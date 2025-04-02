@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  // Serve the site from the /polarisWebsiteV2 subpath
+  basePath: '/polarisWebsiteV2',
+  assetPrefix: '/polarisWebsiteV2/',
+  
+  // Enable static export mode (Next.js 14+)
+  output: 'export',
+
   eslint: {
-    // we use biome for linting
+    // We use biome for linting – ignore during builds
     ignoreDuringBuilds: true,
   },
   images: {
@@ -38,9 +44,6 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
