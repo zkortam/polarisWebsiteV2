@@ -1,0 +1,18 @@
+[build]
+  command = "bun run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18.17.0"
+  BUN_VERSION = "1.0.20"
+
+# Optimize for Next.js
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Handle images
+[images]
+  compress = true
+  quality = 85
+  sizes = [500, 1024, 1920]
+  remote_images = ["https://source.unsplash.com/.*", "https://images.unsplash.com/.*", "https://ext.same-assets.com/.*", "https://ugc.same-assets.com/.*"]
