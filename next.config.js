@@ -1,12 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Serve the site from the /polarisWebsiteV2 subpath
-  basePath: '/polarisWebsiteV2',
-  assetPrefix: '/polarisWebsiteV2/',
-  
   // Enable static export mode (Next.js 14+)
   output: 'export',
-
+  
+  // Remove basePath and assetPrefix as they will be handled by GitHub Pages
   eslint: {
     // We use biome for linting – ignore during builds
     ignoreDuringBuilds: true,
