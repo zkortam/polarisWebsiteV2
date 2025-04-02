@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const navLinks = [
   { href: "#about", label: "About Us" },
@@ -15,8 +16,17 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+
+  const handleVoteClick = () => {
+    toast({
+      title: "Voting Information",
+      description: "Voting opens on 4/7/2025",
+      duration: 3000,
+    });
+  };
 
   // Handle scroll event to change navbar appearance
   useEffect(() => {
@@ -91,7 +101,10 @@ export function Navbar() {
               )}
             </Link>
           ))}
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover">
+          <Button 
+            className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover"
+            onClick={handleVoteClick}
+          >
             Vote Now
           </Button>
         </nav>
@@ -115,7 +128,10 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/80 w-full">
+              <Button 
+                className="bg-primary text-primary-foreground hover:bg-primary/80 w-full"
+                onClick={handleVoteClick}
+              >
                 Vote Now
               </Button>
             </div>

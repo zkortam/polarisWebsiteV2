@@ -179,11 +179,21 @@ export function Contact() {
                 <motion.div className="space-y-4" variants={containerVariants}>
                   <motion.div className="flex items-start gap-4" variants={itemVariants}>
                     <div className="bg-primary/20 p-3 rounded-full">
+                      <IconMapPin className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-medium">Location</h4>
+                      <p className="text-foreground/70 mt-1">Warren College, UC San Diego</p>
+                    </div>
+                  </motion.div>
+
+                  <motion.div className="flex items-start gap-4" variants={itemVariants}>
+                    <div className="bg-primary/20 p-3 rounded-full">
                       <IconMail className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <h4 className="text-base font-medium">Email</h4>
-                      <p className="text-foreground/70 mt-1">polaris@ucsd.edu</p>
+                      <p className="text-foreground/70 mt-1">contact@polarisucsd.org</p>
                     </div>
                   </motion.div>
 
@@ -193,17 +203,7 @@ export function Contact() {
                     </div>
                     <div>
                       <h4 className="text-base font-medium">Phone</h4>
-                      <p className="text-foreground/70 mt-1">(858) 555-1234</p>
-                    </div>
-                  </motion.div>
-
-                  <motion.div className="flex items-start gap-4" variants={itemVariants}>
-                    <div className="bg-primary/20 p-3 rounded-full">
-                      <IconMapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium">Office</h4>
-                      <p className="text-foreground/70 mt-1">Price Center East, 3rd Floor<br />UC San Diego, La Jolla, CA</p>
+                      <p className="text-foreground/70 mt-1">(669) 222-1745</p>
                     </div>
                   </motion.div>
                 </motion.div>

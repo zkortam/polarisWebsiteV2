@@ -27,13 +27,14 @@ const teamMembers = [
   },
   {
     name: "Zakaria Kortam",
-    position: "Executive Vice President",
-    description: "Committed to ensuring fiscal responsibility and transparency in all Associated Students operations.",
+    role: "Executive Vice President",
+    image: "/team/zakaria.jpg",
+    bio: "Leading the charge in modernizing student services and enhancing digital infrastructure.",
     quote: "Transparent and responsible governance is the foundation of effective student leadership.",
     imageSrc: "", // Use fallback avatar
     initials: "ZK",
     color: "bg-emerald-500",
-    strengths: ["Organization", "Financial Planning", "Team Building"],
+    strengths: ["Supporting STEM", "Financial Planning", "Tech Revolution"],
     experience: [
       "AS Committee Member",
       "Finance Club President",

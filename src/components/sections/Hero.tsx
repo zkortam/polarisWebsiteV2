@@ -4,9 +4,19 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
+import { useToast } from "@/components/ui/use-toast";
 
 export function Hero() {
+  const { toast } = useToast();
   const backgroundRef = useRef<HTMLDivElement>(null);
+
+  const handleVoteClick = () => {
+    toast({
+      title: "Voting Information",
+      description: "Voting opens on 4/7/2025",
+      duration: 3000,
+    });
+  };
 
   // GSAP animation for the background dots
   useEffect(() => {
@@ -140,10 +150,17 @@ export function Hero() {
             animate="visible"
             variants={buttonVariants}
           >
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover text-base py-6 px-8">
+            <Button 
+              className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover text-base py-6 px-8"
+              onClick={() => document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Our Platform
             </Button>
-            <Button variant="outline" className="border-primary/20 text-foreground hover:bg-primary/10 glow-hover text-base py-6 px-8">
+            <Button 
+              variant="outline" 
+              className="border-primary/20 text-foreground hover:bg-primary/10 glow-hover text-base py-6 px-8"
+              onClick={() => document.getElementById('team')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Meet the Team
             </Button>
           </motion.div>

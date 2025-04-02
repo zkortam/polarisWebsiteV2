@@ -28,6 +28,7 @@ const footerLinks = [
       { label: "Voting Information", href: "#" },
       { label: "Campaign Events", href: "#" },
       { label: "AS UCSD", href: "https://as.ucsd.edu/", target: "_blank" },
+      { label: "AS Budget", href: "https://as.ucsd.edu/about/budget.html", target: "_blank" },
     ],
   },
 ];
@@ -56,7 +57,7 @@ export function Footer() {
 
             <div className="mt-6 flex items-center space-x-4">
               <motion.a
-                href="#"
+                href="https://www.instagram.com/polaris.ucsd/"
                 className="text-foreground/80 hover:text-primary transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
@@ -96,7 +97,7 @@ export function Footer() {
                 </svg>
               </motion.a>
               <motion.a
-                href="#"
+                href="https://www.instagram.com/polaris.ucsd/"
                 className="text-foreground/80 hover:text-primary transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
@@ -115,7 +116,7 @@ export function Footer() {
                 </svg>
               </motion.a>
               <motion.a
-                href="#"
+                href="https://www.tiktok.com/@polaris.ucsd"
                 className="text-foreground/80 hover:text-primary transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
