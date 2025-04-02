@@ -3,11 +3,7 @@ const nextConfig = {
   // Enable static export mode (Next.js 14+)
   output: 'export',
   
-  // Configure base path and asset prefix for GitHub Pages
-  basePath: '/polarisWebsiteV2',
-  assetPrefix: '/polarisWebsiteV2/',
-  
-  // Ensure trailing slashes are handled correctly
+  // Remove GitHub Pages specific paths since we're using a custom domain
   trailingSlash: true,
 
   eslint: {
