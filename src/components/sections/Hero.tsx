@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
 
 export function Hero() {
   const { toast } = useToast();
@@ -150,12 +151,13 @@ export function Hero() {
             animate="visible"
             variants={buttonVariants}
           >
-            <Button 
-              className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover text-base py-6 px-8"
-              onClick={() => document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Our Platform
-            </Button>
+            <Link href="/platform">
+              <Button 
+                className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover text-base py-6 px-8"
+              >
+                Our Platform
+              </Button>
+            </Link>
             <Button 
               variant="outline" 
               className="border-primary/20 text-foreground hover:bg-primary/10 glow-hover text-base py-6 px-8"
