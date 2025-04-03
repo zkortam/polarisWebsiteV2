@@ -125,8 +125,8 @@ export function Hero() {
   // Generate random stars
   const stars = Array.from({ length: 50 }, (_, i) => ({
     id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
     size: Math.random() * 2 + 1,
     delay: Math.random() * 2,
   }));
@@ -134,16 +134,16 @@ export function Hero() {
   // Generate random shooting stars
   const shootingStars = Array.from({ length: 5 }, (_, i) => ({
     id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
     delay: Math.random() * 5,
   }));
 
   // Generate random sparkles
   const sparkles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
     delay: Math.random() * 2,
   }));
 
@@ -174,6 +174,42 @@ export function Hero() {
     springX.set(x);
     springY.set(y);
   };
+
+  // Update star positions when window resizes
+  useEffect(() => {
+    const updateStarPositions = () => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      
+      // Update stars
+      stars.forEach(star => {
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      });
+      
+      // Update shooting stars
+      shootingStars.forEach(star => {
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      });
+      
+      // Update sparkles
+      sparkles.forEach(sparkle => {
+        sparkle.x = Math.random() * width;
+        sparkle.y = Math.random() * height;
+      });
+    };
+    
+    window.addEventListener('resize', updateStarPositions);
+    updateStarPositions(); // Initial positioning
+    
+    return () => {
+      window.removeEventListener('resize', updateStarPositions);
+    };
+  }, []);
 
   return (
     <section 
@@ -256,6 +292,17 @@ export function Hero() {
               className="object-contain"
               priority
               quality={100}
+            />
+            
+            {/* Logo glow effect on hover */}
+            <motion.div
+              className="absolute inset-0 bg-white rounded-full blur-xl opacity-0"
+              initial={{ opacity: 0 }}
+              whileHover={{ 
+                opacity: 0.7,
+                scale: 1.2,
+                transition: { duration: 0.3 }
+              }}
             />
             
             {/* Logo sparkles */}

@@ -2,72 +2,76 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { IconMenu2, IconX } from "@tabler/icons-react";
-import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
-
-const navLinks = [
-  { href: "/#about", label: "About Us" },
-  { href: "/platform", label: "Platform" },
-  { href: "/#team", label: "Our Team" },
-  { href: "/#contact", label: "Contact" },
-];
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
-  const { toast } = useToast();
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleVoteClick = () => {
-    toast({
-      title: "Voting Information",
-      description: "Voting opens on 4/7/2025",
-      duration: 3000,
-    });
-  };
-
-  // Handle scroll event to change navbar appearance
+  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      setScrolled(isScrolled);
-    };
+      // Change navbar appearance on scroll
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Handle active section
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll("section[id]");
-      const scrollY = window.pageYOffset;
-
-      sections.forEach((section) => {
-        const sectionHeight = section.clientHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute("id");
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          setActiveSection(sectionId || "");
+      // Update active section based on scroll position
+      const sections = ["home", "about", "platform", "team"];
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
         }
+        return false;
       });
+
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isMobileMenuOpen && !target.closest(".mobile-menu") && !target.closest(".menu-button")) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMobileMenuOpen]);
+
+  const navLinks = [
+    { label: "Home", href: "/#home" },
+    { label: "About", href: "/#about" },
+    { label: "Platform", href: "/platform" },
+    { label: "Team", href: "/#team" },
+  ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-background/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+        isScrolled
+          ? "bg-background/80 backdrop-blur-md border-b border-border"
+          : "bg-transparent"
       }`}
     >
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="relative w-8 h-8">
@@ -77,7 +81,6 @@ export function Navbar() {
                 fill
                 sizes="32px"
                 className="object-contain"
-                priority
                 quality={100}
               />
             </div>
@@ -85,72 +88,66 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
-                  activeSection === link.href.slice(1)
+                  activeSection === link.label.toLowerCase()
                     ? "text-primary"
-                    : "text-foreground/80 hover:text-primary"
+                    : "text-foreground/70 hover:text-primary"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <Button 
-              className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover"
-              onClick={handleVoteClick}
-            >
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Vote Now
             </Button>
-          </div>
+          </nav>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="menu-button md:hidden p-2 text-foreground/70 hover:text-primary transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            {isMenuOpen ? (
-              <IconX className="w-6 h-6 text-foreground" />
-            ) : (
-              <IconMenu2 className="w-6 h-6 text-foreground" />
-            )}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-primary/10">
-            <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-base font-medium transition-colors ${
-                    activeSection === link.href.slice(1)
-                      ? "text-primary"
-                      : "text-foreground/80 hover:text-primary"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Button 
-                className="bg-primary text-primary-foreground hover:bg-primary/80 w-full"
-                onClick={() => {
-                  handleVoteClick();
-                  setIsMenuOpen(false);
-                }}
+      {/* Mobile Menu */}
+      <motion.div
+        className="mobile-menu md:hidden fixed inset-0 top-16 bg-background z-40"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : -20 }}
+        transition={{ duration: 0.2 }}
+        style={{ display: isMobileMenuOpen ? "block" : "none" }}
+      >
+        <div className="container mx-auto px-4 py-6">
+          <nav className="flex flex-col space-y-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`text-lg font-medium transition-colors ${
+                  activeSection === link.label.toLowerCase()
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-primary"
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                Vote Now
-              </Button>
-            </div>
-          </div>
-        )}
-      </nav>
+                {link.label}
+              </Link>
+            ))}
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full">
+              Vote Now
+            </Button>
+          </nav>
+        </div>
+      </motion.div>
     </header>
   );
 }
