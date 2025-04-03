@@ -79,7 +79,15 @@ const colorScheme = [
 const transformData = {
   bar: (data: BudgetSummary): BarData[] => {
     return Object.entries(data)
-      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+      .filter(([key, value]) => {
+        return (
+          key !== "title" &&
+          key !== "abbreviation" &&
+          typeof value === "object" &&
+          value !== null &&
+          "amount" in value
+        );
+      })
       .map(([key, value]) => ({
         category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         amount: Math.abs((value as BudgetSummaryItem).amount || 0),
@@ -87,7 +95,15 @@ const transformData = {
   },
   pie: (data: BudgetSummary): PieData[] => {
     return Object.entries(data)
-      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+      .filter(([key, value]) => {
+        return (
+          key !== "title" &&
+          key !== "abbreviation" &&
+          typeof value === "object" &&
+          value !== null &&
+          "amount" in value
+        );
+      })
       .map(([key, value]) => ({
         id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         label: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
@@ -96,7 +112,15 @@ const transformData = {
   },
   treemap: (data: BudgetSummary): TreeMapData => {
     const children = Object.entries(data)
-      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+      .filter(([key, value]) => {
+        return (
+          key !== "title" &&
+          key !== "abbreviation" &&
+          typeof value === "object" &&
+          value !== null &&
+          "amount" in value
+        );
+      })
       .map(([key, value]) => ({
         name: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         value: Math.abs((value as BudgetSummaryItem).amount || 0),
@@ -111,14 +135,30 @@ const transformData = {
     const nodes = [
       { id: "Total Budget" },
       ...Object.entries(data)
-        .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+        .filter(([key, value]) => {
+          return (
+            key !== "title" &&
+            key !== "abbreviation" &&
+            typeof value === "object" &&
+            value !== null &&
+            "amount" in value
+          );
+        })
         .map(([key, value]) => ({
           id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         })),
     ];
 
     const links = Object.entries(data)
-      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+      .filter(([key, value]) => {
+        return (
+          key !== "title" &&
+          key !== "abbreviation" &&
+          typeof value === "object" &&
+          value !== null &&
+          "amount" in value
+        );
+      })
       .map(([key, value]) => ({
         source: "Total Budget",
         target: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
@@ -134,12 +174,22 @@ export default function BudgetPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const chartData = useMemo(() => {
-    return transformData[selectedView](budgetData.budget_summary as BudgetSummary);
+    const summary = budgetData.budget_summary as BudgetSummary;
+    return transformData[selectedView](summary);
   }, [selectedView]);
 
   const budgetItems = useMemo(() => {
-    return Object.entries(budgetData.budget_summary as BudgetSummary)
-      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+    const summary = budgetData.budget_summary as BudgetSummary;
+    return Object.entries(summary)
+      .filter(([key, value]) => {
+        return (
+          key !== "title" &&
+          key !== "abbreviation" &&
+          typeof value === "object" &&
+          value !== null &&
+          "amount" in value
+        );
+      })
       .map(([key, value]) => ({
         category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         amount: (value as BudgetSummaryItem).amount || 0,
@@ -280,7 +330,7 @@ export default function BudgetPage() {
                     colors={{ scheme: "nivo" }}
                     animate={true}
                     tooltip={({ node }) => (
-                      <div className="bg-white p-2 shadow-lg rounded">
+                      <div className="bg-white p-2 shadow-lg rounded text-black">
                         <strong>{node.id}</strong>
                         <br />
                         Amount: ${node.value.toLocaleString()}
@@ -319,7 +369,7 @@ export default function BudgetPage() {
                     labelTextColor={{ from: "color", modifiers: [["darker", 1]] }}
                     animate={true}
                     nodeTooltip={({ node }: { node: SankeyNode }) => (
-                      <div className="bg-white p-2 shadow-lg rounded">
+                      <div className="bg-white p-2 shadow-lg rounded text-black">
                         <strong>{node.id}</strong>
                         <br />
                         Amount: ${node.value?.toLocaleString()}
