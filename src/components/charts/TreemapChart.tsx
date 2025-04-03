@@ -13,36 +13,43 @@ interface TreemapChartProps {
 }
 
 const COLORS = [
-  "var(--primary)",
-  "var(--primary-foreground)",
-  "var(--secondary)",
-  "var(--secondary-foreground)",
-  "var(--accent)",
-  "var(--accent-foreground)",
-  "var(--destructive)",
-  "var(--destructive-foreground)",
+  "hsl(var(--primary))",
+  "hsl(var(--primary-foreground))",
+  "hsl(var(--secondary))",
+  "hsl(var(--secondary-foreground))",
+  "hsl(var(--accent))",
+  "hsl(var(--accent-foreground))",
+  "hsl(var(--destructive))",
+  "hsl(var(--destructive-foreground))",
 ];
 
 const TreemapChart: React.FC<TreemapChartProps> = ({ data, onItemClick }) => {
+  // Safely parse numeric values with error handling
+  const parseValue = (value: string): number => {
+    const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
   // Transform data for the treemap
   const chartData = Object.entries(data)
     .filter(([key]) => key !== "value" && key !== "Items")
     .map(([key, value]) => ({
       name: key,
       abbrev: value.abbrev || key,
-      size: parseFloat(value.toString().replace(/[^0-9.-]+/g, "")),
+      size: parseValue(value),
     }))
     .sort((a, b) => b.size - a.size);
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
+      const totalValue = chartData.reduce((acc, curr) => acc + curr.size, 0);
+      const percentage = ((payload[0].size / totalValue) * 100).toFixed(1);
+      
       return (
         <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
           <p className="text-primary font-medium">{payload[0].name}</p>
           <p className="text-foreground">${payload[0].size.toLocaleString()}</p>
-          <p className="text-foreground/60 text-sm">
-            {((payload[0].size / chartData.reduce((acc, curr) => acc + curr.size, 0)) * 100).toFixed(1)}% of total
-          </p>
+          <p className="text-foreground/60 text-sm">{percentage}% of total</p>
         </div>
       );
     }
@@ -54,10 +61,10 @@ const TreemapChart: React.FC<TreemapChartProps> = ({ data, onItemClick }) => {
       <Treemap
         data={chartData}
         dataKey="size"
-        ratio={4 / 3}
-        stroke="var(--border)"
-        fill="var(--primary)"
-        label={{ fill: "var(--foreground)", fontSize: 12 }}
+        aspectRatio={4 / 3}
+        stroke="hsl(var(--border))"
+        fill="hsl(var(--primary))"
+        label={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
         content={<CustomizedContent onItemClick={onItemClick} />}
       >
         <Tooltip content={<CustomTooltip />} />
@@ -83,10 +90,10 @@ interface CustomizedContentProps {
 const CustomizedContent: React.FC<CustomizedContentProps> = ({
   root,
   depth,
-  x,
-  y,
-  width,
-  height,
+  x = 0,
+  y = 0,
+  width = 0,
+  height = 0,
   index,
   payload,
   rank,
@@ -111,13 +118,13 @@ const CustomizedContent: React.FC<CustomizedContentProps> = ({
           width={width}
           height={height}
           fill={background}
-          stroke="var(--border)"
+          stroke="hsl(var(--border))"
         />
         <text
           x={x + width / 2}
           y={y + height / 2}
           textAnchor="middle"
-          fill="var(--foreground)"
+          fill="hsl(var(--foreground))"
           fontSize={12}
         >
           {name}
@@ -134,13 +141,13 @@ const CustomizedContent: React.FC<CustomizedContentProps> = ({
         width={width}
         height={height}
         fill={background}
-        stroke="var(--border)"
+        stroke="hsl(var(--border))"
       />
       <text
         x={x + width / 2}
         y={y + height / 2}
         textAnchor="middle"
-        fill="var(--foreground)"
+        fill="hsl(var(--foreground))"
         fontSize={12}
       >
         {name}

@@ -25,41 +25,47 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
     { name: "Remaining Funds" },
   ];
 
+  // Safely parse numeric values with error handling
+  const parseValue = (value: string): number => {
+    const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
   const links = [
     {
       source: 0,
       target: 1,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["Referendums, Return to Aid, and Locked in Fees"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Referendums, Return to Aid, and Locked in Fees"]),
     },
     {
       source: 0,
       target: 2,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["Career Employees"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Career Employees"]),
     },
     {
       source: 0,
       target: 3,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["Office Operations (Expendable Funds)"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Office Operations (Expendable Funds)"]),
     },
     {
       source: 0,
       target: 4,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["General Operations (Expendable Funds)"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["General Operations (Expendable Funds)"]),
     },
     {
       source: 0,
       target: 5,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["Senate Operations (Expendable Funds)"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Senate Operations (Expendable Funds)"]),
     },
     {
       source: 0,
       target: 6,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["Student-Employee Payroll & Stipends (Expendable Funds)"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Student-Employee Payroll & Stipends (Expendable Funds)"]),
     },
     {
       source: 0,
       target: 7,
-      value: parseFloat(data["BUDGET SUMMARY"].General.Items["2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))"].replace(/[^0-9.-]+/g, "")),
+      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))"]),
     },
   ];
 
@@ -71,17 +77,24 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0];
+      const totalValue = links.reduce((acc, curr) => acc + curr.value, 0);
+      const percentage = ((data.value / totalValue) * 100).toFixed(1);
+      
       return (
         <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
           <p className="text-primary font-medium">{data.name}</p>
           <p className="text-foreground">${data.value.toLocaleString()}</p>
-          <p className="text-foreground/60 text-sm">
-            {((data.value / links.reduce((acc, curr) => acc + curr.value, 0)) * 100).toFixed(1)}% of total
-          </p>
+          <p className="text-foreground/60 text-sm">{percentage}% of total</p>
         </div>
       );
     }
     return null;
+  };
+
+  const handleNodeClick = (data: any) => {
+    if (data && data.name && onNodeClick) {
+      onNodeClick(data.name);
+    }
   };
 
   return (
@@ -89,24 +102,24 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
       <Sankey
         data={chartData}
         node={{
-          fill: "var(--primary)",
-          stroke: "var(--border)",
+          fill: "hsl(var(--primary))",
+          stroke: "hsl(var(--border))",
           strokeWidth: 1,
         }}
         link={{
-          fill: "var(--primary-foreground)",
-          stroke: "var(--border)",
+          fill: "hsl(var(--primary-foreground))",
+          stroke: "hsl(var(--border))",
           strokeWidth: 1,
         }}
         nodePadding={50}
         nodeThickness={10}
         linkCurvature={0.5}
         label={{
-          fill: "var(--foreground)",
+          fill: "hsl(var(--foreground))",
           fontSize: 12,
           fontWeight: 500,
         }}
-        onClick={(data) => onNodeClick?.(data.name)}
+        onClick={handleNodeClick}
         cursor="pointer"
       >
         <Tooltip content={<CustomTooltip />} />
