@@ -18,7 +18,7 @@ interface ChartDataItem {
 }
 
 interface PieChartProps {
-  data: Record<string, string | { abbrev: string }>;
+  data: Record<string, any>;
   onItemClick?: (name: string) => void;
 }
 
@@ -37,7 +37,10 @@ const COLORS = {
 
 const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
-  const parseValue = (value: string): number => {
+  const parseValue = (value: string | string[]): number => {
+    if (Array.isArray(value)) {
+      return value.reduce((acc, curr) => acc + parseValue(curr), 0);
+    }
     const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
     return isNaN(parsed) ? 0 : parsed;
   };
@@ -46,11 +49,29 @@ const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   const chartData: ChartDataItem[] = Object.entries(data)
     .filter(([key]) => key !== "value" && key !== "Items")
     .map(([key, value]) => {
-      const numValue = parseValue(value.toString());
+      let numValue = 0;
+      let abbrev = key;
+
+      if (typeof value === "object" && value !== null) {
+        if ("value" in value) {
+          numValue = parseValue(value.value);
+        } else if ("Items" in value) {
+          // Sum up all items in the category
+          numValue = Object.entries(value.Items).reduce((acc, [_, itemValue]) => {
+            if (typeof itemValue === "string" || Array.isArray(itemValue)) {
+              return acc + parseValue(itemValue);
+            }
+            return acc;
+          }, 0);
+        }
+      } else {
+        numValue = parseValue(value);
+      }
+
       const type: "revenue" | "expense" = numValue >= 0 ? "revenue" : "expense";
       return {
         name: key,
-        abbrev: typeof value === "object" && "abbrev" in value ? value.abbrev : key,
+        abbrev,
         value: Math.abs(numValue),
         type,
       };

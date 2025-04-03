@@ -9,99 +9,77 @@ import {
 import { cn } from "@/lib/utils";
 
 interface SankeyChartProps {
-  data: any;
-  onNodeClick?: (name: string) => void;
+  data: Record<string, any>;
+  onItemClick?: (name: string) => void;
 }
 
-const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
+const SankeyChart: React.FC<SankeyChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
-  const parseValue = (value: string): number => {
+  const parseValue = (value: string | string[]): number => {
+    if (Array.isArray(value)) {
+      return value.reduce((acc, curr) => acc + parseValue(curr), 0);
+    }
     const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
     return isNaN(parsed) ? 0 : parsed;
   };
 
-  // Transform data for the Sankey diagram
-  const nodes = [
-    { name: "Total Revenue", type: "revenue" },
-    { name: "Total Expenses", type: "expense" },
-    { name: "Referendums", type: "revenue" },
-    { name: "Career Employees", type: "expense" },
-    { name: "Office Operations", type: "expense" },
-    { name: "General Operations", type: "expense" },
-    { name: "Senate Operations", type: "expense" },
-    { name: "Student-Employee Payroll", type: "expense" },
-    { name: "Remaining Funds", type: "revenue" },
-  ];
+  // Transform data for the chart
+  const nodes: { name: string }[] = [];
+  const links: { source: number; target: number; value: number }[] = [];
 
-  // Calculate total revenue and expenses
-  const totalRevenue = parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Total Revenue"]) || 0;
-  const totalExpenses = Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Total Expenses"]) || 0);
+  // Add root node
+  nodes.push({ name: "Budget" });
 
-  // Transform data for the Sankey diagram with proper revenue/expense handling
-  const links = [
-    // Revenue flows
-    {
+  // Process each category
+  Object.entries(data).forEach(([category, value], categoryIndex) => {
+    if (category === "value" || category === "Items") return;
+
+    nodes.push({ name: category });
+    const categoryValue = typeof value === "object" && value !== null
+      ? "value" in value
+        ? parseValue(value.value)
+        : "Items" in value
+          ? Object.entries(value.Items).reduce((acc, [_, itemValue]) => {
+              if (typeof itemValue === "string" || Array.isArray(itemValue)) {
+                return acc + parseValue(itemValue);
+              }
+              return acc;
+            }, 0)
+          : 0
+      : parseValue(value);
+
+    links.push({
       source: 0,
-      target: 2,
-      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Referendums, Return to Aid, and Locked in Fees"]),
-      type: "revenue",
-    },
-    {
-      source: 0,
-      target: 8,
-      value: parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))"]),
-      type: "revenue",
-    },
-    // Expense flows
-    {
-      source: 1,
-      target: 3,
-      value: Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Career Employees"])),
-      type: "expense",
-    },
-    {
-      source: 1,
-      target: 4,
-      value: Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Office Operations (Expendable Funds)"])),
-      type: "expense",
-    },
-    {
-      source: 1,
-      target: 5,
-      value: Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["General Operations (Expendable Funds)"])),
-      type: "expense",
-    },
-    {
-      source: 1,
-      target: 6,
-      value: Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Senate Operations (Expendable Funds)"])),
-      type: "expense",
-    },
-    {
-      source: 1,
-      target: 7,
-      value: Math.abs(parseValue(data["BUDGET SUMMARY"]?.General?.Items?.["Student-Employee Payroll & Stipends (Expendable Funds)"])),
-      type: "expense",
-    },
-  ];
+      target: categoryIndex + 1,
+      value: Math.abs(categoryValue),
+    });
 
-  const chartData = {
-    nodes,
-    links,
-  };
+    // Process subcategories if they exist
+    if (typeof value === "object" && value !== null && "Items" in value) {
+      Object.entries(value.Items).forEach(([subcategory, subValue], subIndex) => {
+        nodes.push({ name: subcategory });
+        const subValueNum = typeof subValue === "string" || Array.isArray(subValue)
+          ? parseValue(subValue)
+          : 0;
+
+        links.push({
+          source: categoryIndex + 1,
+          target: nodes.length - 1,
+          value: Math.abs(subValueNum),
+        });
+      });
+    }
+  });
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0];
-      const totalValue = links.reduce((acc, curr) => acc + curr.value, 0);
+      const totalValue = links.reduce((acc, link) => acc + link.value, 0);
       const percentage = ((data.value / totalValue) * 100).toFixed(1);
       
       return (
         <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
-          <p className={cn(
-            "font-medium",
-            data.type === "revenue" ? "text-green-500" : "text-red-500"
-          )}>
+          <p className="font-medium text-foreground">
             {data.name}
           </p>
           <p className="text-foreground">
@@ -117,41 +95,30 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
   };
 
   const handleNodeClick = (data: any) => {
-    if (data && data.name && onNodeClick) {
-      onNodeClick(data.name);
+    if (data && data.name && onItemClick) {
+      onItemClick(data.name);
     }
   };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <Sankey
-        data={chartData}
+        data={{ nodes, links }}
         node={{
-          fill: (node: any) => {
-            if (node.type === "revenue") return "hsl(142.1 76.2% 36.3%)"; // Green for revenue
-            return "hsl(346.8 77.2% 49.8%)"; // Red for expenses
-          },
+          fill: "hsl(var(--primary))",
           stroke: "hsl(var(--border))",
           strokeWidth: 1,
+          onClick: handleNodeClick,
+          cursor: "pointer",
         }}
         link={{
-          fill: (link: any) => {
-            if (link.type === "revenue") return "hsl(142.1 76.2% 36.3%)"; // Green for revenue
-            return "hsl(346.8 77.2% 49.8%)"; // Red for expenses
-          },
+          fill: "hsl(var(--primary-foreground))",
           stroke: "hsl(var(--border))",
           strokeWidth: 1,
         }}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         nodePadding={50}
-        nodeThickness={10}
         linkCurvature={0.5}
-        label={{
-          fill: "hsl(var(--foreground))",
-          fontSize: 12,
-          fontWeight: 500,
-        }}
-        onClick={handleNodeClick}
-        cursor="pointer"
       >
         <Tooltip content={<CustomTooltip />} />
       </Sankey>
