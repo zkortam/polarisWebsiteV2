@@ -9,6 +9,7 @@ import {
 
 interface TreemapChartProps {
   data: Record<string, string>;
+  onItemClick?: (name: string) => void;
 }
 
 const COLORS = [
@@ -22,15 +23,31 @@ const COLORS = [
   "var(--destructive-foreground)",
 ];
 
-const TreemapChart: React.FC<TreemapChartProps> = ({ data }) => {
+const TreemapChart: React.FC<TreemapChartProps> = ({ data, onItemClick }) => {
   // Transform data for the treemap
   const chartData = Object.entries(data)
     .filter(([key]) => key !== "value" && key !== "Items")
     .map(([key, value]) => ({
       name: key,
+      abbrev: value.abbrev || key,
       size: parseFloat(value.toString().replace(/[^0-9.-]+/g, "")),
     }))
     .sort((a, b) => b.size - a.size);
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
+          <p className="text-primary font-medium">{payload[0].name}</p>
+          <p className="text-foreground">${payload[0].size.toLocaleString()}</p>
+          <p className="text-foreground/60 text-sm">
+            {((payload[0].size / chartData.reduce((acc, curr) => acc + curr.size, 0)) * 100).toFixed(1)}% of total
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -38,15 +55,12 @@ const TreemapChart: React.FC<TreemapChartProps> = ({ data }) => {
         data={chartData}
         dataKey="size"
         ratio={4 / 3}
-        stroke="#fff"
+        stroke="var(--border)"
         fill="var(--primary)"
         label={{ fill: "var(--foreground)", fontSize: 12 }}
-        content={<CustomizedContent />}
+        content={<CustomizedContent onItemClick={onItemClick} />}
       >
-        <Tooltip
-          formatter={(value: number) => `$${value.toLocaleString()}`}
-          labelStyle={{ fontSize: 12 }}
-        />
+        <Tooltip content={<CustomTooltip />} />
       </Treemap>
     </ResponsiveContainer>
   );
@@ -63,6 +77,7 @@ interface CustomizedContentProps {
   payload?: any;
   rank?: number;
   name?: string;
+  onItemClick?: (name: string) => void;
 }
 
 const CustomizedContent: React.FC<CustomizedContentProps> = ({
@@ -76,26 +91,33 @@ const CustomizedContent: React.FC<CustomizedContentProps> = ({
   payload,
   rank,
   name,
+  onItemClick,
 }) => {
   const background = COLORS[Math.floor((index || 0) % COLORS.length)];
   const isLeaf = depth === 1;
 
+  const handleClick = () => {
+    if (name && onItemClick) {
+      onItemClick(name);
+    }
+  };
+
   if (isLeaf) {
     return (
-      <g>
+      <g onClick={handleClick} style={{ cursor: "pointer" }}>
         <rect
           x={x}
           y={y}
           width={width}
           height={height}
           fill={background}
-          stroke="#fff"
+          stroke="var(--border)"
         />
         <text
           x={x + width / 2}
           y={y + height / 2}
           textAnchor="middle"
-          fill="#fff"
+          fill="var(--foreground)"
           fontSize={12}
         >
           {name}
@@ -112,13 +134,13 @@ const CustomizedContent: React.FC<CustomizedContentProps> = ({
         width={width}
         height={height}
         fill={background}
-        stroke="#fff"
+        stroke="var(--border)"
       />
       <text
         x={x + width / 2}
         y={y + height / 2}
         textAnchor="middle"
-        fill="#fff"
+        fill="var(--foreground)"
         fontSize={12}
       >
         {name}

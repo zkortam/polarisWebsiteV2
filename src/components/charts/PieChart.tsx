@@ -11,6 +11,7 @@ import {
 
 interface PieChartProps {
   data: Record<string, string>;
+  onItemClick?: (name: string) => void;
 }
 
 const COLORS = [
@@ -24,16 +25,32 @@ const COLORS = [
   "var(--destructive-foreground)",
 ];
 
-const PieChart: React.FC<PieChartProps> = ({ data }) => {
+const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   // Transform data for the chart
   const chartData = Object.entries(data)
     .filter(([key]) => key !== "value" && key !== "Items")
     .map(([key, value]) => ({
       name: key,
+      abbrev: value.abbrev || key,
       value: parseFloat(value.toString().replace(/[^0-9.-]+/g, "")),
     }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 8); // Show top 8 items
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
+          <p className="text-primary font-medium">{payload[0].name}</p>
+          <p className="text-foreground">${payload[0].value.toLocaleString()}</p>
+          <p className="text-foreground/60 text-sm">
+            {((payload[0].value / chartData.reduce((acc, curr) => acc + curr.value, 0)) * 100).toFixed(1)}% of total
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -47,15 +64,14 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
           outerRadius={80}
           fill="#8884d8"
           dataKey="value"
+          onClick={(data) => onItemClick?.(data.name)}
+          cursor="pointer"
         >
           {chartData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip
-          formatter={(value: number) => `$${value.toLocaleString()}`}
-          labelStyle={{ fontSize: 12 }}
-        />
+        <Tooltip content={<CustomTooltip />} />
       </RechartsPieChart>
     </ResponsiveContainer>
   );

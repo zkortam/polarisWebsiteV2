@@ -9,9 +9,10 @@ import {
 
 interface SankeyChartProps {
   data: any;
+  onNodeClick?: (name: string) => void;
 }
 
-const SankeyChart: React.FC<SankeyChartProps> = ({ data }) => {
+const SankeyChart: React.FC<SankeyChartProps> = ({ data, onNodeClick }) => {
   // Transform data for the Sankey diagram
   const nodes = [
     { name: "Total Revenue" },
@@ -67,21 +68,48 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data }) => {
     links,
   };
 
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0];
+      return (
+        <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
+          <p className="text-primary font-medium">{data.name}</p>
+          <p className="text-foreground">${data.value.toLocaleString()}</p>
+          <p className="text-foreground/60 text-sm">
+            {((data.value / links.reduce((acc, curr) => acc + curr.value, 0)) * 100).toFixed(1)}% of total
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <Sankey
         data={chartData}
-        node={{ fill: "var(--primary)" }}
-        link={{ fill: "var(--primary-foreground)" }}
+        node={{
+          fill: "var(--primary)",
+          stroke: "var(--border)",
+          strokeWidth: 1,
+        }}
+        link={{
+          fill: "var(--primary-foreground)",
+          stroke: "var(--border)",
+          strokeWidth: 1,
+        }}
         nodePadding={50}
         nodeThickness={10}
         linkCurvature={0.5}
-        label={{ fill: "var(--foreground)", fontSize: 12 }}
+        label={{
+          fill: "var(--foreground)",
+          fontSize: 12,
+          fontWeight: 500,
+        }}
+        onClick={(data) => onNodeClick?.(data.name)}
+        cursor="pointer"
       >
-        <Tooltip
-          formatter={(value: number) => `$${value.toLocaleString()}`}
-          labelStyle={{ fontSize: 12 }}
-        />
+        <Tooltip content={<CustomTooltip />} />
       </Sankey>
     </ResponsiveContainer>
   );
