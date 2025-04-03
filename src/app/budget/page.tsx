@@ -1,168 +1,281 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Treemap,
+  TooltipProps,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 
-// Dynamically import chart components to avoid SSR issues
-const BarChart = dynamic(() => import("@/components/charts/BarChart"), { ssr: false });
-const PieChart = dynamic(() => import("@/components/charts/PieChart"), { ssr: false });
-const SankeyChart = dynamic(() => import("@/components/charts/SankeyChart"), { ssr: false });
-const TreemapChart = dynamic(() => import("@/components/charts/TreemapChart"), { ssr: false });
+// Color palette for charts
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+  "#FFC658",
+  "#FF7C43",
+  "#FF6B6B",
+  "#4ECDC4",
+];
 
-// Import budget data
-import budgetData from "@/data/budget.json";
+interface BudgetData {
+  metadata: {
+    title: string;
+    abbr: string;
+    sponsored_by: string;
+    approved_by: string;
+    fiscal_year: string;
+    total_revenue: number;
+    total_allocations: number;
+  };
+  funds: Fund[];
+}
+
+interface Fund {
+  id: string;
+  name: string;
+  abbr: string;
+  type: string;
+  amount: number;
+  description?: string;
+  children?: Fund[];
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background/95 p-4 rounded-lg shadow-lg border border-primary/20">
+        <p className="font-medium">{label}</p>
+        <p className="text-sm">
+          Amount: ${Math.abs(payload[0].value).toLocaleString()}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function BudgetPage() {
-  const [selectedCategory, setSelectedCategory] = useState("BUDGET SUMMARY");
-  const [selectedView, setSelectedView] = useState("overview");
-  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [budgetData, setBudgetData] = useState<BudgetData | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("overview");
 
-  const categories = Object.keys(budgetData);
+  useEffect(() => {
+    fetch("/budget.json")
+      .then((res) => res.json())
+      .then((data) => setBudgetData(data))
+      .catch((error) => console.error("Error loading budget data:", error));
+  }, []);
 
-  const toggleSection = (section: string) => {
-    setExpandedSections(prev =>
-      prev.includes(section)
-        ? prev.filter(s => s !== section)
-        : [...prev, section]
+  if (!budgetData) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">Loading budget data...</div>
+      </div>
     );
-  };
+  }
+
+  // Prepare data for different visualizations
+  const revenueData = budgetData.funds
+    .filter((fund) => fund.type === "income")
+    .map((fund) => ({
+      name: fund.name,
+      amount: fund.amount,
+    }));
+
+  const expenditureData = budgetData.funds
+    .filter((fund) => fund.type === "expenditure")
+    .map((fund) => ({
+      name: fund.name,
+      amount: Math.abs(fund.amount),
+    }));
+
+  const treemapData = budgetData.funds.map((fund) => ({
+    name: fund.name,
+    size: Math.abs(fund.amount),
+    children: fund.children?.map((child) => ({
+      name: child.name,
+      size: Math.abs(child.amount),
+    })),
+  }));
 
   return (
-    <div className="min-h-screen bg-background py-20">
-      <div className="container px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-bold text-gradient mb-4">Budget Visualization</h1>
-          <p className="text-lg text-foreground/80">
-            Explore UCSD Associated Students Budget for 2024-2025
-          </p>
-        </motion.div>
+    <div className="container mx-auto px-4 py-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-8"
+      >
+        <h1 className="text-4xl font-bold text-gradient mb-4">
+          Budget Visualization
+        </h1>
+        <p className="text-foreground/80">
+          Explore how Associated Students allocates resources for the{" "}
+          {budgetData.metadata.fiscal_year} fiscal year
+        </p>
+      </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-4">
-            <h3 className="text-sm font-medium text-foreground/80">Total Revenue</h3>
-            <p className="text-2xl font-bold text-primary">
-              ${budgetData["BUDGET SUMMARY"].General.Items["2024–2025 AS Revenue"].replace(/[^0-9.-]+/g, "")}
-            </p>
-          </Card>
-          <Card className="p-4">
-            <h3 className="text-sm font-medium text-foreground/80">Remaining Funds</h3>
-            <p className="text-2xl font-bold text-primary">
-              ${budgetData["BUDGET SUMMARY"].General.Items["2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))"].replace(/[^0-9.-]+/g, "")}
-            </p>
-          </Card>
-          <Card className="p-4">
-            <h3 className="text-sm font-medium text-foreground/80">Career Employees</h3>
-            <p className="text-2xl font-bold text-primary">
-              ${budgetData["BUDGET SUMMARY"].General.Items["Career Employees"].replace(/[^0-9.-]+/g, "")}
-            </p>
-          </Card>
-          <Card className="p-4">
-            <h3 className="text-sm font-medium text-foreground/80">Office Operations</h3>
-            <p className="text-2xl font-bold text-primary">
-              ${budgetData["BUDGET SUMMARY"].General.Items["Office Operations (Expendable Funds)"].replace(/[^0-9.-]+/g, "")}
-            </p>
-          </Card>
-        </div>
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="revenue">Revenue</TabsTrigger>
+          <TabsTrigger value="expenditures">Expenditures</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+        </TabsList>
 
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="revenue">Revenue</TabsTrigger>
-            <TabsTrigger value="expenses">Expenses</TabsTrigger>
-            <TabsTrigger value="details">Details</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-4">
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">Budget Overview</h2>
-              <div className="h-[400px]">
-                <SankeyChart data={budgetData} />
-              </div>
-            </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="p-6">
-                <h2 className="text-xl font-bold mb-4">Revenue Distribution</h2>
-                <div className="h-[300px]">
-                  <PieChart data={budgetData["BUDGET SUMMARY"].General.Items} />
-                </div>
-              </Card>
-
-              <Card className="p-6">
-                <h2 className="text-xl font-bold mb-4">Major Expense Categories</h2>
-                <div className="h-[300px]">
-                  <BarChart data={budgetData["BUDGET SUMMARY"].General.Items} />
-                </div>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="revenue" className="space-y-4">
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">Revenue Sources</h2>
-              <div className="h-[400px]">
-                <TreemapChart data={budgetData["BUDGET SUMMARY"].General.Items} />
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="expenses" className="space-y-4">
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">Expense Breakdown</h2>
-              <div className="h-[400px]">
-                <BarChart data={budgetData["BUDGET SUMMARY"].General.Items} />
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="details" className="space-y-4">
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">{selectedCategory}</h2>
-              <div className="space-y-4">
-                {Object.entries(budgetData[selectedCategory]).map(([section, data]) => (
-                  <div key={section} className="border rounded-lg p-4">
-                    <Button
-                      variant="ghost"
-                      className="w-full flex justify-between items-center"
-                      onClick={() => toggleSection(section)}
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Total Revenue vs. Expenditures</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={[
+                        {
+                          name: "Revenue",
+                          amount: budgetData.metadata.total_revenue,
+                        },
+                        {
+                          name: "Expenditures",
+                          amount: Math.abs(budgetData.metadata.total_allocations),
+                        },
+                      ]}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
-                      <span className="font-medium">{section}</span>
-                      {expandedSections.includes(section) ? (
-                        <IconChevronUp className="h-4 w-4" />
-                      ) : (
-                        <IconChevronDown className="h-4 w-4" />
-                      )}
-                    </Button>
-                    {expandedSections.includes(section) && (
-                      <div className="mt-4 space-y-2">
-                        {Object.entries(data).map(([key, value]) => (
-                          <div key={key} className="flex justify-between items-center">
-                            <span className="text-sm">{key}</span>
-                            <span className="text-sm font-medium">{value}</span>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Bar dataKey="amount" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={revenueData}
+                        dataKey="amount"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={150}
+                        label
+                      >
+                        {revenueData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="revenue" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue Sources</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[500px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={revenueData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="amount" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="expenditures" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Expenditure Distribution</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[500px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <Treemap
+                    data={treemapData}
+                    dataKey="size"
+                    nameKey="name"
+                    fill="#8884d8"
+                  >
+                    <Tooltip content={<CustomTooltip />} />
+                  </Treemap>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="details" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Detailed Breakdown</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {budgetData.funds.map((fund) => (
+                  <div key={fund.id} className="border-b border-primary/20 pb-4">
+                    <h3 className="text-lg font-semibold mb-2">{fund.name}</h3>
+                    <p className="text-foreground/80 mb-2">
+                      Amount: ${Math.abs(fund.amount).toLocaleString()}
+                    </p>
+                    {fund.description && (
+                      <p className="text-sm text-foreground/60">
+                        {fund.description}
+                      </p>
+                    )}
+                    {fund.children && fund.children.length > 0 && (
+                      <div className="mt-2 pl-4">
+                        {fund.children.map((child) => (
+                          <div key={child.id} className="mb-1">
+                            <span className="font-medium">{child.name}:</span>{" "}
+                            ${Math.abs(child.amount).toLocaleString()}
                           </div>
                         ))}
                       </div>
@@ -170,10 +283,10 @@ export default function BudgetPage() {
                   </div>
                 ))}
               </div>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 } 
