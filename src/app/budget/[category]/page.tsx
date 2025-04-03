@@ -8,7 +8,6 @@ import { ResponsiveTreeMap } from "@nivo/treemap";
 import { ResponsiveSankey } from "@nivo/sankey";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import budgetData from "@/data/budget.json";
@@ -84,188 +83,160 @@ interface SankeyData {
 
 type ChartData = BarData[] | PieData[] | TreeMapData | SankeyData;
 
-const colorScheme = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#96CEB4",
-  "#FFEEAD",
-  "#D4A5A5",
-  "#9B59B6",
-  "#3498DB",
-  "#E67E22",
-  "#2ECC71",
-];
-
 const transformData = {
-  bar: (data: BudgetData): BarData[] => {
+  bar: (data: BudgetItem): BarData[] => {
     const items: BarData[] = [];
     
-    Object.entries(data).forEach(([section, sectionData]) => {
-      if (typeof sectionData === "object" && "General" in sectionData) {
-        const generalItems = sectionData.General?.Items;
-        if (generalItems) {
-          Object.entries(generalItems).forEach(([key, value]) => {
-            if (typeof value === "object" && "value" in value) {
-              items.push({
-                category: value.abbreviation || key,
-                amount: Math.abs(value.value),
-              });
-            }
+    if (data.Items) {
+      Object.entries(data.Items).forEach(([key, value]) => {
+        if (typeof value === "object" && "value" in value) {
+          items.push({
+            category: value.abbreviation || key,
+            amount: Math.abs(value.value),
           });
         }
-      }
-    });
+      });
+    }
+
+    if (data.Subitems) {
+      Object.entries(data.Subitems).forEach(([key, value]) => {
+        items.push({
+          category: value.abbreviation || key,
+          amount: Math.abs(value.value),
+        });
+      });
+    }
 
     return items;
   },
-  pie: (data: BudgetData): PieData[] => {
+  pie: (data: BudgetItem): PieData[] => {
     const items: PieData[] = [];
     
-    Object.entries(data).forEach(([section, sectionData]) => {
-      if (typeof sectionData === "object" && "General" in sectionData) {
-        const generalItems = sectionData.General?.Items;
-        if (generalItems) {
-          Object.entries(generalItems).forEach(([key, value]) => {
-            if (typeof value === "object" && "value" in value) {
-              items.push({
-                id: value.abbreviation || key,
-                label: value.abbreviation || key,
-                value: Math.abs(value.value),
-              });
-            }
+    if (data.Items) {
+      Object.entries(data.Items).forEach(([key, value]) => {
+        if (typeof value === "object" && "value" in value) {
+          items.push({
+            id: value.abbreviation || key,
+            label: value.abbreviation || key,
+            value: Math.abs(value.value),
           });
         }
-      }
-    });
+      });
+    }
+
+    if (data.Subitems) {
+      Object.entries(data.Subitems).forEach(([key, value]) => {
+        items.push({
+          id: value.abbreviation || key,
+          label: value.abbreviation || key,
+          value: Math.abs(value.value),
+        });
+      });
+    }
 
     return items;
   },
-  treemap: (data: BudgetData): TreeMapData => {
+  treemap: (data: BudgetItem): TreeMapData => {
     const children: TreeMapNode[] = [];
     
-    Object.entries(data).forEach(([section, sectionData]) => {
-      if (typeof sectionData === "object") {
-        const sectionChildren: TreeMapNode[] = [];
-        
-        // Handle General section
-        if ("General" in sectionData) {
-          const generalItems = sectionData.General?.Items;
-          if (generalItems) {
-            Object.entries(generalItems).forEach(([key, value]) => {
-              if (typeof value === "object" && "value" in value) {
-                sectionChildren.push({
-                  name: value.abbreviation || key,
-                  value: Math.abs(value.value),
-                });
-              }
-            });
-          }
-        }
-
-        // Handle other sections
-        Object.entries(sectionData).forEach(([key, value]) => {
-          if (key !== "General" && key !== "abbreviation" && typeof value === "object" && "value" in value) {
-            sectionChildren.push({
-              name: (value as BudgetItem).abbreviation || key,
-              value: Math.abs((value as BudgetItem).value),
-            });
-          }
-        });
-
-        if (sectionChildren.length > 0) {
+    if (data.Items) {
+      Object.entries(data.Items).forEach(([key, value]) => {
+        if (typeof value === "object" && "value" in value) {
           children.push({
-            name: sectionData.abbreviation || section,
-            value: sectionChildren.reduce((sum, child) => sum + child.value, 0),
-            children: sectionChildren,
+            name: value.abbreviation || key,
+            value: Math.abs(value.value),
           });
         }
-      }
-    });
+      });
+    }
+
+    if (data.Subitems) {
+      Object.entries(data.Subitems).forEach(([key, value]) => {
+        children.push({
+          name: value.abbreviation || key,
+          value: Math.abs(value.value),
+        });
+      });
+    }
 
     return {
-      name: "Budget",
+      name: data.abbreviation || "Category",
       children: children,
     };
   },
-  sankey: (data: BudgetData): SankeyData => {
-    const nodes: SankeyNode[] = [{ id: "Total Budget" }];
+  sankey: (data: BudgetItem): SankeyData => {
+    const nodes: SankeyNode[] = [{ id: data.abbreviation || "Category" }];
     const links: SankeyLink[] = [];
     
-    Object.entries(data).forEach(([section, sectionData]) => {
-      if (typeof sectionData === "object") {
-        // Handle General section
-        if ("General" in sectionData) {
-          const generalItems = sectionData.General?.Items;
-          if (generalItems) {
-            Object.entries(generalItems).forEach(([key, value]) => {
-              if (typeof value === "object" && "value" in value) {
-                const nodeId = value.abbreviation || key;
-                nodes.push({ id: nodeId });
-                links.push({
-                  source: "Total Budget",
-                  target: nodeId,
-                  value: Math.abs(value.value),
-                });
-              }
-            });
-          }
+    if (data.Items) {
+      Object.entries(data.Items).forEach(([key, value]) => {
+        if (typeof value === "object" && "value" in value) {
+          const nodeId = value.abbreviation || key;
+          nodes.push({ id: nodeId });
+          links.push({
+            source: data.abbreviation || "Category",
+            target: nodeId,
+            value: Math.abs(value.value),
+          });
         }
+      });
+    }
 
-        // Handle other sections
-        Object.entries(sectionData).forEach(([key, value]) => {
-          if (key !== "General" && key !== "abbreviation" && typeof value === "object" && "value" in value) {
-            const nodeId = (value as BudgetItem).abbreviation || key;
-            nodes.push({ id: nodeId });
-            links.push({
-              source: "Total Budget",
-              target: nodeId,
-              value: Math.abs((value as BudgetItem).value),
-            });
-          }
+    if (data.Subitems) {
+      Object.entries(data.Subitems).forEach(([key, value]) => {
+        const nodeId = value.abbreviation || key;
+        nodes.push({ id: nodeId });
+        links.push({
+          source: data.abbreviation || "Category",
+          target: nodeId,
+          value: Math.abs(value.value),
         });
-      }
-    });
+      });
+    }
 
     return { nodes, links };
   },
 };
 
-export default function BudgetPage() {
+export default function CategoryPage({ params }: { params: { category: string } }) {
   const router = useRouter();
   const [selectedView, setSelectedView] = useState<keyof typeof transformData>("bar");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const chartData = useMemo(() => {
-    return transformData[selectedView](budgetData as unknown as BudgetData);
-  }, [selectedView]);
-
-  const budgetItems = useMemo(() => {
-    const items: { category: string; amount: number; description?: string }[] = [];
+  const categoryData = useMemo(() => {
+    // Find the category in the budget data
+    let category: BudgetItem | undefined;
     
-    Object.entries(budgetData as unknown as BudgetData).forEach(([section, sectionData]) => {
-      if (typeof sectionData === "object" && "General" in sectionData) {
-        const generalItems = sectionData.General?.Items;
-        if (generalItems) {
-          Object.entries(generalItems).forEach(([key, value]) => {
-            if (typeof value === "object" && "value" in value) {
-              items.push({
-                category: value.abbreviation || key,
-                amount: value.value,
-                description: value.description,
-              });
+    Object.values(budgetData as unknown as BudgetData).forEach((section) => {
+      if (section.General?.Items) {
+        Object.entries(section.General.Items).forEach(([key, value]) => {
+          if (typeof value === "object" && "value" in value) {
+            if (value.abbreviation === params.category || key === params.category) {
+              category = value as BudgetItem;
             }
-          });
-        }
+          }
+        });
       }
     });
 
-    return items;
-  }, []);
+    return category;
+  }, [params.category]);
 
-  const handleItemClick = (itemId: string) => {
-    router.push(`/budget/${itemId}`);
-  };
+  const chartData = useMemo(() => {
+    if (!categoryData) return null;
+    return transformData[selectedView](categoryData);
+  }, [selectedView, categoryData]);
+
+  if (!categoryData || !chartData) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold">Category not found</h1>
+        <Button onClick={() => router.push("/budget")} className="mt-4">
+          Back to Budget Overview
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -276,9 +247,14 @@ export default function BudgetPage() {
         className="space-y-8"
       >
         <div className="flex flex-col space-y-4">
-          <h1 className="text-4xl font-bold">Budget Visualization</h1>
+          <div className="flex items-center space-x-4">
+            <Button onClick={() => router.push("/budget")} variant="outline">
+              Back to Overview
+            </Button>
+            <h1 className="text-4xl font-bold">{categoryData.abbreviation}</h1>
+          </div>
           <p className="text-lg text-gray-600">
-            Explore the UCSD Associated Students budget for 2024-2025
+            {categoryData.description || "Category details"}
           </p>
         </div>
 
@@ -293,7 +269,7 @@ export default function BudgetPage() {
           <TabsContent value="bar" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle>Budget Distribution - Bar Chart</CardTitle>
+                <CardTitle>Category Distribution - Bar Chart</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[500px]">
@@ -329,7 +305,7 @@ export default function BudgetPage() {
                     animate={true}
                     onClick={(node) => {
                       if (node.data.category) {
-                        handleItemClick(node.data.category as string);
+                        setSelectedItem(node.data.category as string);
                       }
                     }}
                   />
@@ -341,7 +317,7 @@ export default function BudgetPage() {
           <TabsContent value="pie" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle>Budget Distribution - Pie Chart</CardTitle>
+                <CardTitle>Category Distribution - Pie Chart</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[500px]">
@@ -362,7 +338,7 @@ export default function BudgetPage() {
                     arcLabelsTextColor={{ from: "color", modifiers: [["darker", 1.4]] }}
                     onClick={(node) => {
                       if (node.data.id) {
-                        handleItemClick(node.data.id);
+                        setSelectedItem(node.data.id);
                       }
                     }}
                     legends={[
@@ -394,7 +370,7 @@ export default function BudgetPage() {
           <TabsContent value="treemap" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle>Budget Distribution - Treemap</CardTitle>
+                <CardTitle>Category Distribution - Treemap</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[600px]">
@@ -421,7 +397,7 @@ export default function BudgetPage() {
                     enableLabel={true}
                     onClick={(node) => {
                       if (node.id) {
-                        handleItemClick(node.id);
+                        setSelectedItem(node.id);
                       }
                     }}
                   />
@@ -433,7 +409,7 @@ export default function BudgetPage() {
           <TabsContent value="sankey" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle>Budget Flow - Sankey Diagram</CardTitle>
+                <CardTitle>Category Flow - Sankey Diagram</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[600px]">
@@ -465,7 +441,7 @@ export default function BudgetPage() {
                     )}
                     onClick={(node) => {
                       if ('id' in node) {
-                        handleItemClick(node.id);
+                        setSelectedItem(node.id);
                       }
                     }}
                   />
@@ -475,55 +451,29 @@ export default function BudgetPage() {
           </TabsContent>
         </Tabs>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Budget Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <Select value={selectedCategory || ""} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {budgetItems.map((item) => (
-                    <SelectItem key={item.category} value={item.category}>
-                      {item.category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              {selectedCategory && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-2"
+        {selectedItem && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Item Details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-2"
+              >
+                <h3 className="text-xl font-semibold">{selectedItem}</h3>
+                <Button
+                  onClick={() => router.push(`/budget/${selectedItem}`)}
+                  className="mt-2"
                 >
-                  <h3 className="text-xl font-semibold">
-                    {budgetItems.find((item) => item.category === selectedCategory)?.category}
-                  </h3>
-                  <p className="text-lg">
-                    Amount: $
-                    {budgetItems
-                      .find((item) => item.category === selectedCategory)
-                      ?.amount.toLocaleString()}
-                  </p>
-                  <p className="text-gray-600">
-                    {budgetItems.find((item) => item.category === selectedCategory)?.description}
-                  </p>
-                  <Button
-                    onClick={() => handleItemClick(selectedCategory)}
-                    className="mt-2"
-                  >
-                    View Details
-                  </Button>
-                </motion.div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                  View Details
+                </Button>
+              </motion.div>
+            </CardContent>
+          </Card>
+        )}
       </motion.div>
     </div>
   );
