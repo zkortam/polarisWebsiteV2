@@ -11,16 +11,34 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import budgetData from "@/data/budget.json";
 
-interface BudgetSummaryItem {
-  amount?: number;
+interface BudgetItem {
+  value: number;
+  abbreviation: string;
   description?: string;
-  abbreviation?: string;
+  Items?: {
+    [key: string]: BudgetItem | BudgetItem[];
+  };
+  Subitems?: {
+    [key: string]: BudgetItem;
+  };
 }
 
-interface BudgetSummary {
-  title: string;
+interface GeneralSection {
   abbreviation: string;
-  [key: string]: BudgetSummaryItem | string;
+  Items: {
+    [key: string]: BudgetItem | string;
+  };
+}
+
+interface BudgetSection {
+  abbreviation: string;
+  General?: GeneralSection;
+  value?: number;
+  [key: string]: BudgetItem | string | GeneralSection | number | undefined;
+}
+
+interface BudgetData {
+  [key: string]: BudgetSection;
 }
 
 interface BarData {
@@ -38,6 +56,7 @@ interface PieData {
 interface TreeMapNode {
   name: string;
   value: number;
+  children?: TreeMapNode[];
 }
 
 interface TreeMapData {
@@ -77,93 +96,103 @@ const colorScheme = [
 ];
 
 const transformData = {
-  bar: (data: BudgetSummary): BarData[] => {
-    return Object.entries(data)
-      .filter(([key, value]) => {
-        return (
-          key !== "title" &&
-          key !== "abbreviation" &&
-          typeof value === "object" &&
-          value !== null &&
-          "amount" in value
-        );
-      })
-      .map(([key, value]) => ({
-        category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        amount: Math.abs((value as BudgetSummaryItem).amount || 0),
-      }));
+  bar: (data: BudgetData): BarData[] => {
+    const items: BarData[] = [];
+    
+    Object.entries(data).forEach(([section, sectionData]) => {
+      if (typeof sectionData === "object" && "General" in sectionData) {
+        const generalItems = sectionData.General?.Items;
+        if (generalItems) {
+          Object.entries(generalItems).forEach(([key, value]) => {
+            if (typeof value === "object" && "value" in value) {
+              items.push({
+                category: value.abbreviation || key,
+                amount: Math.abs(value.value),
+              });
+            }
+          });
+        }
+      }
+    });
+
+    return items;
   },
-  pie: (data: BudgetSummary): PieData[] => {
-    return Object.entries(data)
-      .filter(([key, value]) => {
-        return (
-          key !== "title" &&
-          key !== "abbreviation" &&
-          typeof value === "object" &&
-          value !== null &&
-          "amount" in value
-        );
-      })
-      .map(([key, value]) => ({
-        id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        label: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        value: Math.abs((value as BudgetSummaryItem).amount || 0),
-      }));
+  pie: (data: BudgetData): PieData[] => {
+    const items: PieData[] = [];
+    
+    Object.entries(data).forEach(([section, sectionData]) => {
+      if (typeof sectionData === "object" && "General" in sectionData) {
+        const generalItems = sectionData.General?.Items;
+        if (generalItems) {
+          Object.entries(generalItems).forEach(([key, value]) => {
+            if (typeof value === "object" && "value" in value) {
+              items.push({
+                id: value.abbreviation || key,
+                label: value.abbreviation || key,
+                value: Math.abs(value.value),
+              });
+            }
+          });
+        }
+      }
+    });
+
+    return items;
   },
-  treemap: (data: BudgetSummary): TreeMapData => {
-    const children = Object.entries(data)
-      .filter(([key, value]) => {
-        return (
-          key !== "title" &&
-          key !== "abbreviation" &&
-          typeof value === "object" &&
-          value !== null &&
-          "amount" in value
-        );
-      })
-      .map(([key, value]) => ({
-        name: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        value: Math.abs((value as BudgetSummaryItem).amount || 0),
-      }));
+  treemap: (data: BudgetData): TreeMapData => {
+    const children: TreeMapNode[] = [];
+    
+    Object.entries(data).forEach(([section, sectionData]) => {
+      if (typeof sectionData === "object" && "General" in sectionData) {
+        const generalItems = sectionData.General?.Items;
+        if (generalItems) {
+          const sectionChildren: TreeMapNode[] = [];
+          Object.entries(generalItems).forEach(([key, value]) => {
+            if (typeof value === "object" && "value" in value) {
+              sectionChildren.push({
+                name: value.abbreviation || key,
+                value: Math.abs(value.value),
+              });
+            }
+          });
+          if (sectionChildren.length > 0) {
+            children.push({
+              name: sectionData.abbreviation || section,
+              value: sectionChildren.reduce((sum, child) => sum + child.value, 0),
+              children: sectionChildren,
+            });
+          }
+        }
+      }
+    });
 
     return {
       name: "Budget",
       children: children,
     };
   },
-  sankey: (data: BudgetSummary): SankeyData => {
-    const nodes = [
-      { id: "Total Budget" },
-      ...Object.entries(data)
-        .filter(([key, value]) => {
-          return (
-            key !== "title" &&
-            key !== "abbreviation" &&
-            typeof value === "object" &&
-            value !== null &&
-            "amount" in value
-          );
-        })
-        .map(([key, value]) => ({
-          id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        })),
-    ];
-
-    const links = Object.entries(data)
-      .filter(([key, value]) => {
-        return (
-          key !== "title" &&
-          key !== "abbreviation" &&
-          typeof value === "object" &&
-          value !== null &&
-          "amount" in value
-        );
-      })
-      .map(([key, value]) => ({
-        source: "Total Budget",
-        target: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        value: Math.abs((value as BudgetSummaryItem).amount || 0),
-      }));
+  sankey: (data: BudgetData): SankeyData => {
+    const nodes: SankeyNode[] = [{ id: "Total Budget" }];
+    const links: SankeyLink[] = [];
+    
+    Object.entries(data).forEach(([section, sectionData]) => {
+      if (typeof sectionData === "object" && "General" in sectionData) {
+        const generalItems = sectionData.General?.Items;
+        if (generalItems) {
+          Object.entries(generalItems).forEach(([key, value]) => {
+            if (typeof value === "object" && "value" in value) {
+              const nodeId = value.abbreviation || key;
+              nodes.push({ id: nodeId });
+              links.push({
+                source: "Total Budget",
+                target: nodeId,
+                value: Math.abs(value.value),
+              });
+            }
+          });
+        }
+      }
+    });
 
     return { nodes, links };
   },
@@ -174,27 +203,30 @@ export default function BudgetPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const chartData = useMemo(() => {
-    const summary = budgetData.budget_summary as BudgetSummary;
-    return transformData[selectedView](summary);
+    return transformData[selectedView](budgetData as BudgetData);
   }, [selectedView]);
 
   const budgetItems = useMemo(() => {
-    const summary = budgetData.budget_summary as BudgetSummary;
-    return Object.entries(summary)
-      .filter(([key, value]) => {
-        return (
-          key !== "title" &&
-          key !== "abbreviation" &&
-          typeof value === "object" &&
-          value !== null &&
-          "amount" in value
-        );
-      })
-      .map(([key, value]) => ({
-        category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
-        amount: (value as BudgetSummaryItem).amount || 0,
-        description: (value as BudgetSummaryItem).description,
-      }));
+    const items: { category: string; amount: number; description?: string }[] = [];
+    
+    Object.entries(budgetData as BudgetData).forEach(([section, sectionData]) => {
+      if (typeof sectionData === "object" && "General" in sectionData) {
+        const generalItems = sectionData.General?.Items;
+        if (generalItems) {
+          Object.entries(generalItems).forEach(([key, value]) => {
+            if (typeof value === "object" && "value" in value) {
+              items.push({
+                category: value.abbreviation || key,
+                amount: value.value,
+                description: value.description,
+              });
+            }
+          });
+        }
+      }
+    });
+
+    return items;
   }, []);
 
   return (

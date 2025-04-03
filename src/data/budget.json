@@ -1,2805 +1,1904 @@
-
 {
-  "title": "ASSOCIATED STUDENTS EXECUTIVE BUDGET 2024-2025",
-  "abbreviation": "ASEB 24-25",
-  "sponsors": {
-  "chief_financial_officer": {
-  "name": "Jacob T. Hoang",
-  "period": "2024-2025",
-  "abbreviation": "CFO"
-  },
-  "approval": {
-  "body": "Senate",
-  "date": "November 20th, 2024",
-  "abbreviation": "Sen."
-  }
-  },
-  "operating_reserves": {
-  "title": "OPERATING RESERVES",
-  "abbreviation": "Op. Res.",
-  "total_reserves": {
-  "amount": 1189555.55,
-  "abbreviation": "Tot. Res."
-  },
-  "mandate_reserves": {
-  "abbreviation": "Mand. Res."
-  }
-  },
-  "carryforwards": {
-  "title": "CARRYFORWARDS",
-  "abbreviation": "Carryf.",
-  "total_as_carryforward": {
-  "amount": 165105.4,
-  "abbreviation": "Tot. AS CF"
-  },
-  "as_carryforward_2024_2025": {
-  "amount": 284480.22,
-  "abbreviation": "AS CF 24-25"
-  },
-  "auxiliary_carryforward": {
-  "abbreviation": "Aux. CF"
-  },
-  "spaces_carryforward_2024_2025": {
-  "amount": 44841.8,
-  "abbreviation": "SPACES CF"
-  },
-  "ksdt_carryforward_2024_2025": {
-  "abbreviation": "KSDT CF"
-  },
-  "ssc_carryforward_2024_2025": {
-  "amount": 100000,
-  "abbreviation": "SSC CF"
-  }
-  },
-  "budget_summary": {
-  "title": "BUDGET SUMMARY",
-  "abbreviation": "Bud. Sum.",
-  "remaining_funds": {
-  "description": "2024-2025 Remaining Funds (AS Revenue - (Referendums, Return to Aid, Employees, Expendable Funds))",
-  "abbreviation": "Rem. Funds"
-  },
-  "as_revenue": {
-  "description": "2024-2025 AS Revenue (Estimated based on 97,708 Annual Average Enrollment x $90.42 (includes 5.1% CPI Increase))",
-  "amount": 8834339,
-  "abbreviation": "AS Rev."
-  },
-  "referendums_return_to_aid_locked_fees": {
-  "amount": -3326238,
-  "abbreviation": "Ref/RTA/Fees"
-  },
-  "career_employees": {
-  "amount": -1777457,
-  "abbreviation": "Career Emp."
-  },
-  "mandated_reserves_contribution": {
-  "description": "Mandated Reserves Contribution (5% of Expendable Funds)",
-  "amount": -186532.2,
-  "abbreviation": "Mand. Res. Cont."
-  },
-  "general_operations": {
-  "description": "General Operations (Expendable Funds)",
-  "amount": -90230,
-  "abbreviation": "Gen. Ops."
-  },
-  "office_operations": {
-  "description": "Office Operations (Expendable Funds)",
-  "amount": -3459133.3,
-  "abbreviation": "Off. Ops."
-  },
-  "senate_operations": {
-  "description": "Senate Operations (Expendable Funds)",
-  "amount": -39150,
-  "abbreviation": "Sen. Ops."
-  },
-  "student_employee_payroll_stipends": {
-  "description": "Student-Employee Payroll & Stipends (Expendable Funds)",
-  "amount": -729498.11,
-  "abbreviation": "Stud. Pay/Stip."
-  }
-  },
-  "locked_in_allocations": {
-  "title": "LOCKED-IN ALLOCATIONS",
-  "abbreviation": "Lock. Alloc.",
-  "referendum_and_return_to_aid": {
-  "title": "Referendum and Return to Aid",
-  "amount": -1966917,
-  "abbreviation": "Ref & RTA",
-  "return_to_aid": {
-  "description": "Return to Aid (29% over $21)",
-  "amount": -600121,
-  "abbreviation": "RTA"
-  },
-  "spaces": {
-  "title": "Student Promoted Access Center for Education and Services (SPACES)",
-  "abbreviation": "SPACES",
-  "expendable_funds": {
-  "abbreviation": "Exp. Funds"
-  },
-  "staff_positions": [
-  {
-  "title": "Student Life Development Specialist III (1 FTE)*",
- "amount": -64604,
- "abbreviation": "SLDS III"
-  },
-  {
-  "title": "Student Life Development Specialist III (1 FTE)*",
- "amount": -64308,
- "abbreviation": "SLDS III"
-  },
-  {
-  "title": "Student Life Development Specialist III (1 FTE)*",
- "amount": -62683,
- "abbreviation": "SLDS III"
-  },
-  {
-  "title": "Blank Asst. III (.1 FTE)*",
- "amount": -6518,
- "abbreviation": "Asst. III"
-  },
-  {
-  "title": "Financial Service Analyst II (.25 FTE)",
- "amount": -19320,
- "abbreviation": "FSA II"
-  },
-  {
-  "title": "Blank Asst. III (.25 FTE)",
- "amount": -17090,
- "abbreviation": "Asst. III"
-  },
-  {
-  "title": "ITS Applications Programmer/Service (.15 FTE)",
- "amount": -22500,
- "abbreviation": "ITS App Prog."
-  }
-  ],
-  "programs": [
-  {
-  "title": "Academic Success Program (ASP) ($0.98 per student)",
- "amount": -95754,
- "abbreviation": "ASP"
-  },
-  {
-  "title": "Student Initiated Access Programs and Services (SIAPS) ($0.98 per student)",
- "amount": -95754,
- "abbreviation": "SIAPS"
-  },
-  {
-  "title": "Student Sustainability Collective ($2.96 per student)",
- "amount": -289224,
- "abbreviation": "SSC"
-  }
-  ]
-  },
-  "ssc": {
-  "expendable_funds": {
-  "abbreviation": "Exp. Funds"
-  },
-  "staff_positions": [
-  {
-  "title": "Student Life Development Specialist III (1 FTE)*",
- "amount": -62683,
- "abbreviation": "SLDS III"
-  },
-  {
-  "title": "Financial Service Analyst II (.25 FTE)",
- "amount": -19320,
- "abbreviation": "FSA II"
-  },
-  {
-  "title": "ITS Applications Programmer/Service (.1 FTE)",
- "amount": -15000,
- "abbreviation": "ITS App Prog."
-  }
-  ]
-  },
-  "ksdt": {
-  "title": "KSDT ($1.10 x 26,916 x 3) ($1.10 per student)",
-  "amount": -107479,
-  "abbreviation": "KSDT",
-  "expendable_funds": {
-  "abbreviation": "Exp. Funds"
-  },
-  "staff_positions": [
-  {
-  "title": "Event Specialist III (.1 FTE)*",
- "amount": -7607,
- "abbreviation": "ES III"
-  }
-  ]
-  },
-  "college_councils": {
-  "title": "College Councils ($.65 x 26,916 x 3) ($0.65 per student)",
-  "amount": -63510,
-  "abbreviation": "Coll. Councils"
-  },
-  "ucsa_membership": {
-  "title": "UCSA Membership ($1.10 x 26,916 x 3) ($1.10 per student)",
-  "amount": -107479,
-  "abbreviation": "UCSA Mem."
-  }
-  }
-  },
-  "career_employees": {
-  "title": "Career Employees",
-  "amount": -1777457,
-  "abbreviation": "Career Emp.",
-  "as_administrative_staff": {
-  "title": "AS Administrative Staff",
-  "amount": -1065008,
-  "abbreviation": "AS Admin Staff",
-  "positions": [
-  {
-  "title": "Student Life Development Specialist IV (1 FTE)*",
-  "amount": -123948,
-  "abbreviation": "SLDS IV"
-  },
-  {
-  "title": "Student Life Development Specialist III (.8 FTE)*",
-  "amount": -104451,
-  "abbreviation": "SLDS III"
-  },
-  {
-  "title": "AS Admin Asst. - Blank Asst. III (1 FTE)*",
-  "amount": -98531,
-  "abbreviation": "AS Admin Asst."
-  },
-  {
-  "title": "AS Admin Asst. - Blank Asst. III (.9 FTE)*",
-  "amount": -58665,
-  "abbreviation": "AS Admin Asst."
-  },
-  {
-  "title": "ASGS Artist Sr. (1 FTE)*",
-  "amount": -106885,
-  "abbreviation": "ASGS Artist Sr."
-  },
-  {
-  "title": "ASGS Artist Sr. (1 FTE)*",
-  "amount": -120372,
-  "abbreviation": "ASGS Artist Sr."
-  },
-  {
-  "title": "Publication Production Specialist 3 (1 FTE*)",
-  "amount": -135208,
-  "abbreviation": "Pub. Prod. Spec."
-  },
-  {
-  "title": "Marketing Specialist III (.6 FTE)*",
-  "amount": -78160,
-  "abbreviation": "Mktg. Spec. III"
-  },
-  {
-  "title": "Marketing Specialist II (1 FTE)*",
-  "amount": -80338,
-  "abbreviation": "Mktg. Spec. II"
-  },
-  {
-  "title": "ITS Applications Programmer (.75 FTE)*",
-  "amount": -118450,
-  "abbreviation": "ITS App Prog."
-  },
-  {
-  "title": "Professional Development",
-  "amount": -40000,
-  "abbreviation": "Prof. Dev."
-  }
-  ]
-  },
-  "student_life_business_office": {
-  "title": "Student Life Business Office",
-  "amount": -465114,
-  "abbreviation": "SLBO",
-  "positions": [
-  {
-  "title": "Human Resources - Blank Asst. III (.7 FTE)*",
-  "amount": -65240,
-  "abbreviation": "HR Asst."
-  },
-  {
-  "title": "Fund Manager - Blank Asst. III (.75 FTE)*",
-  "amount": -75551,
-  "abbreviation": "Fund Mgr."
-  },
-  {
-  "title": "Fund Manager - Blank Asst. III (.5 FTE)*",
-  "amount": -53768,
-  "abbreviation": "Fund Mgr."
-  },
-  {
-  "title": "Fund Manager - Blank Asst. III (.5 FTE)*",
-  "amount": -51449,
-  "abbreviation": "Fund Mgr."
-  },
-  {
-  "title": "Fund Manager - Blank Asst. III (.5 FTE)*",
-  "amount": -50328,
-  "abbreviation": "Fund Mgr."
-  },
-  {
-  "title": "Financial Analyst II (.5 FTE)*",
-  "amount": -59235,
-  "abbreviation": "Fin. Analyst II"
-  },
-  {
-  "title": "Financial Services Analyst II (.5 FTE)*",
-  "amount": -109543,
-  "abbreviation": "FSA II"
-  }
-  ]
-  },
-  "campus_events_office": {
-  "title": "Campus Events Office",
-  "amount": -247335,
-  "abbreviation": "Campus Events",
-  "positions": [
-  {
-  "title": "Event Specialist III (.1 FTE)*",
-  "amount": -11850,
-  "abbreviation": "ES III"
-  },
-  {
-  "title": "Event Specialist III (.9 FTE)*",
-  "amount": -119493,
-  "abbreviation": "ES III"
-  },
-  {
-  "title": "Event Specialist IV (.7 FTE)*",
-  "amount": -115992,
-  "abbreviation": "ES IV"
-  }
-  ]
-  }
-  },
-  "general_operations": {
-  "title": "GENERAL OPERATIONS SUMMARY",
-  "abbreviation": "GEN. OPS.",
-  "total": -90230,
-  "administrative": {
-  "title": "GENERAL OPERATIONS",
-  "abbreviation": "Gen. Ops.",
-  "items": [
-  {
-  "title": "Administrative Supplies and Expenses",
-  "amount": -23980,
-  "abbreviation": "Admin. Supp."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -30000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Administrative Support",
-  "abbreviation": "Admin. Supp."
-  }
-  ],
-  "total": -53980
-  },
-  "as_graphic_studio": {
-  "title": "A.S. Graphic Studio",
-  "abbreviation": "ASGS",
-  "items": [
-  {
-  "title": "Operating and Supplies",
-  "amount": -5000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Software and Technology",
-  "amount": -2000,
-  "abbreviation": "SW & Tech."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -20000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Fluffy Maintanence",
-  "amount": -750,
-  "abbreviation": "Fluffy Maint."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -500,
-  "abbreviation": "Lead. Dev."
-  }
-  ],
-  "total": -28250
-  },
-  "as_elections": {
-  "title": "A.S. Elections",
-  "abbreviation": "AS Elect.",
-  "items": [
-  {
-  "title": "Operating and Supplies",
-  "amount": -2000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -3000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
-  "amount": -3000,
-  "abbreviation": "Prog. Unalloc."
-  }
-  ],
-  "total": -8000
-  }
-  },
-  "office_operations": {
-  "title": "OFFICE OPERATIONS SUMMARY",
-  "abbreviation": "OFF. OPS.",
-  "total": -3459133.3,
-  "office_of_the_president": {
-  "title": "Office of the President",
-  "abbreviation": "Pres. Off.",
-  "total": -70999.6,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -35071.6,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -7500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Leadership Development and Operation",
-  "amount": -1500,
-  "abbreviation": "Lead. Dev. & Op."
-  },
-  {
-  "title": "Travel",
-  "amount": -5000,
-  "abbreviation": "Travel"
-  },
-  {
-  "title": "New York Times",
-  "amount": -21928,
-  "abbreviation": "NYT"
-  }
-  ]
-  },
-  "office_of_college_affairs": {
-  "title": "Office of College Affairs",
-  "abbreviation": "Coll. Affairs",
-  "total": -100000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -26000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -2000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -400,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "College Council Project/Initiative Fund",
-  "amount": -16600,
-  "abbreviation": "CC Proj. Fund"
-  },
-  {
-  "title": "College Council Collaborative Fund",
-  "amount": -15000,
-  "abbreviation": "CC Collab. Fund"
-  },
-  {
-  "title": "Sun God Kits",
-  "amount": -10000,
-  "abbreviation": "SG Kits"
-  },
-  {
-  "title": "Muir Musical",
-  "amount": -30000,
-  "abbreviation": "Muir Mus."
-  }
-  ]
-  },
-  "office_of_food_and_housing_resources": {
-  "title": "Office of Food and Housing Resources",
-  "abbreviation": "Food & Housing",
-  "total": -220987,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -34000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -2000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Professional Closet Program",
-  "amount": -5000,
-  "abbreviation": "Prof. Closet"
-  },
-  {
-  "title": "Produce Distribution Program",
-  "amount": -9000,
-  "abbreviation": "Prod. Dist."
-  },
-  {
-  "title": "Triton Food Pantry",
-  "amount": -170987,
-  "abbreviation": "Food Pantry"
-  }
-  ]
-  },
-  "office_of_health_and_well_being": {
-  "title": "Office of Health and Well-Being",
-  "abbreviation": "Health & Well",
-  "total": -41000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -17000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -4500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -1500,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Programming Unallocated",
-  "amount": -7000,
-  "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Vending Machines",
-  "amount": -7000,
-  "abbreviation": "Vend. Mach."
-  },
-  {
-  "title": "Period Project",
-  "amount": -4000,
-  "abbreviation": "Period Proj."
-  }
-  ]
-  },
-  "office_of_environmental_justice_affairs": {
-  "title": "Office of Environmental Justice Affairs",
-  "abbreviation": "Env. Justice",
-  "total": -14000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -4850,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -1800,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1100,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Programming Unallocated",
-  "amount": -350,
-  "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Office of Equity, Diversity, and Inclusion",
-  "amount": -1600,
-  "abbreviation": "EDI Off."
-  }
-  ]
-  },
-  "office_of_equity_diversity_and_inclusion": {
-  "title": "Office of Equity, Diversity, and Inclusion",
-  "abbreviation": "EDI",
-  "total": -58000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -2000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -2000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -2000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "A.S. EDI Commissions (6 x $2000)",
-  "amount": -12000,
-  "abbreviation": "EDI Comm."
-  },
-  {
-  "title": "A.S. EDI Collaborative Fund",
-  "amount": -20000,
-  "abbreviation": "EDI Collab."
-  },
-  {
-  "title": "A.S. EDI Cultural Celebration",
-  "amount": -20000,
-  "abbreviation": "EDI Cult. Cel."
-  }
-  ]
-  },
-  "office_of_transportation_and_transformation": {
-  "title": "Office of Transportation and Transformation",
-  "abbreviation": "Trans. & Trans.",
-  "total": -150000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -3500,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -1500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Transportation and Transformation Programs",
-  "amount": -45000,
-  "abbreviation": "Trans. Prog."
-  },
-  {
-  "title": "Grocery Shuttle",
-  "amount": -100000,
-  "abbreviation": "Groc. Shuttle"
-  }
-  ]
-  },
-  "office_of_the_executive_vice_president": {
-  "title": "Office of the Executive Vice President",
-  "abbreviation": "Exec. VP",
-  "total": -17600,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -2000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -600,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -500,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Transfer Fund",
-  "amount": -14000,
-  "abbreviation": "Transfer Fund"
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -500,
-  "abbreviation": "Lead. Dev."
-  }
-  ]
-  },
-  "office_of_external_affairs": {
-  "title": "Office of External Affairs",
-  "abbreviation": "Ext. Affairs",
-  "total": -219900,
-  "main_office": {
-  "title": "Office of External Affairs",
-  "abbreviation": "Ext. Affairs",
-  "items": [
-  {
-  "title": "Projects and Initiatives",
- "amount": -9000,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Travel (Conferences)",
- "amount": -57500,
- "abbreviation": "Conf. Travel"
-  },
-  {
-  "title": "Travel (Board Meetings/VP Travel)",
- "amount": -10000,
- "abbreviation": "Board Travel"
-  },
-  {
-  "title": "Leadership Development",
- "amount": -1000,
- "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Operating and Supplies",
- "amount": -400,
- "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -3000,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
- "amount": -4500,
- "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "ABC Conference",
- "amount": -20000,
- "abbreviation": "ABC Conf."
-  }
-  ],
-  "subtotal": -172900
-  },
-  "organizing_campaigns": {
-  "title": "Organizing Campaigns",
-  "abbreviation": "Org. Camp.",
-  "items": [
-  {
-  "title": "UCWeVote Campaign",
- "amount": -2800,
- "abbreviation": "UCWeVote"
-  },
-  {
-  "title": "Racial Justice Now Campaign",
- "amount": -2800,
- "abbreviation": "RJN Camp."
-  },
-  {
-  "title": "Aqcuire Campaign",
- "amount": -2800,
- "abbreviation": "Aqcuire Camp."
-  },
-  {
-  "title": "Fund the UC Campaign",
- "amount": -2800,
- "abbreviation": "FundUC Camp."
-  },
-  {
-  "title": "SEED Campaign",
- "amount": -2800,
- "abbreviation": "SEED Camp."
-  }
-  ],
-  "subtotal": -14000
-  },
-  "triton_lobby_corps": {
-  "title": "Triton Lobby Corps",
-  "abbreviation": "TLC",
-  "items": [
-  {
-  "title": "Marketing and Outreach",
- "amount": -2000,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Projects and Initiatives",
- "amount": -4000,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Programming",
- "amount": -2000,
- "abbreviation": "Prog."
-  },
-  {
-  "title": "Travel",
- "amount": -2000,
- "abbreviation": "Travel"
-  }
-  ],
-  "subtotal": -10000
-  },
-  "civic_engagement": {
-  "title": "Civic Engagement",
-  "abbreviation": "Civic Eng.",
-  "items": [
-  {
-  "title": "Tritons Vote",
- "amount": -15000,
- "abbreviation": "Tritons Vote"
-  },
-  {
-  "title": "Civic Engagement Fund",
- "amount": -15000,
- "abbreviation": "Civic Eng. Fund"
-  },
-  {
-  "title": "On-Campus Polling",
- "amount": -4000,
- "abbreviation": "On-Camp. Poll"
-  }
-  ],
-  "subtotal": -34000
-  },
-  "disabled_students_commission": {
-  "title": "Disabled Students Commission",
-  "abbreviation": "DSC",
-  "items": [
-  {
-  "title": "Projects and Initiatives",
- "amount": -1500,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -500,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
- "amount": -1500,
- "abbreviation": "Prog. Unalloc."
-  }
-  ],
-  "subtotal": -3500
-  },
-  "housing_affairs_commission": {
-  "title": "Housing Affairs Commission",
-  "abbreviation": "HAC",
-  "items": [
-  {
-  "title": "Projects and Initiatives",
- "amount": -2000,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -500,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
- "amount": -1500,
- "abbreviation": "Prog. Unalloc."
-  }
-  ],
-  "subtotal": -4000
-  },
-  "labor_affairs_commission": {
-  "title": "Labor Affairs Commission",
-  "abbreviation": "LAC",
-  "items": [
-  {
-  "title": "Projects and Initiatives",
- "amount": -750,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -250,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
- "amount": -1000,
- "abbreviation": "Prog. Unalloc."
-  }
-  ],
-  "subtotal": -2000
-  }
-  },
-  "office_of_local_affairs": {
-  "title": "Office of Local Affairs",
-  "abbreviation": "Local Aff.",
-  "total": -47000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -12000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -6000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -3000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1000,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Local Organizing Fund",
-  "amount": -25000,
-  "abbreviation": "Local Org. Fund"
-  }
-  ]
-  },
-  "office_of_academic_affairs": {
-  "title": "Office of Academic Affairs",
-  "abbreviation": "Acad. Aff.",
-  "total": -23761,
-  "main_office": {
-  "title": "Office of Academic Affairs",
-  "abbreviation": "Acad. Aff.",
-  "items": [
-  {
-  "title": "Projects and Initiatives",
- "amount": -9300,
- "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -1200,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
- "amount": -2000,
- "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Programming Unallocated",
- "amount": -4500,
- "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Leadership Development",
- "amount": -1000,
- "abbreviation": "Lead. Dev."
-  }
-  ],
-  "subtotal": -18000
-  },
-  "office_of_student_advocacy": {
-  "title": "Office of Student Advocacy",
-  "abbreviation": "Stud. Adv.",
-  "items": [
-  {
-  "title": "Programming (Unallocated)",
- "amount": -2021,
- "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Marketing and Outreach",
- "amount": -2465,
- "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
- "amount": -250,
- "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Leadership Development",
- "amount": -1025,
- "abbreviation": "Lead. Dev."
-  }
-  ],
-  "subtotal": -5761
-  }
-  },
-  "office_of_finance_and_resources": {
-  "title": "Office of Finance and Resources",
-  "abbreviation": "Fin. & Res.",
-  "total": -4000,
-  "items": [
-  {
-  "title": "Operating and Supplies",
-  "amount": -3000,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -500,
-  "abbreviation": "Lead. Dev."
-  }
-  ]
-  },
-  "office_of_student_organizations": {
-  "title": "Office of Student Organizations",
-  "abbreviation": "Stud. Orgs.",
-  "total": -673835.7,
-  "main_items": [
-  {
-  "title": "Town Halls",
-  "amount": -2200,
-  "abbreviation": "Town Halls"
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -4500,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1500,
-  "abbreviation": "Lead. Dev."
-  }
-  ],
-  "student_org_projects": {
-  "title": "Student Organization Projects",
-  "abbreviation": "SO Proj.",
-  "amount": -5000
-  },
-  "student_org_operating": {
-  "title": "Student Organization Operating Unallocated",
-  "abbreviation": "SO Oper.",
-  "items": [
-  {
-  "title": "Fall Quarter 2024",
- "amount": -185000,
- "abbreviation": "Fall 2024"
-  },
-  {
-  "title": "Winter Quarter 2025",
- "amount": -162000,
- "abbreviation": "Winter 2025"
-  },
-  {
-  "title": "Spring Quarter 2025",
- "amount": -174000,
- "abbreviation": "Spring 2025"
-  }
-  ],
-  "subtotal": -521000
-  },
-  "student_org_tournament": {
-  "title": "Student Organization Tournament and Competition Unallocated",
-  "abbreviation": "SO Tourn.",
-  "items": [
-  {
-  "title": "Fall Quarter 2024",
- "amount": -10000,
- "abbreviation": "Fall 2024"
-  },
-  {
-  "title": "Winter Quarter 2025",
- "amount": -10000,
- "abbreviation": "Winter 2025"
-  },
-  {
-  "title": "Spring Quarter 2025",
- "amount": -10000,
- "abbreviation": "Spring 2025"
-  }
-  ],
-  "subtotal": -30000
-  }
-  },
-  "office_of_enterprises_and_services": {
-  "title": "Office of Enterprises and Services",
-  "abbreviation": "Ent. & Serv.",
-  "total": -32609.23,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -8455.77,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -2435,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Programming Unallocated",
-  "amount": -1000,
-  "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Enterprise Operating Funds",
-  "amount": -27600,
-  "abbreviation": "Ent. Op. Funds"
-  },
-  {
-  "title": "A.S. Safe Rides",
-  "amount": -4509.23,
-  "abbreviation": "Safe Rides"
-  },
-  {
-  "title": "Made TO Order",
-  "amount": -500,
-  "abbreviation": "MTO"
-  },
-  {
-  "title": "Enterprise Development Fund",
-  "abbreviation": "Ent. Dev. Fund"
-  },
-  {
-  "title": "Enterprise Reserve Funds",
-  "abbreviation": "Ent. Res. Funds"
-  },
-  {
-  "title": "A.S. Safe Rides Reserve",
-  "abbreviation": "Safe Rides Res."
-  },
-  {
-  "title": "A.S. Soft Reserves",
-  "abbreviation": "Soft Res."
-  },
-  {
-  "title": "Enterprise Stability Reserve",
-  "abbreviation": "Ent. Stab. Res."
-  }
-  ]
-  },
-  "triton_television": {
-  "title": "Triton Television (TTV) (w/ 7.25% Tax)",
-  "abbreviation": "TTV",
-  "total": -52161.79,
-  "items": [
-  {
-  "title": "Equipment",
-  "amount": -22580.12,
-  "abbreviation": "Equip."
-  },
-  {
-  "title": "Studio Repairs",
-  "amount": -2400,
-  "abbreviation": "Studio Rep."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -3230,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -6059.57,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Programming",
-  "amount": -7438.6,
-  "abbreviation": "Prog."
-  },
-  {
-  "title": "UCSDFF",
-  "amount": -6927.41,
-  "abbreviation": "UCSDFF"
-  }
-  ]
-  },
-  "office_of_communications": {
-  "title": "Office of Communications",
-  "abbreviation": "Comms.",
-  "total": -64000,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -15000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -40000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -3500,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1000,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Programming Allocated",
-  "abbreviation": "Prog. Alloc."
-  },
-  {
-  "title": "Triton Dine (3)",
-  "amount": -60000,
-  "abbreviation": "Triton Dine"
-  },
-  {
-  "title": "Town Halls (8)",
-  "amount": -4000,
-  "abbreviation": "Town Halls"
-  }
-  ]
-  },
-  "office_of_concert_and_events": {
-  "title": "Office of Concert and Events",
-  "abbreviation": "Concerts & Events",
-  "total": -1502200,
-  "items": [
-  {
-  "title": "Marketing and Outreach",
-  "amount": -6500,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies (Equipment)",
-  "amount": -1200,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "Music Licensing Fees",
-  "amount": -12000,
-  "abbreviation": "Music Lic."
-  },
-  {
-  "title": "Special Events",
-  "amount": -70000,
-  "abbreviation": "Spec. Events"
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -4800,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Programming Allocated",
-  "abbreviation": "Prog. Alloc."
-  },
-  {
-  "title": "Sun God Festival",
-  "amount": -1022200,
-  "abbreviation": "Sun God Fest."
-  },
-  {
-  "title": "Sun God Festival Contingency",
-  "amount": -25000,
-  "abbreviation": "SGF Cont."
-  },
-  {
-  "title": "Horizon Day One Fest",
-  "amount": -200000,
-  "abbreviation": "Horizon Fest"
-  },
-  {
-  "title": "Bear Gardens (4)",
-  "amount": -120000,
-  "abbreviation": "Bear Gardens"
-  },
-  {
-  "title": "Bear Garden Senior Sendoff",
-  "amount": -100000,
-  "abbreviation": "BG Sr. Sendoff"
-  }
-  ]
-  },
-  "office_of_spirit_and_athletics": {
-  "title": "Office of Spirit and Athletics",
-  "abbreviation": "Spirit & Ath.",
-  "total": -68000,
-  "items": [
-  {
-  "title": "Marketing and Outreach",
-  "amount": -750,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programs & Initiatives",
-  "amount": -30000,
-  "abbreviation": "Prog. & Init."
-  },
-  {
-  "title": "Athletic Programming",
-  "amount": -10000,
-  "abbreviation": "Ath. Prog."
-  },
-  {
-  "title": "Collaborative Funding",
-  "amount": -6925,
-  "abbreviation": "Collab. Fund"
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1325,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Programming Allocated",
-  "abbreviation": "Prog. Alloc."
-  },
-  {
-  "title": "Battle of the Bands",
-  "amount": -13000,
-  "abbreviation": "Battle Bands"
-  },
-  {
-  "title": "Spirit Night",
-  "amount": -10000,
-  "abbreviation": "Spirit Night"
-  },
-  {
-  "title": "Vegas Night",
-  "amount": -25000,
-  "abbreviation": "Vegas Night"
-  },
-  {
-  "title": "Spring into Spring",
-  "amount": -20000,
-  "abbreviation": "Spring Event"
-  }
-  ]
-  },
-  "office_of_personnel_affairs": {
-  "title": "Office of Personnel Affairs",
-  "abbreviation": "Pers. Affairs",
-  "total": -5500,
-  "items": [
-  {
-  "title": "Projects and Initiatives",
-  "amount": -5000,
-  "abbreviation": "Proj. & Init."
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -12000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Operating and Supplies",
-  "amount": -500,
-  "abbreviation": "Oper. & Supp."
-  },
-  {
-  "title": "A.S. Community Development",
-  "amount": -8000,
-  "abbreviation": "Comm. Dev."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -10000,
-  "abbreviation": "Lead. Dev."
-  },
-  {
-  "title": "Fellowship Program",
-  "abbreviation": "Fellowship"
-  },
-  {
-  "title": "Marketing and Outreach",
-  "amount": -4000,
-  "abbreviation": "Mktg. & Out."
-  },
-  {
-  "title": "Programming Unallocated",
-  "amount": -500,
-  "abbreviation": "Prog. Unalloc."
-  },
-  {
-  "title": "Leadership Development",
-  "amount": -1000,
-  "abbreviation": "Lead. Dev."
-  }
-  ]
-  }
-  },
-  "senate_operations": {
-  "title": "SENATE OPERATIONS",
-  "abbreviation": "Senate Ops.",
-  "total": -39150,
-  "senator_funds": {
-  "title": "Senator Funds",
-  "abbreviation": "Sen. Funds",
-  "programming_unallocated": {
-  "title": "Programming Unallocated (29 Senators x $450 / Senator x 3 quarters)",
-  "amount": -39150,
-  "abbreviation": "Prog. Unalloc."
-  }
-  }
-  },
-  "student_salaries": {
-  "title": "STUDENT SALARIES SUMMARY",
-  "abbreviation": "Stud. Sal.",
-  "total": -259008.11,
-  "administrative_student_salaries": {
-  "title": "Administrative Student Salaries",
-  "abbreviation": "Admin. Stud. Sal.",
-  "positions": [
-  {
-  "title": "SLBO Office Assistant",
-  "description": "1 x $16/hr x 20hr/wk x 40 wk",
-  "amount": -12800,
-  "abbreviation": "SLBO Asst."
-  },
-  {
-  "title": "Executive Assistant to the President",
-  "description": "1 x $16.90/hr x 12hr/wk x 28 wk",
-  "amount": -5678.4,
-  "abbreviation": "Exec. Asst."
-  },
-  {
-  "title": "Triton Food Pantry Lead Manager",
-  "description": "1 x $16/hr x 12hr/wk x 35 wk",
-  "amount": -6720,
-  "abbreviation": "TFP Lead Mgr."
-  },
-  {
-  "title": "Triton Food Pantry Manager",
-  "description": "2 x $16/hr x 12hr/wk x 35 wk",
-  "amount": -13440,
-  "abbreviation": "TFP Mgr."
-  },
-  {
-  "title": "Triton Food Pantry Pop-Up Manager",
-  "description": "1 x $16/hr x 12hr/wk x 35 wk",
-  "amount": -6720,
-  "abbreviation": "TFP Pop-Up Mgr."
-  },
-  {
-  "title": "Graphic Artist",
-  "description": "3 x $17.69/hr x 19hr/wk x 33wk",
-  "amount": -33274.89,
-  "abbreviation": "Graph. Artist"
-  },
-  {
-  "title": "Graphic Artist Sr.",
-  "description": "3 x $17.69/hr x 29hr/wk x 12wk",
-  "amount": -18468.36,
-  "abbreviation": "Graph. Artist Sr."
-  },
-  {
-  "title": "Graphic Artist Sr.",
-  "description": "1 x $18.03/hr x 19hr/wk x 33wk",
-  "amount": -11304.81,
-  "abbreviation": "Graph. Artist Sr."
-  },
-  {
-  "title": "Graphic Artist",
-  "description": "1 x $18.03/hr x 29hr/wk x 12wk",
-  "amount": -6274.44,
-  "abbreviation": "Graph. Artist"
-  },
-  {
-  "title": "Webmaster/Computer Programmer",
-  "description": "1 x $18.03/hr x 19hr/wk x 35wk",
-  "amount": -11989.95,
-  "abbreviation": "Webmaster"
-  },
-  {
-  "title": "Public Relations",
-  "description": "3 x $17.70/hr x 19hr/wk x 35wk",
-  "amount": -35311.5,
-  "abbreviation": "PR"
-  },
-  {
-  "title": "A.S. Mascot",
-  "description": "1 x $17.05/hr x 10hr/wk x 33wk",
-  "amount": -5626.5,
-  "abbreviation": "Mascot"
-  },
-  {
-  "title": "TO Manager",
-  "description": "1 x $18.42/hr x 12hr/wk x 35wk",
-  "amount": -7736.4,
-  "abbreviation": "TO Mgr."
-  },
-  {
-  "title": "TO Asst Manager",
-  "description": "1 x $17.05/hr x 12hr/wk x 35wk",
-  "amount": -7161,
-  "abbreviation": "TO Asst. Mgr."
-  },
-  {
-  "title": "Sales Associates",
-  "description": "5 x $16.85/hr x 12hr/wk x 33wk",
-  "amount": -33363,
-  "abbreviation": "Sales Assoc."
-  },
-  {
-  "title": "Made TO Order Manager",
-  "description": "1 x $18.42/hr x 19hr/wk x 33wk",
-  "amount": -11549.34,
-  "abbreviation": "MTO Mgr."
-  },
-  {
-  "title": "Made TO Order Manager",
-  "description": "1 x $18.42/hr x 10hr/wk x 12wk",
-  "amount": -2210.4,
-  "abbreviation": "MTO Mgr."
-  },
-  {
-  "title": "Made To Order Sales Associate",
-  "description": "3 x $16.85/hr x 12hr/wk x 33wk",
-  "amount": -20017.8,
-  "abbreviation": "MTO Sales Assoc."
-  },
-  {
-  "title": "Made To Order Sales Associate",
-  "description": "3 x $16.85/hr x 10hr/wk x 12wk",
-  "amount": -6066,
-  "abbreviation": "MTO Sales Assoc."
-  }
-  ],
-  "student_salary_benefits": {
-  "title": "Student Salary Benefits (1.8%)",
-  "amount": -3295.32,
-  "abbreviation": "Stud. Sal. Ben."
-  }
-  }
-  },
-  "student_stipends": {
-  "title": "STUDENT STIPENDS",
-  "abbreviation": "Stud. Stip.",
-  "total": -130725,
-  "cabinet_stipends": {
-  "title": "Cabinet Stipends",
-  "abbreviation": "Cab. Stip.",
-  "positions": [
-  {
-  "title": "President",
-  "description": "1 x $300/wk x 42 wk",
-  "amount": -12600,
-  "abbreviation": "Pres."
-  },
-  {
-  "title": "Executive Vice President",
-  "description": "1 x $250/wk x 42wk",
-  "amount": -10500,
-  "abbreviation": "EVP"
-  },
-  {
-  "title": "Vice President External Affairs",
-  "description": "1 x $250/wk x 42wk",
-  "amount": -10500,
-  "abbreviation": "VP Ext. Aff."
-  },
-  {
-  "title": "Vice President Academic Affairs",
-  "description": "1 x $250/wk x 42 wk",
-  "amount": -10500,
-  "abbreviation": "VP Acad. Aff."
-  },
-  {
-  "title": "Chief Financial Officer",
-  "description": "1 x $250/wk x 42wk",
-  "amount": -10500,
-  "abbreviation": "CFO"
-  },
-  {
-  "title": "Chief Communications Officer",
-  "description": "1 x $250/wk x 42 wk",
-  "amount": -10500,
-  "abbreviation": "CCO"
-  },
-  {
-  "title": "Chief Personnel Officer",
-  "description": "1 x $250/wk x 35 wk",
-  "amount": -10500,
-  "abbreviation": "CPO"
-  },
-  {
-  "title": "Associate Vice President, Concerts and Events",
-  "description": "1 x $150/wk x 35 wk",
-  "amount": -5250,
-  "abbreviation": "AVP Concert"
-  },
-  {
-  "title": "Associate Vice President, Student Organizations",
-  "description": "1 x $150/wk x 35 wk",
-  "amount": -5250,
-  "abbreviation": "AVP Stud. Org."
-  },
-  {
-  "title": "Associate Vice President, Student Advocacy",
-  "description": "1 x $150/wk x 35 wk",
-  "amount": -5250,
-  "abbreviation": "AVP Stud. Adv."
-  },
-  {
-  "title": "Associate Vice President, College Affairs",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Coll. Aff."
-  },
-  {
-  "title": "Associate Vice President, Enterprises and Services",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Ent. Serv."
-  },
-  {
-  "title": "Associate Vice President, Environmental Justice Affairs",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Env. Just."
-  },
-  {
-  "title": "Associate Vice President, Equity, Diversity, and Inclusion",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP EDI"
-  },
-  {
-  "title": "Associate Vice President, Food and Housing Resources",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Food/Hous."
-  },
-  {
-  "title": "Associate Vice President, Health and Well-Being",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Health"
-  },
-  {
-  "title": "Associate Vice President, Local Affairs",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Local Aff."
-  },
-  {
-  "title": "Associate Vice President, Spirit and Athletics",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Spirit"
-  },
-  {
-  "title": "Associate Vice President, Transportation and Transformation",
-  "description": "1 x $125/wk x 35 wk",
-  "amount": -4375,
-  "abbreviation": "AVP Transport."
-  }
-  ]
-  },
-  "senate_stipends": {
-  "title": "Senate Stipends",
-  "abbreviation": "Sen. Stip.",
-  "positions": [
-  {
-  "title": "Campus-Wide Senators",
-  "description": "5 x $45/wk x 42 wk",
-  "amount": -9450,
-  "abbreviation": "Campus Sen."
-  },
-  {
-  "title": "International Senator",
-  "description": "1 x $45/wk x 42 wk",
-  "amount": -1890,
-  "abbreviation": "Int'l Sen."
-  },
-  {
-  "title": "Out-of-State Senator",
-  "description": "1 x $45/wk x 42 wk",
-  "amount": -1890,
-  "abbreviation": "OOS Sen."
-  },
-  {
-  "title": "First Year Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "1st Yr. Sen."
-  },
-  {
-  "title": "Transfer Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Transfer Sen."
-  },
-  {
-  "title": "Off-Campus Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Off-Camp. Sen."
-  },
-  {
-  "title": "Revelle Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Revelle Sen."
-  },
-  {
-  "title": "Muir Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Muir Sen."
-  },
-  {
-  "title": "Marshall Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Marshall Sen."
-  },
-  {
-  "title": "Warren Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Warren Sen."
-  },
-  {
-  "title": "Roosevelt Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Roosevelt Sen."
-  },
-  {
-  "title": "Sixth Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Sixth Sen."
-  },
-  {
-  "title": "Seventh Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Seventh Sen."
-  },
-  {
-  "title": "Eighth Senators",
-  "description": "2 x $45/wk x 42 wk",
-  "amount": -3780,
-  "abbreviation": "Eighth Sen."
-  }
-  ]
-  },
-  "staff_stipends": {
-  "title": "Staff Stipends",
-  "abbreviation": "Staff Stip.",
-  "total": -284955,
-  "office_of_the_president": {
-  "title": "Office of the President",
-  "abbreviation": "Pres. Off.",
-  "positions": [
-  {
-  "title": "Executive Director / Chief of Staff",
- "description": "1 x $80/wk x 31 wk",
- "amount": -2480,
- "abbreviation": "ED/CoS"
-  },
-  {
-  "title": "Director of Programs and Initiatives",
- "description": "1 x $60/wk x 31 wk",
- "amount": -1860,
- "abbreviation": "Dir. Prog."
-  },
-  {
-  "title": "Director of Media and Outreach",
- "description": "1 x $60/wk x 31 wk",
- "amount": -1860,
- "abbreviation": "Dir. Media"
-  },
-  {
-  "title": "Director of Alumni Relations",
- "description": "1 x $60/wk x 31 wk",
- "amount": -1860,
- "abbreviation": "Dir. Alumni"
-  },
-  {
-  "title": "Director of Internal Affairs",
- "description": "1 x $60/wk x 31 wk",
- "amount": -1860,
- "abbreviation": "Dir. Int. Aff."
-  }
-  ],
-  "subtotal": -9920
-  },
-  "office_of_college_affairs": {
-  "title": "Office of College Affairs",
-  "abbreviation": "Coll. Affairs",
-  "positions": [
-  {
-  "title": "Director of Staff",
- "description": "1 x $45/wk x 22 wk",
- "amount": -990,
- "abbreviation": "Dir. Staff"
-  },
-  {
-  "title": "Director of Marketing",
- "description": "1 x $30/wk x 22 wk",
- "amount": -660,
- "abbreviation": "Dir. Mktg."
-  },
-  {
-  "title": "Director of Programming",
- "description": "1 x $25/wk x 22 wk",
- "amount": -550,
- "abbreviation": "Dir. Prog."
-  }
-  ],
-  "subtotal": -2200
-  },
-  "office_of_food_and_housing_resources": {
-  "title": "Office of Food and Housing Resources",
-  "abbreviation": "Food & Housing",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Director of Food Affairs",
- "description": "1 x $60/wk x 30 wk",
- "amount": -1800,
- "abbreviation": "Dir. Food"
-  },
-  {
-  "title": "Director of External Affairs",
- "description": "1 x $60/wk x 30 wk",
- "amount": -1800,
- "abbreviation": "Dir. Ext. Aff."
-  },
-  {
-  "title": "Marketing Strategist",
- "description": "1 x $45/wk x 28 wk",
- "amount": -1260,
- "abbreviation": "Mktg. Strat."
-  }
-  ],
-  "subtotal": -7260
-  },
-  "office_of_equity_diversity_and_inclusion": {
-  "title": "Office of Equity, Diversity, and Inclusion",
-  "abbreviation": "EDI",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Director of Internal Affairs",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "Dir. Int. Aff."
-  },
-  {
-  "title": "Director of External Affairs",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "Dir. Ext. Aff."
-  },
-  {
-  "title": "Women's Commission Chair",
- "description": "1 x $55/wk x 30 wk",
- "amount": -1650,
- "abbreviation": "Women's Comm."
-  },
-  {
-  "title": "Undocumented Students Commission Chair",
- "description": "1 x $55/wk x 30 wk",
- "amount": -1650,
- "abbreviation": "Undoc. Comm."
-  },
-  {
-  "title": "BIPOC Commission Chair",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "BIPOC Comm."
-  },
-  {
-  "title": "LGBTQIA+ Commission Chair",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "LGBTQIA+ Comm."
-  },
-  {
-  "title": "Student With Dependents Commission Chair",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "SWD Comm."
-  },
-  {
-  "title": "International Students Commission Chair",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "Int'l Comm."
-  },
-  {
-  "title": "Marketing & Outreach Director",
- "description": "1 x $45/wk x 22 wk",
- "amount": -990,
- "abbreviation": "Mktg. Dir."
-  },
-  {
-  "title": "SAAC Liaison(s)",
- "description": "5 x $30/wk x 25 wk",
- "amount": -3750,
- "abbreviation": "SAAC Liaison"
-  },
-  {
-  "title": "DOC Intern(s)",
- "description": "5 x $20/wk x 10 wk",
- "amount": -1000,
- "abbreviation": "DOC Intern"
-  }
-  ],
-  "subtotal": -20480
-  },
-  "office_of_environmental_justice_affairs": {
-  "title": "Office of Environmental Justice Affairs",
-  "abbreviation": "Env. Justice",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 25 wk",
- "amount": -2000,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Director of Programs and Initiatives",
- "description": "1 x $60/wk x 25 wk",
- "amount": -1500,
- "abbreviation": "Dir. Prog."
-  },
-  {
-  "title": "Director of Media and Outreach",
- "description": "1 x $60/wk x 25 wk",
- "amount": -1500,
- "abbreviation": "Dir. Media"
-  },
-  {
-  "title": "Event Programming Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Event Coord."
-  },
-  {
-  "title": "Outreach Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Outreach Coord."
-  },
-  {
-  "title": "Population Advocate(s)",
- "description": "2 x $30/wk x 25 wk",
- "amount": -750,
- "abbreviation": "Pop. Adv."
-  },
-  {
-  "title": "Sustainability Intern",
- "description": "1 x $20/wk x 25 wk",
- "amount": -500,
- "abbreviation": "Sustain. Intern"
-  },
-  {
-  "title": "Environmental Justice Intern",
- "description": "1 x $20/wk x 25 wk",
- "amount": -500,
- "abbreviation": "EJ Intern"
-  }
-  ],
-  "subtotal": -9000
-  },
-  "office_of_health_and_well_being": {
-  "title": "Office of Health and Well-Being",
-  "abbreviation": "Health & Well",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 23 wk",
- "amount": -1840,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Director of Sexual Health",
- "description": "1 x $60/wk x 23 wk",
- "amount": -1380,
- "abbreviation": "Dir. Sex. Health"
-  },
-  {
-  "title": "Director of Student Health",
- "description": "1 x $60/wk x 23 wk",
- "amount": -1380,
- "abbreviation": "Dir. Stud. Health"
-  },
-  {
-  "title": "Director of Mental Health",
- "description": "1 x $60/wk x 23 wk",
- "amount": -1380,
- "abbreviation": "Dir. Mental Health"
-  },
-  {
-  "title": "Outreach Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Outreach Coord."
-  },
-  {
-  "title": "Marketing Strategist",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Mktg. Strat."
-  },
-  {
-  "title": "Sexual Health Advocate(s)",
- "description": "2 x $30/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Sex. Health Adv."
-  },
-  {
-  "title": "Student Health Advocate(s)",
- "description": "2 x $30/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Stud. Health Adv."
-  },
-  {
-  "title": "Mental Health Advocate(s)",
- "description": "2 x $30/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Mental Health Adv."
-  }
-  ],
-  "subtotal": -11830
-  },
-  "office_of_transportation_and_transformation": {
-  "title": "Office of Transporation and Transformation",
-  "abbreviation": "Trans. & Trans.",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 20 wk",
- "amount": -1600,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Director of Communications",
- "description": "1 x $60/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Dir. Comm."
-  },
-  {
-  "title": "Outreach and Media Coordinator",
- "description": "1 x $45/wk x 20 wk",
- "amount": -900,
- "abbreviation": "Outreach Coord."
-  }
-  ],
-  "subtotal": -3700
-  },
-  "office_of_the_executive_vice_president": {
-  "title": "Office of the Executive Vice President",
-  "abbreviation": "Exec. VP",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 25 wk",
- "amount": -2000,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Media Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Media Coord."
-  }
-  ],
-  "subtotal": -3125
-  },
-  "office_of_external_affairs": {
-  "title": "Office of External Affairs",
-  "abbreviation": "Ext. Affairs",
-  "main_office_positions": [
-  {
-  "title": "Director of Staff",
- "description": "1 x $80/wk x 42 wk",
- "amount": -3360,
- "abbreviation": "Dir. Staff"
-  },
-  {
-  "title": "Communications Director",
- "description": "1 x $70/wk x 42 wk",
- "amount": -2940,
- "abbreviation": "Comm. Dir."
-  },
-  {
-  "title": "Internal Organizing Director",
- "description": "1 x $75/wk x 42 wk",
- "amount": -3150,
- "abbreviation": "Int. Org. Dir."
-  },
-  {
-  "title": "External Organizing Director",
- "description": "1 x $75/wk x 42 wk",
- "amount": -3150,
- "abbreviation": "Ext. Org. Dir."
-  },
-  {
-  "title": "Legislative Director",
- "description": "1 x $75/wk x 42 wk",
- "amount": -3150,
- "abbreviation": "Legis. Dir."
-  },
-  {
-  "title": "Deputy Legislative Director",
- "description": "1 x $70/wk x 42 wk",
- "amount": -2940,
- "abbreviation": "Dep. Legis. Dir."
-  },
-  {
-  "title": "Administrative Aid (2)",
- "description": "2 x $45/wk x 35 wk",
- "amount": -3150,
- "abbreviation": "Admin. Aid"
-  },
-  {
-  "title": "Racial Justice Now Campaign Coordinator",
- "description": "1 x $40/wk x 32 wk",
- "amount": -1280,
- "abbreviation": "RJN Coord."
-  },
-  {
-  "title": "AQUIRE Campaign Coordinator",
- "description": "1 x $40/wk x 32 wk",
- "amount": -1280,
- "abbreviation": "AQUIRE Coord."
-  },
-  {
-  "title": "Fund the UC Campaign Coordinator",
- "description": "1 x $40/wk x 32 wk",
- "amount": -1280,
- "abbreviation": "FundUC Coord."
-  },
-  {
-  "title": "SEED Campaign Coordinator",
- "description": "1 x $40/wk x 32 wk",
- "amount": -1280,
- "abbreviation": "SEED Coord."
-  },
-  {
-  "title": "Civic Engagement Director",
- "description": "1 x $70/wk x 42 wk",
- "amount": -2940,
- "abbreviation": "Civic Eng. Dir."
-  },
-  {
-  "title": "Disabled Students Director",
- "description": "1 x $60/wk x 32 wk",
- "amount": -1920,
- "abbreviation": "Disabled Stud. Dir."
-  },
-  {
-  "title": "Labor Relations Director",
- "description": "1 x $60/wk x 32 wk",
- "amount": -1920,
- "abbreviation": "Labor Rel. Dir."
-  },
-  {
-  "title": "Housing Affairs Director",
- "description": "1 x $60/wk x 32 wk",
- "amount": -1920,
- "abbreviation": "Housing Aff. Dir."
-  }
-  ],
-  "triton_lobby_corps": {
-  "title": "Triton Lobby Corps",
-  "abbreviation": "TLC",
-  "positions": [
-  {
-  "title": "State Lobbyists",
- "description": "4 x $45/wk x 30 wk",
- "amount": -5400,
- "abbreviation": "State Lob."
-  },
- {
-  "title": "Federal Lobbyists",
- "description": "3 x $45/wk x 30 wk",
- "amount": -4050,
- "abbreviation": "Fed. Lob."
-  }
-  ],
-  "subtotal": -9450
-  },
-  "housing_affairs_commission": {
-  "title": "Housing Affairs Commission",
-  "abbreviation": "HAC",
-  "positions": [
-  {
-  "title": "Housing Affairs Organizing Coordinator",
- "description": "1 x $40/wk x 20 wk",
- "amount": -800,
- "abbreviation": "Housing Org. Coord."
-  },
- {
-  "title": "Housing Affairs Policy Analysis Coordinator",
- "description": "1 x $40/wk x 20 wk",
- "amount": -800,
- "abbreviation": "Housing Pol. Coord."
-  }
-  ],
-  "subtotal": -1600
-  },
-  "disabled_students_commission": {
-  "title": "Disabled Students Commission",
-  "abbreviation": "DSC",
-  "positions": [
-  {
-  "title": "Assistant Executive Director",
- "description": "1 x $40/wk x 20 wk",
- "amount": -800,
- "abbreviation": "Asst. ED"
-  },
- {
-  "title": "Communication & Historian Director",
- "description": "1 x $30/wk x 20 wk",
- "amount": -600,
- "abbreviation": "Comm. Dir."
-  },
- {
-  "title": "Community Oureach Director",
- "description": "1 x $30/wk x 20 wk",
- "amount": -600,
- "abbreviation": "Outreach Dir."
-  }
-  ],
-  "subtotal": -2000
-  },
-  "labor_affairs_commission": {
-  "title": "Labor Affairs Commission",
-  "abbreviation": "LAC",
-  "positions": [
-  {
-  "title": "Labor Affairs Organizing Coordinator",
- "description": "1 x $45/wk x 20 wk",
- "amount": -900,
- "abbreviation": "Labor Org. Coord."
-  }
-  ],
-  "subtotal": -900
-  },
-  "subtotal": -65285
-  },
-  "office_of_local_affairs": {
-  "title": "Office of Local Affairs",
-  "abbreviation": "Local Aff.",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Government Affairs Director",
- "description": "1 x $60/wk x 30 wk",
- "amount": -1800,
- "abbreviation": "Gov. Aff. Dir."
-  },
-  {
-  "title": "Community Affairs Director",
- "description": "1 x $60/wk x 30 wk",
- "amount": -1800,
- "abbreviation": "Comm. Aff. Dir."
-  },
-  {
-  "title": "Marketing Affairs Director",
- "description": "1 x $60/wk x 30 wk",
- "amount": -1800,
- "abbreviation": "Mktg. Aff. Dir."
-  },
-  {
-  "title": "Government Affairs Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Gov. Aff. Coord."
-  },
-  {
-  "title": "Community Affairs Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Comm. Aff. Coord."
-  },
-  {
-  "title": "Event Programming Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Event Coord."
-  },
-  {
-  "title": "Lobbying Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Lobby Coord."
-  },
-  {
-  "title": "Advocacy Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Adv. Coord."
-  },
-  {
-  "title": "Community Empowerment Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Comm. Emp. Coord."
-  },
-  {
-  "title": "Urban Development Coordinator",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Urban Dev. Coord."
-  }
-  ],
-  "subtotal": -15675
-  },
-  "office_of_academic_affairs": {
-  "title": "Office of Academic Affairs",
-  "abbreviation": "Acad. Aff.",
-  "positions": [
-  {
-  "title": "Director(s) of Academic Divisions",
- "description": "8 x $60/wk x 23 wk",
- "amount": -11040,
- "abbreviation": "Dir. Acad. Div."
-  },
-  {
-  "title": "Multimedia Coordinator",
- "description": "1 x $45/wk x 23 wk",
- "amount": -1035,
- "abbreviation": "Multi. Coord."
-  },
-  {
-  "title": "Director of Internal Affairs",
- "description": "1 x $70/wk x 23 wk",
- "amount": -1610,
- "abbreviation": "Dir. Int. Aff."
-  },
-  {
-  "title": "Director of External Affairs",
- "description": "1 x $70/wk x 23 wk",
- "amount": -1610,
- "abbreviation": "Dir. Ext. Aff."
-  },
-  {
-  "title": "Director of Programs and Initiatives",
- "description": "1 x $60/wk x 23 wk",
- "amount": -1380,
- "abbreviation": "Dir. Prog."
-  },
-  {
-  "title": "Director of Retention",
- "description": "1 x $55/wk x 23 wk",
- "amount": -1265,
- "abbreviation": "Dir. Retention"
-  },
-  {
-  "title": "Director of Advocacy",
- "description": "1 x $55/wk x 23 wk",
- "amount": -1265,
- "abbreviation": "Dir. Advocacy"
-  }
-  ],
-  "subtotal": -19205
-  },
-  "office_of_student_advocacy": {
-  "title": "Office of Student Advocacy",
-  "abbreviation": "Stud. Adv.",
-  "positions": [
-  {
-  "title": "Outreach Advocate",
- "description": "1 x $45/wk x 28 wk",
- "amount": -1260,
- "abbreviation": "Outreach Adv."
-  },
-  {
-  "title": "Director of Internal Affairs",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "Dir. Int. Aff."
-  },
-  {
-  "title": "Director of External Affairs",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "Dir. Ext. Aff."
-  },
-  {
-  "title": "Student Advocate",
- "description": "5 x $40/wk x 30 wk",
- "amount": -6000,
- "abbreviation": "Stud. Adv."
-  },
-  {
-  "title": "Returning Student Advocate",
- "description": "5 x $40/wk x 28 wk",
- "amount": -5600,
- "abbreviation": "Ret. Stud. Adv."
-  }
-  ],
-  "subtotal": -17060
-  },
-  "office_of_finance_and_resources": {
-  "title": "Office of Finance and Resources",
-  "abbreviation": "Fin. & Res.",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 25 wk",
- "amount": -2960,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Finance Analyst",
- "description": "3 x $45/wk x 25 wk",
- "amount": -4725,
- "abbreviation": "Fin. Analyst"
-  },
-  {
-  "title": "Committee Liaison",
- "description": "1 x $50/wk x 25 wk",
- "amount": -1500,
- "abbreviation": "Comm. Liaison"
-  }
-  ],
-  "subtotal": -9185
-  },
-  "office_of_student_organizations": {
-  "title": "Office of Student Organizations",
-  "abbreviation": "Stud. Orgs.",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Data Analyst",
- "description": "1 x $45/wk x 30 wk",
- "amount": -1350,
- "abbreviation": "Data Analyst"
-  },
-  {
-  "title": "Funding Auditor(s)",
- "description": "3 x $30/wk x 30 wk",
- "amount": -2700,
- "abbreviation": "Fund. Auditor"
-  }
-  ],
-  "subtotal": -6450
-  },
-  "office_of_enterprises_and_services": {
-  "title": "Office of Enterprises and Services",
-  "abbreviation": "Ent. & Serv.",
-  "positions": [
-  {
-  "title": "Chief of Staff",
- "description": "1 x $80/wk x 25 wk",
- "amount": -2000,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Executive Assistant",
- "description": "1 x $45/wk x 25 wk",
- "amount": -1125,
- "abbreviation": "Exec. Asst."
-  },
-  {
-  "title": "Photography Manager",
- "description": "1 x $30/wk x 25 wk",
- "amount": -750,
- "abbreviation": "Photo Mgr."
-  },
-  {
-  "title": "Agricultural Manager",
- "description": "1 x $30/wk x 25 wk",
- "amount": -750,
- "abbreviation": "Agr. Mgr."
-  }
-  ],
-  "subtotal": -4625
-  },
-  "office_of_communications": {
-  "title": "Office of Communications",
-  "abbreviation": "Comms.",
-  "positions": [
-  {
-  "title": "Executive Internal Operations Officer",
- "description": "1 x $80/wk x 20 wk",
- "amount": -1600,
- "abbreviation": "Exec. Int. Ops."
-  },
-  {
-  "title": "Senior Internal Communications Officer",
- "description": "1 x $70/wk x 20 wk",
- "amount": -1400,
- "abbreviation": "Sr. Int. Comm."
-  },
-  {
-  "title": "Internal Liason Officer",
- "description": "1 x $55/wk x 20 wk",
- "amount": -1100,
- "abbreviation": "Int. Liaison"
-  },
-  {
-  "title": "Internal Communcations Officer",
- "description": "1 x $60/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Int. Comm."
-  },
-  {
-  "title": "Senior Strategic Communications Officer",
- "description": "1 x $70/wk x 20 wk",
- "amount": -1400,
- "abbreviation": "Sr. Strat. Comm."
-  },
-  {
-  "title": "Publicity Management Officer",
- "description": "1 x $60/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Pub. Mgmt."
-  },
-  {
-  "title": "Senate Communications Officer",
- "description": "1 x $60/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Sen. Comm."
-  },
-  {
-  "title": "Senior Marketing Communications Officer",
- "description": "1 x $70/wk x 20 wk",
- "amount": -1400,
- "abbreviation": "Sr. Mktg. Comm."
-  },
-  {
-  "title": "Social Media Officer",
- "description": "1 x $60/wk x 20 wk",
- "amount": -1200,
- "abbreviation": "Social Media"
-  },
-  {
-  "title": "Marketing & Engagement Officer(s)",
- "description": "3 x $60/wk x 20 wk",
- "amount": -3600,
- "abbreviation": "Mktg. & Eng."
-  },
-  {
-  "title": "Senior Data Analytics Officer",
- "description": "1 x $70/wk x 20 wk",
- "amount": -1400,
- "abbreviation": "Sr. Data Anal."
-  },
-  {
-  "title": "Data Analytics Officer(s)",
- "description": "2 x $60/wk x 20 wk",
- "amount": -2400,
- "abbreviation": "Data Anal."
-  },
-  {
-  "title": "Historial Records Officer",
- "description": "1 x $55/wk x 20 wk",
- "amount": -1100,
- "abbreviation": "Hist. Records"
-  }
-  ],
-  "subtotal": -20200
-  },
-  "office_of_concerts_and_events": {
-  "title": "Office of Concerts and Events",
-  "abbreviation": "Concerts & Events",
-  "positions": [
-  {
-  "title": "Bear Garden Director",
- "description": "1 x $85/wk x 34 wk",
- "amount": -2890,
- "abbreviation": "BG Dir."
-  },
-  {
-  "title": "Co-Marketing Director(s)",
- "description": "2 x $85/wk x 34 wk",
- "amount": -5780,
- "abbreviation": "Co-Mktg. Dir."
-  },
-  {
-  "title": "Chief of Staff",
- "description": "1 x $60/wk x 34 wk",
- "amount": -2040,
- "abbreviation": "CoS"
-  },
-  {
-  "title": "Special Events Director",
- "description": "1 x $85/wk x 34 wk",
- "amount": -2890,
- "abbreviation": "Spec. Events Dir."
-  },
-  {
-  "title": "Festivals Director",
- "description": "1 x $85/wk x 34 wk",
- "amount": -2890,
- "abbreviation": "Fest. Dir."
-  },
-  {
-  "title": "Festivals Coordinator(s)",
- "description": "2 x $50/wk x 28 wk",
- "amount": -2800,
- "abbreviation": "Fest. Coord."
-  },
-  {
-  "title": "Special Events Coordinator(s)",
- "description": "2 x $50/wk x 28 wk",
- "amount": -2800,
- "abbreviation": "Spec. Events Coord."
-  },
-  {
-  "title": "Bear Garden Coordinator",
- "description": "1 x $50/wk x 28 wk",
- "amount": -1400,
- "abbreviation": "BG Coord."
-  },
-  {
-  "title": "Marketing Coordinator(s)",
- "description": "2 x $50/wk x 28 wk",
- "amount": -2800,
- "abbreviation": "Mktg. Coord."
-  }
-  ],
-  "subtotal": -26290
-  },
-  "office_of_spirit_and_athletics": {
-  "title": "Office of Spirit and Athletics",
-  "abbreviation": "Spirit & Ath.",
-  "positions": [
-  {
-  "title": "Chief of Staff for Leadership Development",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "CoS Lead. Dev."
-  },
-  {
-  "title": "Chief of Staff for Programming",
- "description": "1 x $70/wk x 30 wk",
- "amount": -2100,
- "abbreviation": "CoS Prog."
-  },
-  {
-  "title": "Finance Director",
- "description": "1 x $50/wk x 30 wk",
- "amount": -1500,
- "abbreviation": "Fin. Dir."
-  },
-  {
-  "title": "Marketing Director",
- "description": "1 x $50/wk x 27 wk",
- "amount": -1350,
- "abbreviation": "Mktg. Dir."
-  },
-  {
-  "title": "Outreach Director",
- "description": "1 x $50/wk x 27 wk",
- "amount": -1350,
- "abbreviation": "Outreach Dir."
-  },
-  {
-  "title": "Spirit and Athletics Director",
- "description": "2 x $50/wk x 27 wk",
- "amount": -2700,
- "abbreviation": "Spirit Dir."
-  },
-  {
-  "title": "Spirit and Atheltics Coordinator",
- "description": "2 x $30/wk x 25 wk",
- "amount": -1500,
- "abbreviation": "Spirit Coord."
-  }
-  ],
-  "subtotal": -12600
-  },
-  "office_of_personnel_affairs": {
-  "title": "Office of Personnel Affairs",
-  "abbreviation": "Pers. Affairs",
-  "positions": [
-  {
-  "title": "Director of Internal Operations",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "Dir. Int. Ops."
-  },
-  {
-  "title": "Programming Coordinator",
- "description": "1 x $35/wk x 22 wk",
- "amount": -770,
- "abbreviation": "Prog. Coord."
-  },
-  {
-  "title": "Fellowship Director",
- "description": "1 x $55/wk x 22 wk",
- "amount": -1210,
- "abbreviation": "Fellow. Dir."
-  }
-  ],
-  "subtotal": -3190
-  },
-  "triton_television": {
-  "title": "Triton Television (TTV)",
-  "abbreviation": "TTV",
-  "positions": [
-  {
-  "title": "Station Manager(s)",
- "description": "2 x $100/wk x 42 wk",
- "amount": -8400,
- "abbreviation": "Station Mgr."
-  },
-  {
-  "title": "Director of Internal Affairs",
- "description": "1 x $80/wk x 35 wk",
- "amount": -2800,
- "abbreviation": "Dir. Int. Aff."
-  },
-  {
-  "title": "Director of External Affairs",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "Dir. Ext. Aff."
-  },
-  {
-  "title": "Staff Development Coordinator",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "Staff Dev. Coord."
-  },
-  {
-  "title": "Film Festival Coordinator",
- "description": "1 x $45/wk x 30 wk",
- "amount": -1350,
- "abbreviation": "Film Fest. Coord."
-  },
-  {
-  "title": "Project Manager",
- "description": "1 x $80/wk x 30 wk",
- "amount": -2400,
- "abbreviation": "Proj. Mgr."
-  },
-  {
-  "title": "A.S. Senior Project Manager(s)",
- "description": "2 x $80/wk x 30 wk",
- "amount": -4800,
- "abbreviation": "Sr. Proj. Mgr."
-  }
-  ],
-  "subtotal": -24550
-  },
-  "elections": {
-  "title": "Elections",
-  "abbreviation": "Elections",
-  "positions": [
-  {
-  "title": "Elections Manager",
- "description": "1 x $40/wk x 20 wk",
- "amount": -800,
- "abbreviation": "Elections Mgr."
-  }
-  ],
-  "subtotal": -800
-  },
-  "stipend_benefits": {
-  "title": "Stipend Benefits (1.8%)",
-  "amount": -8000,
-  "abbreviation": "Stip. Ben."
-  }
-  }
-  },
-  "allocation_difference": {
-  "title": "ALLOCATION DIFFERENCE (COMPARED TO FUNDS AFTER CAREER EMPLOYEEES)",
-  "abbreviation": "Alloc. Diff."
-  }
- }
+  "OPERATING RESERVES": {
+    "abbreviation": "OP RES",
+    "General": {
+      "abbreviation": "Gen",
+      "Items": {
+        "abbreviation": "Items",
+        "Total Reserves": {
+          "value": -1189556,
+          "abbreviation": "Tot Res."
+        },
+        "Mandate Reserves": {
+          "value": -1189556,
+          "abbreviation": "Mand Res."
+        }
+      }
+    }
+  },
+  "CARRYFORWARDS": {
+    "abbreviation": "CARRYFWD",
+    "General": {
+      "abbreviation": "Gen",
+      "Items": {
+        "abbreviation": "Items",
+        "Total A.S. Carryforward": {
+          "value": -165105,
+          "abbreviation": "Tot AS C.fwd"
+        },
+        "2024–2025 A.S. Carryforward": {
+          "value": -165105,
+          "abbreviation": "2024–25 AS C.fwd"
+        },
+        "Auxiliary Carryforward": {
+          "value": -429322,
+          "abbreviation": "Aux C.fwd"
+        },
+        "2024–2025 SPACES Carryforward": {
+          "value": -284480,
+          "abbreviation": "2024–25 SPACES C.fwd"
+        },
+        "2024–2025 KSDT Carryforward": {
+          "value": -44842,
+          "abbreviation": "2024–25 KSDT C.fwd"
+        },
+        "2024–2025 SSC Carryforward": {
+          "value": -100000,
+          "abbreviation": "2024–25 SSC C.fwd"
+        }
+      }
+    }
+  },
+  "BUDGET SUMMARY": {
+    "abbreviation": "BUD SUM",
+    "General": {
+      "abbreviation": "Gen",
+      "Items": {
+        "abbreviation": "Items",
+        "2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))": {
+          "value": -587367,
+          "abbreviation": "2024–25 Rem Funds"
+        },
+        "2024–2025 AS Revenue": {
+          "value": 8834339,
+          "abbreviation": "2024–25 AS Rev"
+        },
+        "Referendums, Return to Aid, and Locked in Fees": {
+          "value": -3326238,
+          "abbreviation": "Ref, Rtn Aid, & Lkd Fees"
+        },
+        "Career Employees": {
+          "value": -1777457,
+          "abbreviation": "Care Emp"
+        },
+        "Mandated Reserves Contribution (5% of Expendable Funds)": {
+          "value": -186532,
+          "abbreviation": "Mand Res Contrib"
+        },
+        "General Operations (Expendable Funds)": {
+          "value": -90230,
+          "abbreviation": "Gen Ops (Exp Fds)"
+        },
+        "Office Operations (Expendable Funds)": {
+          "value": -3459133,
+          "abbreviation": "Off Ops (Exp Fds)"
+        },
+        "Senate Operations (Expendable Funds)": {
+          "value": -39150,
+          "abbreviation": "Sen Ops (Exp Fds)"
+        },
+        "Student-Employee Payroll & Stipends (Expendable Funds)": {
+          "value": -729498,
+          "abbreviation": "Stud Emp Pay & Stip (Exp Fds)"
+        }
+      }
+    }
+  },
+  "LOCKED–IN ALLOCATIONS": {
+    "abbreviation": "Lockd–In Allocs",
+    "General": {
+      "abbreviation": "Gen",
+      "Items": {
+        "abbreviation": "Items",
+        "Referendum and Return to Aid": {
+          "value": -3326238,
+          "abbreviation": "Ref & Rtn Aid"
+        },
+        "Return to Aid (29% over $21)": {
+          "value": -1966917,
+          "abbreviation": "Rtn Aid (29% > $21)"
+        },
+        "Student Promoted Access Center for Education and Services (SPACES)": {
+          "value": -600121,
+          "abbreviation": "SPACES",
+          "Expendable Funds": {
+            "value": -343098,
+            "abbreviation": "Exp Fds"
+          },
+          "Student Life Development Specialist III (1 FTE)*": [
+            {
+              "value": -64604,
+              "abbreviation": "SLDS III"
+            },
+            {
+              "value": -64308,
+              "abbreviation": "SLDS III"
+            },
+            {
+              "value": -62683,
+              "abbreviation": "SLDS III"
+            }
+          ],
+          "Blank Asst. III (.1 FTE)*": {
+            "value": -6518,
+            "abbreviation": "BAsst III (.1)"
+          },
+          "Financial Service Analyst II (.25 FTE)": {
+            "value": -19320,
+            "abbreviation": "Fin Serv Anal II (.25)"
+          },
+          "Blank Asst. III (.25 FTE)": {
+            "value": -17090,
+            "abbreviation": "BAsst III (.25)"
+          },
+          "ITS Applications Programmer/Service (.15 FTE)": {
+            "value": -22500,
+            "abbreviation": "ITS Apps Prog/Serv (.15)"
+          }
+        },
+        "Academic Success Program (ASP)": {
+          "value": -95754,
+          "abbreviation": "ASP"
+        },
+        "Student Initiated Access Programs and Services (SIAPS)": {
+          "value": -95754,
+          "abbreviation": "SIAPS"
+        },
+        "Student Sustainability Collective": {
+          "value": -289224,
+          "abbreviation": "Stud Sust Coll",
+          "Expendable Funds": {
+            "value": -192221,
+            "abbreviation": "Exp Fds"
+          },
+          "Student Life Development Specialist III (1 FTE)*": {
+            "value": -62683,
+            "abbreviation": "SLDS III"
+          },
+          "Financial Service Analyst II (.25 FTE)": {
+            "value": -19320,
+            "abbreviation": "Fin Serv Anal II (.25)"
+          },
+          "ITS Applications Programmer/Service (.1 FTE)": {
+            "value": -15000,
+            "abbreviation": "ITS Apps Prog/Serv (.1)"
+          }
+        },
+        "KSDT": {
+          "value": -107479,
+          "abbreviation": "KSDT",
+          "Expendable Funds": {
+            "value": -99872,
+            "abbreviation": "Exp Fds"
+          },
+          "Event Specialist III (.1 FTE)*": {
+            "value": -7607,
+            "abbreviation": "Evt Spec III (.1)"
+          }
+        },
+        "College Councils": {
+          "value": -63510,
+          "abbreviation": "Coll Councils"
+        },
+        "UCSA Membership": {
+          "value": -107479,
+          "abbreviation": "UCSA Mem"
+        }
+      }
+    },
+    "CAREER EMPLOYEES": {
+      "value": -1777457,
+      "abbreviation": "Care Emp",
+      "AS Administrative Staff": {
+        "value": -1065008,
+        "abbreviation": "AS Admin Staff",
+        "Items": {
+          "Student Life Development Specialist IV (1 FTE)*": {
+            "value": -123948,
+            "abbreviation": "SLDS IV"
+          },
+          "Student Life Development Specialist III (.8 FTE)*": {
+            "value": -104451,
+            "abbreviation": "SLDS III (.8)"
+          },
+          "AS Admin Asst. – Blank Asst. III (1 FTE)*": {
+            "value": -98531,
+            "abbreviation": "AS Adm Asst – BAsst III (1)"
+          },
+          "AS Admin Asst. – Blank Asst. III (.9 FTE)*": {
+            "value": -58665,
+            "abbreviation": "AS Adm Asst – BAsst III (.9)"
+          },
+          "ASGS Artist Sr. (1 FTE)*": [
+            {
+              "value": -106885,
+              "abbreviation": "ASGS Art Sr (1)"
+            },
+            {
+              "value": -120372,
+              "abbreviation": "ASGS Art Sr (1)"
+            }
+          ],
+          "Publication Production Specialist 3 (1 FTE)*": {
+            "value": -135208,
+            "abbreviation": "PPS3 (1)"
+          },
+          "Marketing Specialist III (.6 FTE)*": {
+            "value": -78160,
+            "abbreviation": "Mkt Spec III (.6)"
+          },
+          "Marketing Specialist II (1 FTE)*": {
+            "value": -80338,
+            "abbreviation": "Mkt Spec II (1)"
+          },
+          "ITS Applications Programmer (.75 FTE)*": {
+            "value": -118450,
+            "abbreviation": "ITS Apps Prog (.75)"
+          },
+          "Professional Development": {
+            "value": -40000,
+            "abbreviation": "Prof Dev"
+          }
+        }
+      },
+      "Student Life Business Office": {
+        "value": -465114,
+        "abbreviation": "SLBO",
+        "Items": {
+          "Human Resources – Blank Asst. III (.7 FTE)*": {
+            "value": -65240,
+            "abbreviation": "HR – BAsst III (.7)"
+          },
+          "Fund Manager – Blank Asst. III (.75 FTE)*": {
+            "value": -75551,
+            "abbreviation": "Fund Mngr – BAsst III (.75)"
+          },
+          "Fund Manager – Blank Asst. III (.5 FTE)*": [
+            {
+              "value": -53768,
+              "abbreviation": "Fund Mngr – BAsst III (.5)"
+            },
+            {
+              "value": -51449,
+              "abbreviation": "Fund Mngr – BAsst III (.5)"
+            },
+            {
+              "value": -50328,
+              "abbreviation": "Fund Mngr – BAsst III (.5)"
+            }
+          ],
+          "Financial Analyst II (.5 FTE)*": {
+            "value": -59235,
+            "abbreviation": "Fin Anal II (.5)"
+          },
+          "Financial Services Analyst II (.5 FTE)*": {
+            "value": -109543,
+            "abbreviation": "Fin Serv Anal II (.5)"
+          }
+        }
+      },
+      "Campus Events Office": {
+        "value": -247335,
+        "abbreviation": "Campus Events Off",
+        "Items": {
+          "Event Specialist III (.1 FTE)*": {
+            "value": -11850,
+            "abbreviation": "Evt Spec III (.1)"
+          },
+          "Event Specialist III (.9 FTE)*": {
+            "value": -119493,
+            "abbreviation": "Evt Spec III (.9)"
+          },
+          "Event Specialist IV (.7 FTE)*": {
+            "value": -115992,
+            "abbreviation": "Evt Spec IV (.7)"
+          }
+        }
+      }
+    }
+  },
+  "GENERAL OPERATIONS SUMMARY": {
+    "value": -90230,
+    "abbreviation": "Gen Ops Sum",
+    "Administrative Supplies and Expenses": {
+      "value": -53980,
+      "abbreviation": "Adm Supp & Exp",
+      "Items": {
+        "Operating and Supplies": {
+          "value": -23980,
+          "abbreviation": "Oper & Supp"
+        },
+        "Administrative Support": {
+          "value": -30000,
+          "abbreviation": "Admin Supp"
+        }
+      }
+    },
+    "A.S. Graphic Studio": {
+      "value": -28250,
+      "abbreviation": "AS GS",
+      "Items": {
+        "Operating and Supplies": {
+          "value": -5000,
+          "abbreviation": "Oper & Supp"
+        },
+        "Software and Technology": {
+          "value": -2000,
+          "abbreviation": "Soft & Tech"
+        },
+        "Marketing and Outreach": {
+          "value": -20000,
+          "abbreviation": "Mkt & Out"
+        },
+        "Fluffy Maintenance": {
+          "value": -750,
+          "abbreviation": "Fluff Maint"
+        },
+        "Leadership Development": {
+          "value": -500,
+          "abbreviation": "Lead Dev"
+        }
+      }
+    },
+    "A.S. Elections": {
+      "value": -8000,
+      "abbreviation": "AS Elec",
+      "Items": {
+        "Operating and Supplies": {
+          "value": -2000,
+          "abbreviation": "Oper & Supp"
+        },
+        "Marketing and Outreach": {
+          "value": -3000,
+          "abbreviation": "Mkt & Out"
+        },
+        "Programming Unallocated": {
+          "value": -3000,
+          "abbreviation": "Prog Unalloc"
+        }
+      }
+    }
+  },
+  "OFFICE OPERATIONS SUMMARY": {
+    "value": -3459133,
+    "abbreviation": "Off Ops Sum",
+    "Office Operations": {
+      "Office of the President": {
+        "value": -645837,
+        "abbreviation": "Off Pres",
+        "Items": {
+          "Office of the President": {
+            "value": -71000,
+            "abbreviation": "Off Pres"
+          },
+          "Projects and Initiatives": {
+            "value": -35072,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -7500,
+            "abbreviation": "Mkt & Out"
+          },
+          "Leadership Development and Operation": {
+            "value": -1500,
+            "abbreviation": "Lead Dev & Ops"
+          },
+          "Travel": {
+            "value": -5000,
+            "abbreviation": "Travel"
+          },
+          "New York Times": {
+            "value": -21928,
+            "abbreviation": "NY Times"
+          }
+        }
+      },
+      "Office of College Affairs": {
+        "value": -100000,
+        "abbreviation": "Off Coll Aff",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -26000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -2000,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -400,
+            "abbreviation": "Oper & Supp"
+          },
+          "College Council Project/Initiative Fund": {
+            "value": -16600,
+            "abbreviation": "Coll Counc Proj Fund"
+          },
+          "College Council Collaborative Fund": {
+            "value": -15000,
+            "abbreviation": "Coll Counc Collab Fund"
+          },
+          "Sun God Kits": {
+            "value": -10000,
+            "abbreviation": "Sun God Kits"
+          },
+          "Muir Musical": {
+            "value": -30000,
+            "abbreviation": "Muir Mus"
+          }
+        }
+      },
+      "Office of Food and Housing Resources": {
+        "value": -220987,
+        "abbreviation": "Off Food & Housing",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -34000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -2000,
+            "abbreviation": "Mkt & Out"
+          },
+          "Professional Closet Program": {
+            "value": -5000,
+            "abbreviation": "Prof Clos Prog"
+          },
+          "Produce Distribution Program": {
+            "value": -9000,
+            "abbreviation": "Prod Dist Prog"
+          },
+          "Triton Food Pantry": {
+            "value": -170987,
+            "abbreviation": "Triton FP"
+          }
+        }
+      },
+      "Office of Health and Well–Being": {
+        "value": -41000,
+        "abbreviation": "Off Health & Well",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -17000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -4500,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -1500,
+            "abbreviation": "Oper & Supp"
+          },
+          "Programming Unallocated": {
+            "value": -7000,
+            "abbreviation": "Prog Unalloc"
+          },
+          "Vending Machines": {
+            "value": -7000,
+            "abbreviation": "Vend Mach"
+          },
+          "Period Project": {
+            "value": -4000,
+            "abbreviation": "Per Proj"
+          }
+        }
+      },
+      "Office of Environmental Justice Affairs": {
+        "value": -4850,
+        "abbreviation": "Off Env Just Aff",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -1800,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -1100,
+            "abbreviation": "Mkt & Out"
+          },
+          "Leadership Development": {
+            "value": -350,
+            "abbreviation": "Lead Dev"
+          },
+          "Programming Unallocated": {
+            "value": -1600,
+            "abbreviation": "Prog Unalloc"
+          }
+        }
+      },
+      "Office of Equity, Diversity, and Inclusion": {
+        "value": -58000,
+        "abbreviation": "Off Equity, Div & Inc",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -2000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -2000,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -2000,
+            "abbreviation": "Oper & Supp"
+          },
+          "A.S. EDI Commissions (6 × $2,000)": {
+            "value": -12000,
+            "abbreviation": "AS EDI Comms"
+          },
+          "A.S. EDI Collaborative Fund": {
+            "value": -20000,
+            "abbreviation": "AS EDI Collab Fund"
+          },
+          "A.S. EDI Cultural Celebration": {
+            "value": -20000,
+            "abbreviation": "AS EDI Cult Celebr"
+          }
+        }
+      },
+      "Office of Transportation and Transformation": {
+        "value": -150000,
+        "abbreviation": "Off Trans & Transf",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -3500,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -1500,
+            "abbreviation": "Mkt & Out"
+          },
+          "Transportation and Transformation Programs": {
+            "value": -45000,
+            "abbreviation": "Trans & Transf Progs"
+          },
+          "Grocery Shuttle": {
+            "value": -100000,
+            "abbreviation": "Groc Shuttle"
+          }
+        }
+      },
+      "Office of the Executive Vice President": {
+        "value": -17600,
+        "abbreviation": "Off Exec VP",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -2000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -600,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -500,
+            "abbreviation": "Oper & Supp"
+          },
+          "Transfer Fund": {
+            "value": -14000,
+            "abbreviation": "Trans Fund"
+          },
+          "Leadership Development": {
+            "value": -500,
+            "abbreviation": "Lead Dev"
+          }
+        }
+      },
+      "Office of External Affairs": {
+        "value": -219900,
+        "abbreviation": "Off Ext Aff",
+        "Items": {
+          "Office of External Affairs": {
+            "value": -172900,
+            "abbreviation": "Off Ext Aff"
+          },
+          "Projects and Initiatives": [
+            {
+              "value": -9000,
+              "abbreviation": "Proj & Init 1"
+            },
+            {
+              "value": -4000,
+              "abbreviation": "Proj & Init 1"
+            },
+            {
+              "value": -1500,
+              "abbreviation": "Proj & Init 1"
+            },
+            {
+              "value": -2000,
+              "abbreviation": "Proj & Init 1"
+            }
+          ],
+          "Programming": {
+            "value": -2000,
+            "abbreviation": "Prog"
+          },
+          "Travel": {
+            "value": -2000,
+            "abbreviation": "Travel"
+          },
+          "Civic Engagement": {
+            "value": -34000,
+            "abbreviation": "Civ Eng"
+          },
+          "Tritons Vote": {
+            "value": -15000,
+            "abbreviation": "Tritons Vote"
+          },
+          "Civic Engagement Fund": {
+            "value": -15000,
+            "abbreviation": "Civ Eng Fund"
+          },
+          "On–Campus Polling": {
+            "value": -4000,
+            "abbreviation": "On-Campus Poll"
+          },
+          "Disabled Students Commission": {
+            "value": -3500,
+            "abbreviation": "Dis Stud Comm"
+          },
+          "Projects and Initiatives 2": {
+            "value": -2000,
+            "abbreviation": "Proj & Init 2"
+          },
+          "Marketing and Outreach 2": [
+            {
+              "value": -3000,
+              "abbreviation": "Mkt & Out 2"
+            },
+            {
+              "value": -500,
+              "abbreviation": "Mkt & Out 2"
+            }
+          ],
+          "Programming Unallocated": {
+            "value": -1500,
+            "abbreviation": "Prog Unalloc"
+          },
+          "Housing Affairs Commission": {
+            "value": -4000,
+            "abbreviation": "Hous Aff Comm"
+          },
+          "Projects and Initiatives 3": {
+            "value": -2000,
+            "abbreviation": "Proj & Init 3"
+          },
+          "Marketing and Outreach 3": {
+            "value": -500,
+            "abbreviation": "Mkt & Out 3"
+          },
+          "Programming Unallocated 2": {
+            "value": -1500,
+            "abbreviation": "Prog Unalloc 2"
+          },
+          "Labor Affairs Commission": {
+            "value": -2000,
+            "abbreviation": "Lab Aff Comm"
+          },
+          "Projects and Initiatives 4": {
+            "value": -750,
+            "abbreviation": "Proj & Init 4"
+          },
+          "Marketing and Outreach 4": {
+            "value": -250,
+            "abbreviation": "Mkt & Out 4"
+          },
+          "Programming Unallocated 3": {
+            "value": -1000,
+            "abbreviation": "Prog Unalloc 3"
+          }
+        }
+      },
+      "Office of Local Affairs": {
+        "value": -47000,
+        "abbreviation": "Off Local Aff",
+        "Items": {
+          "Projects and Initiatives": {
+            "value": -12000,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -6000,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -3000,
+            "abbreviation": "Oper & Supp"
+          },
+          "Leadership Development": {
+            "value": -1000,
+            "abbreviation": "Lead Dev"
+          },
+          "Local Organizing Fund": {
+            "value": -25000,
+            "abbreviation": "Local Org Fund"
+          }
+        }
+      },
+      "Office of Academic Affairs": {
+        "value": -23761,
+        "abbreviation": "Off Acad Aff",
+        "Items": {
+          "Office of Academic Affairs": {
+            "value": -18000,
+            "abbreviation": "Off Acad Aff"
+          },
+          "Projects and Initiatives": {
+            "value": -9300,
+            "abbreviation": "Proj & Init"
+          },
+          "Marketing and Outreach": {
+            "value": -1200,
+            "abbreviation": "Mkt & Out"
+          },
+          "Operating and Supplies": {
+            "value": -2000,
+            "abbreviation": "Oper & Supp"
+          },
+          "Programming Unallocated": {
+            "value": -4500,
+            "abbreviation": "Prog Unalloc"
+          },
+          "Leadership Development": {
+            "value": -1000,
+            "abbreviation": "Lead Dev"
+          },
+          "Office of Student Advocacy": {
+            "value": -5761,
+            "abbreviation": "Off Stud Adv"
+          },
+          "Programming Unallocated 2": {
+            "value": -2021,
+            "abbreviation": "Prog Unalloc 2"
+          },
+          "Marketing and Outreach 2": {
+            "value": -2465,
+            "abbreviation": "Mkt & Out 2"
+          },
+          "Operating and Supplies 2": {
+            "value": -250,
+            "abbreviation": "Oper & Supp 2"
+          },
+          "Leadership Development 2": {
+            "value": -1025,
+            "abbreviation": "Lead Dev 2"
+          }
+        }
+      },
+      "Office of Finance and Resources": {
+        "value": -673836,
+        "abbreviation": "Off Fin & Res",
+        "Items": {
+          "Office of Finance and Resources": {
+            "value": -4000,
+            "abbreviation": "Off Fin & Res",
+            "Subitems": {
+              "Operating and Supplies": {
+                "value": -3000,
+                "abbreviation": "Oper & Supp"
+              },
+              "Marketing and Outreach": {
+                "value": -500,
+                "abbreviation": "Mkt & Out"
+              },
+              "Leadership Development": {
+                "value": -500,
+                "abbreviation": "Lead Dev"
+              }
+            }
+          },
+          "Office of Student Organizations": {
+            "value": -576200,
+            "abbreviation": "Off Stud Orgs",
+            "Subitems": {
+              "Town Halls": {
+                "value": -2200,
+                "abbreviation": "Town Halls"
+              },
+              "Operating and Supplies": {
+                "value": -4500,
+                "abbreviation": "Oper & Supp"
+              },
+              "Leadership Development": {
+                "value": -1500,
+                "abbreviation": "Lead Dev"
+              },
+              "Student Organization Projects": {
+                "value": -5000,
+                "abbreviation": "Stud Org Proj"
+              },
+              "Student Organization Operating Unallocated": {
+                "value": -12000,
+                "abbreviation": "Stud Org Oper Unalloc"
+              },
+              "Student Organization Programming Unallocated": {
+                "value": -521000,
+                "abbreviation": "Stud Org Prog Unalloc"
+              },
+              "Fall Quarter 2024": [
+                {
+                  "value": -185000,
+                  "abbreviation": "FQ 2024"
+                },
+                {
+                  "value": -10000,
+                  "abbreviation": "FQ 2024"
+                }
+              ],
+              "Winter Quarter 2025": [
+                {
+                  "value": -162000,
+                  "abbreviation": "WQ 2025"
+                },
+                {
+                  "value": -10000,
+                  "abbreviation": "WQ 2025"
+                }
+              ],
+              "Spring Quarter 2025": [
+                {
+                  "value": -174000,
+                  "abbreviation": "SQ 2025"
+                },
+                {
+                  "value": -10000,
+                  "abbreviation": "SQ 2025"
+                }
+              ],
+              "Student Organization Tournament and Competition Unallocated": {
+                "value": -30000,
+                "abbreviation": "Stud Org Tourney Unalloc"
+              }
+            }
+          },
+          "Office of Enterprises and Services": {
+            "value": -93636,
+            "abbreviation": "Off Ent & Serv",
+            "Subitems": {
+              "Projects and Initiatives": {
+                "value": -8456,
+                "abbreviation": "Proj & Init"
+              },
+              "Marketing and Outreach": {
+                "value": -500,
+                "abbreviation": "Mkt & Out"
+              },
+              "Operating and Supplies": {
+                "value": -2433,
+                "abbreviation": "Oper & Supp"
+              },
+              "Programming Unallocated": {
+                "value": -1000,
+                "abbreviation": "Prog Unalloc"
+              },
+              "Enterprise Operating Funds": {
+                "value": -32609,
+                "abbreviation": "Ent Oper Fnds"
+              },
+              "A.S. Safe Rides": {
+                "value": -27600,
+                "abbreviation": "AS Safe Rides"
+              },
+              "Made TO Order": {
+                "value": -4509,
+                "abbreviation": "MTO Order"
+              },
+              "Enterprise Development Fund": {
+                "value": -500,
+                "abbreviation": "Ent Dev Fund"
+              }
+            }
+          },
+          "Triton Television (TTV)": {
+            "value": -52162,
+            "abbreviation": "Triton TV",
+            "Subitems": {
+              "Equipment": {
+                "value": -22580,
+                "abbreviation": "Equip"
+              },
+              "Studio Repairs": {
+                "value": -2400,
+                "abbreviation": "Stud Rep"
+              },
+              "Marketing and Outreach": {
+                "value": -3200,
+                "abbreviation": "Mkt & Out"
+              },
+              "Operating and Supplies": {
+                "value": -6060,
+                "abbreviation": "Oper & Supp"
+              },
+              "Programming": {
+                "value": -7439,
+                "abbreviation": "Prog"
+              },
+              "UCSDFTF": {
+                "value": -6482,
+                "abbreviation": "UCSDFTF"
+              }
+            }
+          }
+        }
+      },
+      "Office of Communications": {
+        "value": -1837200,
+        "abbreviation": "Off Comm",
+        "Items": {
+          "Office of Communications": {
+            "value": -123500,
+            "abbreviation": "Off Comm",
+            "Subitems": {
+              "Projects and Initiatives": {
+                "value": -15000,
+                "abbreviation": "Proj & Init"
+              },
+              "Marketing and Outreach": {
+                "value": -40000,
+                "abbreviation": "Mkt & Out"
+              },
+              "Operating and Supplies": {
+                "value": -3500,
+                "abbreviation": "Oper & Supp"
+              },
+              "Leadership Development": {
+                "value": -1000,
+                "abbreviation": "Lead Dev"
+              },
+              "Programming Allocated; Triton Dine (3)": {
+                "value": -60000,
+                "abbreviation": "Prog Alloc; Triton Dine (3)"
+              },
+              "Town Halls (8)": {
+                "value": -4000,
+                "abbreviation": "Town Halls (8)"
+              }
+            }
+          },
+          "Office of Concert and Events": {
+            "value": -1596700,
+            "abbreviation": "Off Concert & Events",
+            "Subitems": {
+              "Marketing and Outreach": {
+                "value": -6500,
+                "abbreviation": "Mkt & Out"
+              },
+              "Operating and Supplies (Equipment)": {
+                "value": -1200,
+                "abbreviation": "Oper & Supp (Equip)"
+              },
+              "Music Licensing Fees": {
+                "value": -12000,
+                "abbreviation": "Music Lic Fees"
+              },
+              "Special Events": {
+                "value": -70000,
+                "abbreviation": "Spec Events"
+              },
+              "Leadership Development": {
+                "value": -4800,
+                "abbreviation": "Lead Dev"
+              },
+              "Programming Allocated": {
+                "value": -1502200,
+                "abbreviation": "Prog Alloc"
+              },
+              "Sun God Festival": {
+                "value": -1022200,
+                "abbreviation": "Sun God Fest"
+              },
+              "Sun God Festival Contingency": {
+                "value": -25000,
+                "abbreviation": "Sun God Fest Cont"
+              },
+              "Horizon": {
+                "value": -200000,
+                "abbreviation": "Horizon"
+              },
+              "Day One Fest": {
+                "value": -120000,
+                "abbreviation": "Day One Fest"
+              },
+              "Bear Gardens (4)": {
+                "value": -100000,
+                "abbreviation": "Bear Gardens (4)"
+              },
+              "Bear Garden Senior Sendoff": {
+                "value": -35000,
+                "abbreviation": "Bear Garden Sen Send"
+              }
+            }
+          },
+          "Office of Spirit and Athletics": {
+            "value": -117000,
+            "abbreviation": "Off Spirit & Athl",
+            "Subitems": {
+              "Marketing and Outreach": {
+                "value": -750,
+                "abbreviation": "Mkt & Out"
+              },
+              "Programs & Initiatives": {
+                "value": -30000,
+                "abbreviation": "Progs & Init"
+              },
+              "Athletic Programming": {
+                "value": -10000,
+                "abbreviation": "Athl Prog"
+              },
+              "Collaborative Funding": {
+                "value": -6925,
+                "abbreviation": "Collab Fund"
+              },
+              "Leadership Development": {
+                "value": -1325,
+                "abbreviation": "Lead Dev"
+              },
+              "Programming Allocated": {
+                "value": -68000,
+                "abbreviation": "Prog Alloc"
+              },
+              "Battle of the Bands": {
+                "value": -13000,
+                "abbreviation": "Battle Bands"
+              },
+              "Spirit Night": {
+                "value": -10000,
+                "abbreviation": "Spirit Night"
+              },
+              "Vegas Night": {
+                "value": -25000,
+                "abbreviation": "Vegas Night"
+              },
+              "Spring into Spring": {
+                "value": -20000,
+                "abbreviation": "Spr into Spr"
+              }
+            }
+          }
+        }
+      },
+      "Office of Personnel Affairs": {
+        "value": -41000,
+        "abbreviation": "Off Pers Aff",
+        "Items": {
+          "Office of Personnel Affairs": {
+            "value": -41000,
+            "abbreviation": "Off Pers Aff",
+            "Subitems": {
+              "Projects and Initiatives": {
+                "value": -5000,
+                "abbreviation": "Proj & Init"
+              },
+              "Marketing and Outreach": {
+                "value": -12000,
+                "abbreviation": "Mkt & Out"
+              },
+              "Operating and Supplies": {
+                "value": -500,
+                "abbreviation": "Oper & Supp"
+              },
+              "A.S. Community Development": {
+                "value": -8000,
+                "abbreviation": "AS Comm Dev"
+              },
+              "Leadership Development": {
+                "value": -10000,
+                "abbreviation": "Lead Dev"
+              },
+              "Fellowship Program": {
+                "value": -5500,
+                "abbreviation": "Fell Prog"
+              },
+              "Programming Unallocated": {
+                "value": -4000,
+                "abbreviation": "Prog Unalloc"
+              },
+              "Leadership Development 2": {
+                "value": -500,
+                "abbreviation": "Lead Dev 2"
+              },
+              "Operating and Supplies 2": {
+                "value": -1000,
+                "abbreviation": "Oper & Supp 2"
+              }
+            }
+          }
+        }
+      },
+      "Triton Television (TTV)": {
+        "value": -24550,
+        "abbreviation": "Triton TV",
+        "Items": {
+          "Triton Television (TTV)": {
+            "value": -24550,
+            "abbreviation": "Triton TV",
+            "Subitems": {
+              "Station Manager(s)": {
+                "value": -8400,
+                "abbreviation": "Stn Mngr(s)"
+              },
+              "Director of Internal Affairs": {
+                "value": -2800,
+                "abbreviation": "Dir Int. Ops."
+              },
+              "Director of External Affairs": {
+                "value": -2400,
+                "abbreviation": "Dir Ext. Aff."
+              },
+              "Staff Development Coordinator": {
+                "value": -2400,
+                "abbreviation": "Staff Dev Coord"
+              },
+              "Film Festival Coordinator": {
+                "value": -1350,
+                "abbreviation": "Film Fest Coord"
+              },
+              "Project Manager": {
+                "value": -2400,
+                "abbreviation": "Proj Mngr"
+              },
+              "A.S. Senior Project Manager(s)": {
+                "value": -4800,
+                "abbreviation": "AS Sr Proj Mngr"
+              }
+            }
+          }
+        }
+      },
+      "Elections": {
+        "value": -800,
+        "abbreviation": "Elections",
+        "Items": {
+          "Elections Manager": {
+            "value": -800,
+            "abbreviation": "Elections Mngr"
+          }
+        }
+      },
+      "General": {
+        "Items": {
+          "Stipend Benefits (1.8%)": {
+            "value": -8000,
+            "abbreviation": "Stip Benefits"
+          }
+        }
+      }
+    }
+  },
+  "STUDENT SALARIES SUMMARY": {
+    "value": -729498,
+    "abbreviation": "Stud Sal Sum",
+    "Administrative Student Salaries": {
+      "value": -259008,
+      "abbreviation": "Admin Stud Sal",
+      "Items": {
+        "SLBO Office Assistant": {
+          "value": -12800,
+          "abbreviation": "SLBO Off Asst"
+        },
+        "Executive Assistant to the President": {
+          "value": -5678,
+          "abbreviation": "Exec Asst to Pres"
+        },
+        "Triton Food Pantry Lead Manager": {
+          "value": -6720,
+          "abbreviation": "Triton FP Lead Mngr"
+        },
+        "Triton Food Pantry Manager": {
+          "value": -13440,
+          "abbreviation": "Triton FP Mngr"
+        },
+        "Triton Food Pantry Pop-Up Manager": {
+          "value": -7247,
+          "abbreviation": "Triton FP Pop-Up Mngr"
+        },
+        "Graphic Artist": [
+          {
+            "value": -31749,
+            "abbreviation": "Graph Art"
+          },
+          {
+            "value": -18847,
+            "abbreviation": "Graph Art"
+          }
+        ],
+        "Sr. Graphic Artist": [
+          {
+            "value": -11469,
+            "abbreviation": "Sr Graph Art"
+          },
+          {
+            "value": -4107,
+            "abbreviation": "Sr Graph Art"
+          }
+        ],
+        "Webmaster/Computer Programmer": {
+          "value": -2106,
+          "abbreviation": "Web/Comp Prog"
+        },
+        "Public Relations": {
+          "value": -17877,
+          "abbreviation": "Pub Rel"
+        },
+        "A.S. Mascot": {
+          "value": -5627,
+          "abbreviation": "AS Mascot"
+        },
+        "TO Manager": {
+          "value": -7146,
+          "abbreviation": "TO Mngr"
+        },
+        "TO Asst Manager": {
+          "value": -5968,
+          "abbreviation": "TO Asst Mngr"
+        },
+        "Sales Associates": {
+          "value": -33367,
+          "abbreviation": "Sales Assts"
+        },
+        "Made TO Order Manager": [
+          {
+            "value": -6095,
+            "abbreviation": "MTO Order Mngr"
+          },
+          {
+            "value": -2216,
+            "abbreviation": "MTO Order Mngr"
+          }
+        ],
+        "Made TO Order Sales Associate": [
+          {
+            "value": -20918,
+            "abbreviation": "MTO Order Sales Asst"
+          },
+          {
+            "value": -6066,
+            "abbreviation": "MTO Order Sales Asst"
+          }
+        ],
+        "Student Salary Benefits": {
+          "value": -3295,
+          "abbreviation": "Stud Sal Benefits"
+        }
+      }
+    }
+  },
+  "STUDENT STIPENDS": {
+    "Cabinet Stipends": {
+      "value": -130725,
+      "abbreviation": "Cab Stip",
+      "Items": {
+        "President": {
+          "value": -12600,
+          "abbreviation": "Pres"
+        },
+        "Executive Vice President": {
+          "value": -10500,
+          "abbreviation": "Exec VP"
+        },
+        "Vice President External Affairs": {
+          "value": -10500,
+          "abbreviation": "VP Ext Aff"
+        },
+        "Vice President Academic Affairs": {
+          "value": -10500,
+          "abbreviation": "VP Acad Aff"
+        },
+        "Chief Financial Officer": {
+          "value": -10500,
+          "abbreviation": "CFO"
+        },
+        "Chief Communications Officer": {
+          "value": -10500,
+          "abbreviation": "CCO"
+        },
+        "Chief Personnel Officer": {
+          "value": -10500,
+          "abbreviation": "CPO"
+        },
+        "Associate Vice President, Concerts and Events": {
+          "value": -5250,
+          "abbreviation": "Assoc VP, Concerts & Events"
+        },
+        "Associate Vice President, Student Organizations": {
+          "value": -5250,
+          "abbreviation": "Assoc VP, Stud Orgs"
+        },
+        "Associate Vice President, Student Advocacy": {
+          "value": -5250,
+          "abbreviation": "Assoc VP, Stud Adv"
+        },
+        "Associate Vice President, College Affairs": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Coll Aff"
+        },
+        "Associate Vice President, Enterprises and Services": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Ent & Serv"
+        },
+        "Associate Vice President, Environmental Justice Affairs": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Env Just Aff"
+        },
+        "Associate Vice President, Equity, Diversity, and Inclusion": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Equity, Div & Inc"
+        },
+        "Associate Vice President, Food and Housing Resources": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Food & Housing"
+        },
+        "Associate Vice President, Health and Well–Being": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Health & Well"
+        },
+        "Associate Vice President, Local Affairs": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Local Aff"
+        },
+        "Associate Vice President, Spirit and Athletics": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Spirit & Athl"
+        },
+        "Associate Vice President, Transportation and Transformation": {
+          "value": -4375,
+          "abbreviation": "Assoc VP, Trans & Transf"
+        }
+      }
+    },
+    "Senate Stipends": {
+      "value": -54810,
+      "abbreviation": "Senate Stip",
+      "Items": {
+        "Campus–Wide Senators": {
+          "value": -9450,
+          "abbreviation": "Campus–Wide Sens"
+        },
+        "International Senator": {
+          "value": -1890,
+          "abbreviation": "Intl Senator"
+        },
+        "Out–of–State Senator": {
+          "value": -1890,
+          "abbreviation": "Out–of–State Sen"
+        },
+        "First Year Senators": {
+          "value": -3780,
+          "abbreviation": "1st Yr Sens"
+        },
+        "Transfer Senators": {
+          "value": -3780,
+          "abbreviation": "Transfer Sens"
+        },
+        "Off–Campus Senators": {
+          "value": -3780,
+          "abbreviation": "Off–Campus Sens"
+        },
+        "Revelle Senators": {
+          "value": -3780,
+          "abbreviation": "Revelle Sens"
+        },
+        "Muir Senators": {
+          "value": -3780,
+          "abbreviation": "Muir Sens"
+        },
+        "Marshall Senators": {
+          "value": -3780,
+          "abbreviation": "Marshall Sens"
+        },
+        "Warren Senators": {
+          "value": -3780,
+          "abbreviation": "Warren Sens"
+        },
+        "Roosevelt Senators": {
+          "value": -3780,
+          "abbreviation": "Roosevelt Sens"
+        },
+        "Sixth Senators": {
+          "value": -3780,
+          "abbreviation": "6th Sens"
+        },
+        "Seventh Senators": {
+          "value": -3780,
+          "abbreviation": "7th Sens"
+        },
+        "Eighth Senators": {
+          "value": -3780,
+          "abbreviation": "8th Sens"
+        }
+      }
+    }
+  },
+  "STAFF STIPENDS": {
+    "Office of the President": {
+      "value": -9920,
+      "abbreviation": "Off Pres",
+      "Items": {
+        "Executive Director / Chief of Staff": {
+          "value": -2480,
+          "abbreviation": "Exec Dir/Chf Staff"
+        },
+        "Director of Programs and Initiatives": {
+          "value": -1860,
+          "abbreviation": "Dir Progs & Init"
+        },
+        "Director of Media and Outreach": {
+          "value": -1860,
+          "abbreviation": "Dir Media & Out"
+        },
+        "Director of Alumni Relations": {
+          "value": -1860,
+          "abbreviation": "Dir Alum Rel"
+        },
+        "Director of Internal Affairs": {
+          "value": -1860,
+          "abbreviation": "Dir Int. Ops."
+        }
+      }
+    },
+    "Office of College Affairs": {
+      "value": -2200,
+      "abbreviation": "Off Coll Aff",
+      "Items": {
+        "Director of Staff": {
+          "value": -990,
+          "abbreviation": "Dir Staff"
+        },
+        "Director of Marketing": {
+          "value": -660,
+          "abbreviation": "Dir Mkt"
+        },
+        "Director of Programming": {
+          "value": -550,
+          "abbreviation": "Dir Prog"
+        }
+      }
+    },
+    "Office of Food and Housing Resources": {
+      "value": -7260,
+      "abbreviation": "Off Food & Housing",
+      "Items": {
+        "Chief of Staff": {
+          "value": -2400,
+          "abbreviation": "Chf Staff"
+        },
+        "Director of Food Affairs": {
+          "value": -1800,
+          "abbreviation": "Dir Food Aff"
+        },
+        "Director of External Affairs": {
+          "value": -1800,
+          "abbreviation": "Dir Ext. Aff"
+        },
+        "Marketing Strategist": {
+          "value": -1260,
+          "abbreviation": "Mkt Strat"
+        }
+      }
+    },
+    "Office of Equity, Diversity, and Inclusion": {
+      "value": -20480,
+      "abbreviation": "Off Equity, Div & Inc",
+      "Items": {
+        "Chief of Staff": {
+          "value": -2400,
+          "abbreviation": "Chf Staff"
+        },
+        "Director of Internal Affairs": {
+          "value": -2100,
+          "abbreviation": "Dir Int. Ops."
+        },
+        "Director of External Affairs": {
+          "value": -2100,
+          "abbreviation": "Dir Ext. Aff"
+        },
+        "Women’s Commission Chair": {
+          "value": -1650,
+          "abbreviation": "Wom Comm Ch"
+        },
+        "Undocumented Students Commission Chair": {
+          "value": -1650,
+          "abbreviation": "Undoc Stud Comm Ch"
+        },
+        "BIPOC Commission Chair": {
+          "value": -1210,
+          "abbreviation": "BIPOC Comm Ch"
+        },
+        "LGBTQIA+ Commission Chair": {
+          "value": -1210,
+          "abbreviation": "LGBTQIA+ Comm Ch"
+        },
+        "Student With Dependents Commission Chair": {
+          "value": -1210,
+          "abbreviation": "Stud w/ Dep Comm Ch"
+        },
+        "International Students Commission Chair": {
+          "value": -1210,
+          "abbreviation": "Intl Stud Comm Ch"
+        },
+        "Marketing & Outreach Director": {
+          "value": -1790,
+          "abbreviation": "Mkt & Out Dir"
+        },
+        "SAAC Liaison(s)": {
+          "value": -3750,
+          "abbreviation": "SAAC Liaison"
+        },
+        "DOC Intern(s)": {
+          "value": -1000,
+          "abbreviation": "DOC Intern"
+        }
+      }
+    },
+    "Office of Environmental Justice Affairs": {
+      "value": -9000,
+      "abbreviation": "Off Env Just Aff",
+      "Items": {
+        "Chief of Staff": {
+          "value": -2000,
+          "abbreviation": "Chf Staff"
+        },
+        "Director of Programs and Initiatives": {
+          "value": -1500,
+          "abbreviation": "Dir Progs & Init"
+        },
+        "Director of Media and Outreach": {
+          "value": -1500,
+          "abbreviation": "Dir Media & Out"
+        },
+        "Event Programming Coordinator": {
+          "value": -1125,
+          "abbreviation": "Evt Prog Coord"
+        },
+        "Outreach Coordinator": {
+          "value": -1125,
+          "abbreviation": "Out Coord"
+        },
+        "Population Advocate(s)": {
+          "value": -750,
+          "abbreviation": "Pop Adv"
+        },
+        "Sustainability Intern": {
+          "value": -500,
+          "abbreviation": "Sust Intern"
+        },
+        "Environmental Justice Intern": {
+          "value": -1500,
+          "abbreviation": "Env Just Intern"
+        }
+      }
+    },
+    "Office of Health and Well–Being": {
+      "value": -11830,
+      "abbreviation": "Off Health & Well",
+      "Items": {
+        "Chief of Staff": {
+          "value": -1840,
+          "abbreviation": "Chf Staff"
+        },
+        "Director of Sexual Health": {
+          "value": -1380,
+          "abbreviation": "Dir Sex Health"
+        },
+        "Director of Student Health": {
+          "value": -1380,
+          "abbreviation": "Dir Stud Health"
+        },
+        "Director of Mental Health": {
+          "value": -1380,
+          "abbreviation": "Dir Ment Health"
+        },
+        "Outreach Coordinator": {
+          "value": -1125,
+          "abbreviation": "Out Coord"
+        },
+        "Marketing Strategist": {
+          "value": -1125,
+          "abbreviation": "Mkt Strat"
+        },
+        "Sexual Health Advocate(s)": {
+          "value": -1200,
+          "abbreviation": "Sex Health Adv"
+        },
+        "Student Health Advocate(s)": {
+          "value": -1200,
+          "abbreviation": "Stud Health Adv"
+        },
+        "Mental Health Advocate(s)": {
+          "value": -1200,
+          "abbreviation": "Ment Health Adv"
+        }
+      }
+    },
+    "Office of Transportation and Transformation": {
+      "value": -3700,
+      "abbreviation": "Off Trans & Transf",
+      "Items": {
+        "Chief of Staff": {
+          "value": -1600,
+          "abbreviation": "Chf Staff"
+        },
+        "Director of Communications": {
+          "value": -1200,
+          "abbreviation": "Dir Comm"
+        },
+        "Outreach and Media Coordinator": {
+          "value": -900,
+          "abbreviation": "Out & Media Coord"
+        }
+      }
+    },
+    "Office of the Executive Vice President": {
+      "value": -3125,
+      "abbreviation": "Off Exec VP",
+      "Items": {
+        "Chief of Staff": {
+          "value": -2000,
+          "abbreviation": "Chf Staff"
+        },
+        "Media Coordinator": {
+          "value": -1125,
+          "abbreviation": "Media Coord"
+        }
+      }
+    },
+    "Office of External Affairs": {
+      "value": -65285,
+      "abbreviation": "Off Ext Aff",
+      "Items": {
+        "Office of External Affairs": {
+          "value": -53660,
+          "abbreviation": "Off Ext Aff"
+        },
+        "Triton Lobby Corps": {
+          "value": -9450,
+          "abbreviation": "Triton Lobby"
+        },
+        "Housing Affairs Commission": {
+          "value": -1600,
+          "abbreviation": "Hous Aff Comm"
+        },
+        "Disabled Students Commission": {
+          "value": -2000,
+          "abbreviation": "Dis Stud Comm"
+        },
+        "Labor Affairs Commission": {
+          "value": -900,
+          "abbreviation": "Lab Aff Comm"
+        }
+      }
+    },
+    "Office of Local Affairs": {
+      "value": -15675,
+      "abbreviation": "Off Local Aff",
+      "Items": {
+        "Chief of Staff": {
+          "value": -2400,
+          "abbreviation": "Chf Staff"
+        },
+        "Government Affairs Director": {
+          "value": -1800,
+          "abbreviation": "Gov Aff Dir"
+        },
+        "Community Affairs Director": {
+          "value": -1800,
+          "abbreviation": "Comm Aff Dir"
+        },
+        "Marketing Affairs Director": {
+          "value": -1800,
+          "abbreviation": "Mkt Aff Dir"
+        },
+        "Government Affairs Coordinator": {
+          "value": -1125,
+          "abbreviation": "Gov Aff Coord"
+        },
+        "Community Affairs Coordinator": {
+          "value": -1125,
+          "abbreviation": "Comm Aff Coord"
+        },
+        "Event Programming Coordinator": {
+          "value": -1125,
+          "abbreviation": "Evt Prog Coord"
+        },
+        "Lobbying Coordinator": {
+          "value": -1125,
+          "abbreviation": "Lobby Coord"
+        },
+        "Advocacy Coordinator": {
+          "value": -1125,
+          "abbreviation": "Advoc Coord"
+        },
+        "Community Empowerment Coordinator": {
+          "value": -1125,
+          "abbreviation": "Comm Emp Coord"
+        },
+        "Urban Development Coordinator": {
+          "value": -1125,
+          "abbreviation": "Urban Dev Coord"
+        }
+      }
+    },
+    "Office of Academic Affairs": {
+      "value": -19205,
+      "abbreviation": "Off Acad Aff",
+      "Items": {
+        "Director(s) of Academic Divisions": {
+          "value": -11040,
+          "abbreviation": "Dir Acad Div"
+        },
+        "Multimedia Coordinator": {
+          "value": -1035,
+          "abbreviation": "Mult Media Coord"
+        },
+        "Director of Internal Affairs": {
+          "value": -1610,
+          "abbreviation": "Dir Int. Ops."
+        },
+        "Director of External Affairs": {
+          "value": -1610,
+          "abbreviation": "Dir Ext. Aff."
+        },
+        "Director of Programs and Initiatives": {
+          "value": -1380,
+          "abbreviation": "Dir Progs & Init"
+        },
+        "Director of Retention": {
+          "value": -1265,
+          "abbreviation": "Dir Retent"
+        },
+        "Director of Advocacy": {
+          "value": -1265,
+          "abbreviation": "Dir Advoc"
+        }
+      }
+    },
+    "Office of Student Advocacy": {
+      "value": -17060,
+      "abbreviation": "Off Stud Adv",
+      "Items": {
+        "Outreach Advocate": {
+          "value": -1260,
+          "abbreviation": "Outreach Adv"
+        },
+        "Director of Internal Affairs": {
+          "value": -2100,
+          "abbreviation": "Dir Int. Ops."
+        },
+        "Director of External Affairs": {
+          "value": -2100,
+          "abbreviation": "Dir Ext. Aff."
+        },
+        "Student Advocate Returning": {
+          "value": -6000,
+          "abbreviation": "Stud Adv Ret"
+        },
+        "Student Advocate": {
+          "value": -5600,
+          "abbreviation": "Stud Adv"
+        }
+      }
+    },
+    "Office of Finance and Resources": {
+      "value": -20260,
+      "abbreviation": "Off Fin & Res",
+      "Items": {
+        "Office of Finance and Resources": {
+          "value": -9185,
+          "abbreviation": "Off Fin & Res"
+        },
+        "Office of Student Organizations": {
+          "value": -6450,
+          "abbreviation": "Off Stud Orgs"
+        },
+        "Office of Enterprises and Services": {
+          "value": -4625,
+          "abbreviation": "Off Ent & Serv"
+        }
+      }
+    },
+    "Office of Communications": {
+      "value": -46490,
+      "abbreviation": "Off Comm",
+      "Items": {
+        "Office of Communications": {
+          "value": -20200,
+          "abbreviation": "Off Comm"
+        },
+        "Office of Concerts and Events": {
+          "value": -26290,
+          "abbreviation": "Off Concert & Events"
+        },
+        "Office of Spirit and Athletics": {
+          "value": -12600,
+          "abbreviation": "Off Spirit & Athl"
+        }
+      }
+    },
+    "Office of Personnel Affairs": {
+      "value": -3190,
+      "abbreviation": "Off Pers Aff",
+      "Items": {
+        "Director of Internal Operations": {
+          "value": -1210,
+          "abbreviation": "Dir Int. Ops."
+        },
+        "Programming Coordinator": {
+          "value": -770,
+          "abbreviation": "Prog Coord"
+        },
+        "Fellowship Director": {
+          "value": -1210,
+          "abbreviation": "Fell Dir"
+        }
+      }
+    },
+    "Triton Television (TTV)": {
+      "value": -24550,
+      "abbreviation": "Triton TV",
+      "Items": {
+        "Triton Television (TTV)": {
+          "value": -24550,
+          "abbreviation": "Triton TV",
+          "Subitems": {
+            "Station Manager(s)": {
+              "value": -8400,
+              "abbreviation": "Stn Mngr(s)"
+            },
+            "Director of Internal Affairs": {
+              "value": -2800,
+              "abbreviation": "Dir Int. Ops."
+            },
+            "Director of External Affairs": {
+              "value": -2400,
+              "abbreviation": "Dir Ext. Aff."
+            },
+            "Staff Development Coordinator": {
+              "value": -2400,
+              "abbreviation": "Staff Dev Coord"
+            },
+            "Film Festival Coordinator": {
+              "value": -1350,
+              "abbreviation": "Film Fest Coord"
+            },
+            "Project Manager": {
+              "value": -2400,
+              "abbreviation": "Proj Mngr"
+            },
+            "A.S. Senior Project Manager(s)": {
+              "value": -4800,
+              "abbreviation": "AS Sr Proj Mngr"
+            }
+          }
+        }
+      }
+    },
+    "Elections": {
+      "value": -800,
+      "abbreviation": "Elections",
+      "Items": {
+        "Elections Manager": {
+          "value": -800,
+          "abbreviation": "Elections Mngr"
+        }
+      }
+    },
+    "General": {
+      "Items": {
+        "Stipend Benefits (1.8%)": {
+          "value": -8000,
+          "abbreviation": "Stip Benefits"
+        }
+      }
+    }
+  }
+}
