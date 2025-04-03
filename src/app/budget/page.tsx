@@ -81,7 +81,7 @@ const transformData = {
     return Object.entries(data)
       .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
       .map(([key, value]) => ({
-        category: key.replace(/_/g, " ").toUpperCase(),
+        category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         amount: Math.abs((value as BudgetSummaryItem).amount || 0),
       }));
   },
@@ -89,20 +89,22 @@ const transformData = {
     return Object.entries(data)
       .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
       .map(([key, value]) => ({
-        id: key.replace(/_/g, " ").toUpperCase(),
-        label: key.replace(/_/g, " ").toUpperCase(),
+        id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
+        label: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         value: Math.abs((value as BudgetSummaryItem).amount || 0),
       }));
   },
   treemap: (data: BudgetSummary): TreeMapData => {
+    const children = Object.entries(data)
+      .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
+      .map(([key, value]) => ({
+        name: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
+        value: Math.abs((value as BudgetSummaryItem).amount || 0),
+      }));
+
     return {
       name: "Budget",
-      children: Object.entries(data)
-        .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
-        .map(([key, value]) => ({
-          name: key.replace(/_/g, " ").toUpperCase(),
-          value: Math.abs((value as BudgetSummaryItem).amount || 0),
-        })),
+      children: children,
     };
   },
   sankey: (data: BudgetSummary): SankeyData => {
@@ -110,8 +112,8 @@ const transformData = {
       { id: "Total Budget" },
       ...Object.entries(data)
         .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
-        .map(([key]) => ({
-          id: key.replace(/_/g, " ").toUpperCase(),
+        .map(([key, value]) => ({
+          id: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         })),
     ];
 
@@ -119,7 +121,7 @@ const transformData = {
       .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
       .map(([key, value]) => ({
         source: "Total Budget",
-        target: key.replace(/_/g, " ").toUpperCase(),
+        target: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         value: Math.abs((value as BudgetSummaryItem).amount || 0),
       }));
 
@@ -139,7 +141,7 @@ export default function BudgetPage() {
     return Object.entries(budgetData.budget_summary as BudgetSummary)
       .filter(([key, value]) => key !== "title" && key !== "abbreviation" && typeof value === "object" && "amount" in value)
       .map(([key, value]) => ({
-        category: key.replace(/_/g, " ").toUpperCase(),
+        category: (value as BudgetSummaryItem).abbreviation || key.replace(/_/g, " ").toUpperCase(),
         amount: (value as BudgetSummaryItem).amount || 0,
         description: (value as BudgetSummaryItem).description,
       }));
