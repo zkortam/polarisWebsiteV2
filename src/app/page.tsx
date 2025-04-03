@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Platform } from "@/components/sections/Platform";
@@ -34,17 +36,19 @@ export default function Home() {
     <>
       {loading && <LoadingScreen />}
 
-      <div
-        className={`flex flex-col ${
+      <main
+        className={`flex min-h-screen flex-col ${
           contentVisible ? "opacity-100" : "opacity-0"
         } transition-opacity duration-700`}
       >
+        <Navbar />
         <Hero />
         <About />
         <Platform />
         <Team />
         <Contact />
-      </div>
+        <Footer />
+      </main>
     </>
   );
 }

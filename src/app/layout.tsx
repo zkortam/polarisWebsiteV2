@@ -3,8 +3,6 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,11 +28,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Navbar />
-        <main className="pt-16">
-          {children}
-        </main>
-        <Footer />
+        {children}
         <Toaster />
       </body>
     </html>
