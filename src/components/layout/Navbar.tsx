@@ -2,23 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 const navLinks = [
-  { href: "#about", label: "About Us" },
-  { href: "#platform", label: "Platform" },
-  { href: "#team", label: "Our Team" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About Us" },
+  { href: "/platform", label: "Platform" },
+  { href: "/#team", label: "Our Team" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Navbar() {
   const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleVoteClick = () => {
     toast({
@@ -31,22 +31,29 @@ export function Navbar() {
   // Handle scroll event to change navbar appearance
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
+    };
 
-      // Update active section based on scroll position
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Handle active section
+  useEffect(() => {
+    const handleScroll = () => {
       const sections = document.querySelectorAll("section[id]");
+      const scrollY = window.pageYOffset;
 
-      // Fixed: Using for...of instead of forEach
-      for (const section of sections) {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        if (
-          window.scrollY >= sectionTop - 100 &&
-          window.scrollY < sectionTop + sectionHeight - 100
-        ) {
-          setActiveSection(`#${section.getAttribute("id")}`);
+      sections.forEach((section) => {
+        const sectionHeight = section.clientHeight;
+        const sectionTop = section.offsetTop - 100;
+        const sectionId = section.getAttribute("id");
+
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          setActiveSection(sectionId || "");
         }
-      }
+      });
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -54,91 +61,95 @@ export function Navbar() {
   }, []);
 
   return (
-    <motion.header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "py-2 glassmorphism shadow-lg"
-          : "py-4 bg-transparent"
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-background/80 backdrop-blur-md shadow-lg" : "bg-transparent"
       }`}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <motion.div
-            className="relative w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center glow-hover"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="absolute w-6 h-6 bg-primary rounded-full opacity-80"></div>
-            <div className="absolute w-6 h-6 bg-primary rounded-full animate-pulse-slow"></div>
-          </motion.div>
-          <motion.span
-            className="text-xl font-bold text-gradient"
-            whileHover={{ scale: 1.05 }}
-          >
-            POLARIS
-          </motion.span>
-        </Link>
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="relative w-8 h-8">
+              <Image
+                src="/PolarisLogo.png"
+                alt="Polaris Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span className="text-xl font-bold text-gradient">POLARIS</span>
+          </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`relative text-sm font-medium transition-colors hover:text-primary ${
-                activeSection === link.href ? "text-primary" : "text-foreground/80"
-              }`}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  activeSection === link.href.slice(1)
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Button 
+              className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover"
+              onClick={handleVoteClick}
             >
-              <span>{link.label}</span>
-              {activeSection === link.href && (
-                <motion.div
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
-                  layoutId="activeSection"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </Link>
-          ))}
-          <Button 
-            className="bg-primary text-primary-foreground hover:bg-primary/80 glow-hover"
-            onClick={handleVoteClick}
+              Vote Now
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            Vote Now
-          </Button>
-        </nav>
+            {isMenuOpen ? (
+              <IconX className="w-6 h-6 text-foreground" />
+            ) : (
+              <IconMenu2 className="w-6 h-6 text-foreground" />
+            )}
+          </button>
+        </div>
 
         {/* Mobile Navigation */}
-        <Sheet>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" className="glow-hover">
-              <IconMenu2 className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="glassmorphism border-primary/20">
-            <div className="flex flex-col space-y-6 mt-8">
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 py-4 border-t border-primary/10">
+            <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-lg font-medium transition-colors hover:text-primary"
+                  className={`text-base font-medium transition-colors ${
+                    activeSection === link.href.slice(1)
+                      ? "text-primary"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
               <Button 
                 className="bg-primary text-primary-foreground hover:bg-primary/80 w-full"
-                onClick={handleVoteClick}
+                onClick={() => {
+                  handleVoteClick();
+                  setIsMenuOpen(false);
+                }}
               >
                 Vote Now
               </Button>
             </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </motion.header>
+          </div>
+        )}
+      </nav>
+    </header>
   );
 }
 

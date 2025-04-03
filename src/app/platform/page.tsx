@@ -132,7 +132,7 @@ export default function PlatformPage() {
       <section className="py-20">
         <div className="container px-4 md:px-6">
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={containerInView ? "visible" : "hidden"}
@@ -141,12 +141,12 @@ export default function PlatformPage() {
             {platformPoints.map((point, index) => (
               <motion.div key={index} variants={itemVariants}>
                 <Card className="glassmorphism border-primary/10 h-full overflow-hidden group hover:border-primary/20 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="text-4xl">{point.icon}</div>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="flex items-start gap-3 md:gap-4">
+                      <div className="text-3xl md:text-4xl flex-shrink-0">{point.icon}</div>
                       <div>
-                        <h3 className="text-xl font-semibold mb-2 text-gradient">{point.title}</h3>
-                        <p className="text-foreground/80">{point.description}</p>
+                        <h3 className="text-lg md:text-xl font-semibold mb-2 text-gradient">{point.title}</h3>
+                        <p className="text-sm md:text-base text-foreground/80">{point.description}</p>
                       </div>
                     </div>
                   </CardContent>
