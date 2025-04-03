@@ -29,7 +29,7 @@ const teamMembers = [
     name: "Zakaria Kortam",
     role: "Executive Vice President",
     image: "/team/zakaria.jpg",
-    bio: "Leading the charge in modernizing student services and enhancing digital infrastructure.",
+    description: "Leading the charge in modernizing student services and enhancing digital infrastructure.",
     quote: "Transparent and responsible governance is the foundation of effective student leadership.",
     imageSrc: "", // Use fallback avatar
     initials: "ZK",
