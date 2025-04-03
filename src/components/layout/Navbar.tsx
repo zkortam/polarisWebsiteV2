@@ -10,7 +10,6 @@ import Image from "next/image";
 const navLinks = [
   { href: "/#about", label: "About Us" },
   { href: "/platform", label: "Platform" },
-  { href: "/budget", label: "Budget" },
   { href: "/#team", label: "Our Team" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -48,7 +47,7 @@ export function Navbar() {
 
       sections.forEach((section) => {
         const sectionHeight = section.clientHeight;
-        const sectionTop = (section as HTMLElement).offsetTop - 100;
+        const sectionTop = section.offsetTop - 100;
         const sectionId = section.getAttribute("id");
 
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {

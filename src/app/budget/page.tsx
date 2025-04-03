@@ -1,292 +1,255 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Treemap,
-  TooltipProps,
-} from "recharts";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ChevronDown, ChevronUp, Search, Filter } from "lucide-react";
+import budgetData from "@/data/budget.json";
 
-// Color palette for charts
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884D8",
-  "#82CA9D",
-  "#FFC658",
-  "#FF7C43",
-  "#FF6B6B",
-  "#4ECDC4",
-];
+// Chart components will be imported here
+import { BarChart } from "@/components/charts/BarChart";
+import { PieChart } from "@/components/charts/PieChart";
+import { TreemapChart } from "@/components/charts/TreemapChart";
+import { SankeyChart } from "@/components/charts/SankeyChart";
 
-interface BudgetData {
-  metadata: {
-    title: string;
-    abbr: string;
-    sponsored_by: string;
-    approved_by: string;
-    fiscal_year: string;
-    total_revenue: number;
-    total_allocations: number;
-  };
-  funds: Fund[];
-}
-
-interface Fund {
-  id: string;
+interface BudgetItem {
   name: string;
-  abbr: string;
-  type: string;
   amount: number;
+  children?: BudgetItem[];
   description?: string;
-  children?: Fund[];
 }
-
-const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-background/95 p-4 rounded-lg shadow-lg border border-primary/20">
-        <p className="font-medium">{label}</p>
-        <p className="text-sm">
-          Amount: ${Math.abs(payload[0].value).toLocaleString()}
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
 
 export default function BudgetPage() {
-  const [budgetData, setBudgetData] = useState<BudgetData | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("overview");
+  const [activeView, setActiveView] = useState("overview");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<"amount" | "name">("amount");
 
-  useEffect(() => {
-    fetch("/budget.json")
-      .then((res) => res.json())
-      .then((data) => setBudgetData(data))
-      .catch((error) => console.error("Error loading budget data:", error));
-  }, []);
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
 
-  if (!budgetData) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">Loading budget data...</div>
-      </div>
-    );
-  }
+  // Calculate total budget
+  const totalBudget = budgetData.budget_summary.as_revenue.amount;
 
-  // Prepare data for different visualizations
-  const revenueData = budgetData.funds
-    .filter((fund) => fund.type === "income")
-    .map((fund) => ({
-      name: fund.name,
-      amount: fund.amount,
-    }));
+  // Filter and sort budget items
+  const filteredItems = React.useMemo(() => {
+    let items = [...budgetData.locked_in_allocations.items];
+    
+    if (searchQuery) {
+      items = items.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-  const expenditureData = budgetData.funds
-    .filter((fund) => fund.type === "expenditure")
-    .map((fund) => ({
-      name: fund.name,
-      amount: Math.abs(fund.amount),
-    }));
+    if (selectedCategory !== "all") {
+      items = items.filter(item => item.category === selectedCategory);
+    }
 
-  const treemapData = budgetData.funds.map((fund) => ({
-    name: fund.name,
-    size: Math.abs(fund.amount),
-    children: fund.children?.map((child) => ({
-      name: child.name,
-      size: Math.abs(child.amount),
-    })),
-  }));
+    return items.sort((a, b) => {
+      if (sortBy === "amount") {
+        return b.amount - a.amount;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [searchQuery, selectedCategory, sortBy]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-8"
-      >
-        <h1 className="text-4xl font-bold text-gradient mb-4">
-          Budget Visualization
-        </h1>
-        <p className="text-foreground/80">
-          Explore how Associated Students allocates resources for the{" "}
-          {budgetData.metadata.fiscal_year} fiscal year
-        </p>
-      </motion.div>
+    <div className="min-h-screen bg-background py-20">
+      <div className="container px-4 md:px-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <Badge className="mb-4 bg-primary/20 text-primary hover:bg-primary/30">
+            Budget Visualization
+          </Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-6">
+            UCSD Associated Students Budget 2024-2025
+          </h1>
+          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
+            Explore how Associated Students allocates and manages its budget across various programs and initiatives.
+          </p>
+        </motion.div>
 
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue</TabsTrigger>
-          <TabsTrigger value="expenditures">Expenditures</TabsTrigger>
-          <TabsTrigger value="details">Details</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Total Revenue vs. Expenditures</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={[
-                        {
-                          name: "Revenue",
-                          amount: budgetData.metadata.total_revenue,
-                        },
-                        {
-                          name: "Expenditures",
-                          amount: Math.abs(budgetData.metadata.total_allocations),
-                        },
-                      ]}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="amount" fill="#8884d8" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Revenue Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={revenueData}
-                        dataKey="amount"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={150}
-                        label
-                      >
-                        {revenueData.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltip />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Controls */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="md:col-span-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" />
+              <Input
+                placeholder="Search budget items..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
-        </TabsContent>
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="programs">Programs</SelectItem>
+              <SelectItem value="operations">Operations</SelectItem>
+              <SelectItem value="personnel">Personnel</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={sortBy} onValueChange={(value: "amount" | "name") => setSortBy(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="amount">Amount</SelectItem>
+              <SelectItem value="name">Name</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        <TabsContent value="revenue" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Revenue Sources</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[500px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={revenueData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="amount" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* Main Content */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="revenue">Revenue</TabsTrigger>
+            <TabsTrigger value="expenses">Expenses</TabsTrigger>
+            <TabsTrigger value="details">Details</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="expenditures" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Expenditure Distribution</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[500px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <Treemap
-                    data={treemapData}
-                    dataKey="size"
-                    nameKey="name"
-                    fill="#8884d8"
-                  >
-                    <Tooltip content={<CustomTooltip />} />
-                  </Treemap>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="details" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Detailed Breakdown</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {budgetData.funds.map((fund) => (
-                  <div key={fund.id} className="border-b border-primary/20 pb-4">
-                    <h3 className="text-lg font-semibold mb-2">{fund.name}</h3>
-                    <p className="text-foreground/80 mb-2">
-                      Amount: ${Math.abs(fund.amount).toLocaleString()}
-                    </p>
-                    {fund.description && (
-                      <p className="text-sm text-foreground/60">
-                        {fund.description}
-                      </p>
-                    )}
-                    {fund.children && fund.children.length > 0 && (
-                      <div className="mt-2 pl-4">
-                        {fund.children.map((child) => (
-                          <div key={child.id} className="mb-1">
-                            <span className="font-medium">{child.name}:</span>{" "}
-                            ${Math.abs(child.amount).toLocaleString()}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Total Budget</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-primary">
+                    {formatCurrency(totalBudget)}
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Budget Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <PieChart data={budgetData.budget_summary} />
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Budget Flow</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <SankeyChart data={budgetData} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="revenue" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue Sources</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <BarChart data={budgetData.budget_summary} type="revenue" />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="expenses" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Expense Categories</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <TreemapChart data={budgetData.locked_in_allocations} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="details" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Detailed Breakdown</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[600px] pr-4">
+                  <div className="space-y-4">
+                    {filteredItems.map((item) => (
+                      <div key={item.name} className="space-y-2">
+                        <div className="flex items-center justify-between p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors">
+                          <div>
+                            <h3 className="font-medium">{item.name}</h3>
+                            {item.description && (
+                              <p className="text-sm text-foreground/60">{item.description}</p>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="font-medium">{formatCurrency(item.amount)}</span>
+                            {item.children && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setExpandedItems(prev =>
+                                    prev.includes(item.name)
+                                      ? prev.filter(i => i !== item.name)
+                                      : [...prev, item.name]
+                                  );
+                                }}
+                              >
+                                {expandedItems.includes(item.name) ? (
+                                  <ChevronUp className="h-4 w-4" />
+                                ) : (
+                                  <ChevronDown className="h-4 w-4" />
+                                )}
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {expandedItems.includes(item.name) && item.children && (
+                          <div className="ml-8 space-y-2">
+                            {item.children.map((child) => (
+                              <div
+                                key={child.name}
+                                className="flex items-center justify-between p-3 rounded-lg bg-primary/5"
+                              >
+                                <span>{child.name}</span>
+                                <span className="font-medium">{formatCurrency(child.amount)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 } 
