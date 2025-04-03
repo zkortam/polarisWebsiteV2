@@ -75,8 +75,10 @@ export function Navbar() {
                 src="/PolarisLogo.png"
                 alt="Polaris Logo"
                 fill
+                sizes="32px"
                 className="object-contain"
                 priority
+                quality={100}
               />
             </div>
             <span className="text-xl font-bold text-gradient">POLARIS</span>

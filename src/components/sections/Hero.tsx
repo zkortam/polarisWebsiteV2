@@ -66,8 +66,10 @@ export function Hero() {
               src="/PolarisLogo.png"
               alt="Polaris Logo"
               fill
+              sizes="96px"
               className="object-contain"
               priority
+              quality={100}
             />
           </motion.div>
 
