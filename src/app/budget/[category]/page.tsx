@@ -12,24 +12,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import budgetData from "@/data/budget.json";
 
-export async function generateStaticParams() {
-  const categories: { category: string }[] = [];
-  
-  Object.values(budgetData as unknown as BudgetData).forEach((section) => {
-    if (section.General?.Items) {
-      Object.entries(section.General.Items).forEach(([key, value]) => {
-        if (typeof value === "object" && "value" in value) {
-          categories.push({
-            category: value.abbreviation || key,
-          });
-        }
-      });
-    }
-  });
-
-  return categories;
-}
-
 interface BudgetItem {
   value: number;
   abbreviation: string;
