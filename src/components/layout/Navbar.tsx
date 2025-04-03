@@ -11,9 +11,16 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Handle scroll events
   useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       // Change navbar appearance on scroll
       if (window.scrollY > 10) {
@@ -40,10 +47,12 @@ export function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
+    if (!mounted) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (isMobileMenuOpen && !target.closest(".mobile-menu") && !target.closest(".menu-button")) {
@@ -53,7 +62,7 @@ export function Navbar() {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, mounted]);
 
   const navLinks = [
     { label: "Home", href: "/#home" },
@@ -61,6 +70,30 @@ export function Navbar() {
     { label: "Platform", href: "/platform" },
     { label: "Team", href: "/#team" },
   ];
+
+  if (!mounted) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="relative w-8 h-8">
+                <Image
+                  src="/PolarisLogo.png"
+                  alt="Polaris Logo"
+                  fill
+                  sizes="32px"
+                  className="object-contain"
+                  quality={100}
+                />
+              </div>
+              <span className="text-xl font-bold text-gradient">POLARIS</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header
