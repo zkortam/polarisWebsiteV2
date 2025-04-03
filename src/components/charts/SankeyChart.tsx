@@ -15,11 +15,13 @@ interface SankeyChartProps {
 
 const SankeyChart: React.FC<SankeyChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
-  const parseValue = (value: string | string[]): number => {
+  const parseValue = (value: any): number => {
+    if (value === null || value === undefined) return 0;
     if (Array.isArray(value)) {
       return value.reduce((acc, curr) => acc + parseValue(curr), 0);
     }
-    const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
+    const stringValue = String(value);
+    const parsed = parseFloat(stringValue.replace(/[^0-9.-]+/g, ""));
     return isNaN(parsed) ? 0 : parsed;
   };
 
@@ -40,10 +42,7 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onItemClick }) => {
         ? parseValue(value.value)
         : "Items" in value
           ? Object.entries(value.Items).reduce((acc, [_, itemValue]) => {
-              if (typeof itemValue === "string" || Array.isArray(itemValue)) {
-                return acc + parseValue(itemValue);
-              }
-              return acc;
+              return acc + parseValue(itemValue);
             }, 0)
           : 0
       : parseValue(value);
@@ -58,9 +57,7 @@ const SankeyChart: React.FC<SankeyChartProps> = ({ data, onItemClick }) => {
     if (typeof value === "object" && value !== null && "Items" in value) {
       Object.entries(value.Items).forEach(([subcategory, subValue], subIndex) => {
         nodes.push({ name: subcategory });
-        const subValueNum = typeof subValue === "string" || Array.isArray(subValue)
-          ? parseValue(subValue)
-          : 0;
+        const subValueNum = parseValue(subValue);
 
         links.push({
           source: categoryIndex + 1,

@@ -32,11 +32,13 @@ const COLORS = [
 
 const TreemapChart: React.FC<TreemapChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
-  const parseValue = (value: string | string[]): number => {
+  const parseValue = (value: any): number => {
+    if (value === null || value === undefined) return 0;
     if (Array.isArray(value)) {
       return value.reduce((acc, curr) => acc + parseValue(curr), 0);
     }
-    const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
+    const stringValue = String(value);
+    const parsed = parseFloat(stringValue.replace(/[^0-9.-]+/g, ""));
     return isNaN(parsed) ? 0 : parsed;
   };
 
@@ -54,9 +56,7 @@ const TreemapChart: React.FC<TreemapChartProps> = ({ data, onItemClick }) => {
           // Process subcategories
           children = Object.entries(value.Items).map(([subKey, subValue]) => ({
             name: subKey,
-            value: typeof subValue === "string" || Array.isArray(subValue)
-              ? parseValue(subValue)
-              : 0,
+            value: parseValue(subValue),
             children: [],
           }));
           // Sum up all items for the parent category

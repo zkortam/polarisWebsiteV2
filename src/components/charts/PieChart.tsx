@@ -37,11 +37,13 @@ const COLORS = {
 
 const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
-  const parseValue = (value: string | string[]): number => {
+  const parseValue = (value: any): number => {
+    if (value === null || value === undefined) return 0;
     if (Array.isArray(value)) {
       return value.reduce((acc, curr) => acc + parseValue(curr), 0);
     }
-    const parsed = parseFloat(value.toString().replace(/[^0-9.-]+/g, ""));
+    const stringValue = String(value);
+    const parsed = parseFloat(stringValue.replace(/[^0-9.-]+/g, ""));
     return isNaN(parsed) ? 0 : parsed;
   };
 
@@ -58,10 +60,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
         } else if ("Items" in value) {
           // Sum up all items in the category
           numValue = Object.entries(value.Items).reduce((acc, [_, itemValue]) => {
-            if (typeof itemValue === "string" || Array.isArray(itemValue)) {
-              return acc + parseValue(itemValue);
-            }
-            return acc;
+            return acc + parseValue(itemValue);
           }, 0);
         }
       } else {
