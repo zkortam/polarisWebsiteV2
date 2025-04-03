@@ -8,22 +8,32 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { cn } from "@/lib/utils";
+
+interface ChartDataItem {
+  name: string;
+  abbrev: string;
+  value: number;
+  type: "revenue" | "expense";
+}
 
 interface PieChartProps {
-  data: Record<string, string>;
+  data: Record<string, string | { abbrev: string }>;
   onItemClick?: (name: string) => void;
 }
 
-const COLORS = [
-  "hsl(var(--primary))",
-  "hsl(var(--primary-foreground))",
-  "hsl(var(--secondary))",
-  "hsl(var(--secondary-foreground))",
-  "hsl(var(--accent))",
-  "hsl(var(--accent-foreground))",
-  "hsl(var(--destructive))",
-  "hsl(var(--destructive-foreground))",
-];
+const COLORS = {
+  revenue: [
+    "hsl(142.1 76.2% 36.3%)", // Green
+    "hsl(142.1 76.2% 46.3%)",
+    "hsl(142.1 76.2% 56.3%)",
+  ],
+  expense: [
+    "hsl(346.8 77.2% 49.8%)", // Red
+    "hsl(346.8 77.2% 59.8%)",
+    "hsl(346.8 77.2% 69.8%)",
+  ],
+} as const;
 
 const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   // Safely parse numeric values with error handling
@@ -33,33 +43,48 @@ const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
   };
 
   // Transform data for the chart
-  const chartData = Object.entries(data)
+  const chartData: ChartDataItem[] = Object.entries(data)
     .filter(([key]) => key !== "value" && key !== "Items")
-    .map(([key, value]) => ({
-      name: key,
-      abbrev: value.abbrev || key,
-      value: parseValue(value),
-    }))
+    .map(([key, value]) => {
+      const numValue = parseValue(value.toString());
+      const type: "revenue" | "expense" = numValue >= 0 ? "revenue" : "expense";
+      return {
+        name: key,
+        abbrev: typeof value === "object" && "abbrev" in value ? value.abbrev : key,
+        value: Math.abs(numValue),
+        type,
+      };
+    })
     .sort((a, b) => b.value - a.value)
     .slice(0, 8); // Show top 8 items
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
+      const data = payload[0];
       const totalValue = chartData.reduce((acc, curr) => acc + curr.value, 0);
-      const percentage = ((payload[0].value / totalValue) * 100).toFixed(1);
+      const percentage = ((data.value / totalValue) * 100).toFixed(1);
       
       return (
         <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
-          <p className="text-primary font-medium">{payload[0].name}</p>
-          <p className="text-foreground">${payload[0].value.toLocaleString()}</p>
-          <p className="text-foreground/60 text-sm">{percentage}% of total</p>
+          <p className={cn(
+            "font-medium",
+            data.type === "revenue" ? "text-green-500" : "text-red-500"
+          )}>
+            {data.name}
+          </p>
+          <p className="text-foreground">
+            ${data.value.toLocaleString()}
+          </p>
+          <p className="text-foreground/60 text-sm">
+            {percentage}% of total
+          </p>
         </div>
       );
     }
     return null;
   };
 
-  const handlePieClick = (data: any) => {
+  const handlePieClick = (data: ChartDataItem) => {
     if (data && data.name && onItemClick) {
       onItemClick(data.name);
     }
@@ -75,13 +100,17 @@ const PieChart: React.FC<PieChartProps> = ({ data, onItemClick }) => {
           labelLine={false}
           label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
           outerRadius={80}
-          fill="hsl(var(--primary))"
           dataKey="value"
           onClick={handlePieClick}
           cursor="pointer"
+          animationDuration={1000}
+          animationBegin={0}
         >
           {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[entry.type][index % COLORS[entry.type].length]}
+            />
           ))}
         </Pie>
         <Tooltip content={<CustomTooltip />} />

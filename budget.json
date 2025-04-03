@@ -6,11 +6,11 @@
         "Items": {
           "abbreviation": "Items",
           "Total Reserves": {
-            "value": "($1,189,555.55)",
+            "value": -1189556,
             "abbreviation": "Tot Res."
           },
           "Mandate Reserves": {
-            "value": "($1,189,555.55)",
+            "value": -1189556,
             "abbreviation": "Mand Res."
           }
         }
@@ -23,27 +23,27 @@
         "Items": {
           "abbreviation": "Items",
           "Total A.S. Carryforward": {
-            "value": "($165,105.40)",
+            "value": -165105,
             "abbreviation": "Tot AS C.fwd"
           },
           "2024–2025 A.S. Carryforward": {
-            "value": "($165,105.40)",
+            "value": -165105,
             "abbreviation": "2024–25 AS C.fwd"
           },
           "Auxiliary Carryforward": {
-            "value": "($429,322.02)",
+            "value": -429322,
             "abbreviation": "Aux C.fwd"
           },
           "2024–2025 SPACES Carryforward": {
-            "value": "($284,480.22)",
+            "value": -284480,
             "abbreviation": "2024–25 SPACES C.fwd"
           },
           "2024–2025 KSDT Carryforward": {
-            "value": "($44,841.80)",
+            "value": -44842,
             "abbreviation": "2024–25 KSDT C.fwd"
           },
           "2024–2025 SSC Carryforward": {
-            "value": "($100,000.00)",
+            "value": -100000,
             "abbreviation": "2024–25 SSC C.fwd"
           }
         }
@@ -56,39 +56,39 @@
         "Items": {
           "abbreviation": "Items",
           "2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))": {
-            "value": "($587,367.41)",
+            "value": -587367,
             "abbreviation": "2024–25 Rem Funds"
           },
           "2024–2025 AS Revenue": {
-            "value": "($8,834,339.00)",
+            "value": 8834339,
             "abbreviation": "2024–25 AS Rev"
           },
           "Referendums, Return to Aid, and Locked in Fees": {
-            "value": "($3,326,238.00)",
+            "value": -3326238,
             "abbreviation": "Ref, Rtn Aid, & Lkd Fees"
           },
           "Career Employees": {
-            "value": "($1,777,457.00)",
+            "value": -1777457,
             "abbreviation": "Care Emp"
           },
           "Mandated Reserves Contribution (5% of Expendable Funds)": {
-            "value": "($186,532.20)",
+            "value": -186532,
             "abbreviation": "Mand Res Contrib"
           },
           "General Operations (Expendable Funds)": {
-            "value": "($90,230.00)",
+            "value": -90230,
             "abbreviation": "Gen Ops (Exp Fds)"
           },
           "Office Operations (Expendable Funds)": {
-            "value": "($3,459,133.30)",
+            "value": -3459133,
             "abbreviation": "Off Ops (Exp Fds)"
           },
           "Senate Operations (Expendable Funds)": {
-            "value": "($39,150.00)",
+            "value": -39150,
             "abbreviation": "Sen Ops (Exp Fds)"
           },
           "Student-Employee Payroll & Stipends (Expendable Funds)": {
-            "value": "($729,498.11)",
+            "value": -729498,
             "abbreviation": "Stud Emp Pay & Stip (Exp Fds)"
           }
         }
@@ -101,206 +101,206 @@
         "Items": {
           "abbreviation": "Items",
           "Referendum and Return to Aid": {
-            "value": "($3,326,238.00)",
+            "value": -3326238,
             "abbreviation": "Ref & Rtn Aid"
           },
           "Return to Aid (29% over $21)": {
-            "value": "($1,966,917.00)",
+            "value": -1966917,
             "abbreviation": "Rtn Aid (29% > $21)"
           },
           "Student Promoted Access Center for Education and Services (SPACES)": {
-            "value": "($600,121.00)",
+            "value": -600121,
             "abbreviation": "SPACES",
             "Expendable Funds": {
-              "value": "($343,098.00)",
+              "value": -343098,
               "abbreviation": "Exp Fds"
             },
             "Student Life Development Specialist III (1 FTE)*": [
               {
-                "value": "($64,604.00)",
+                "value": -64604,
                 "abbreviation": "SLDS III"
               },
               {
-                "value": "($64,308.00)",
+                "value": -64308,
                 "abbreviation": "SLDS III"
               },
               {
-                "value": "($62,683.00)",
+                "value": -62683,
                 "abbreviation": "SLDS III"
               }
             ],
             "Blank Asst. III (.1 FTE)*": {
-              "value": "($6,518.00)",
+              "value": -6518,
               "abbreviation": "BAsst III (.1)"
             },
             "Financial Service Analyst II (.25 FTE)": {
-              "value": "($19,320.00)",
+              "value": -19320,
               "abbreviation": "Fin Serv Anal II (.25)"
             },
             "Blank Asst. III (.25 FTE)": {
-              "value": "($17,090.00)",
+              "value": -17090,
               "abbreviation": "BAsst III (.25)"
             },
             "ITS Applications Programmer/Service (.15 FTE)": {
-              "value": "($22,500.00)",
+              "value": -22500,
               "abbreviation": "ITS Apps Prog/Serv (.15)"
             }
           },
           "Academic Success Program (ASP)": {
-            "value": "($95,754.00)",
+            "value": -95754,
             "abbreviation": "ASP"
           },
           "Student Initiated Access Programs and Services (SIAPS)": {
-            "value": "($95,754.00)",
+            "value": -95754,
             "abbreviation": "SIAPS"
           },
           "Student Sustainability Collective": {
-            "value": "($289,224.00)",
+            "value": -289224,
             "abbreviation": "Stud Sust Coll",
             "Expendable Funds": {
-              "value": "($192,221.00)",
+              "value": -192221,
               "abbreviation": "Exp Fds"
             },
             "Student Life Development Specialist III (1 FTE)*": {
-              "value": "($62,683.00)",
+              "value": -62683,
               "abbreviation": "SLDS III"
             },
             "Financial Service Analyst II (.25 FTE)": {
-              "value": "($19,320.00)",
+              "value": -19320,
               "abbreviation": "Fin Serv Anal II (.25)"
             },
             "ITS Applications Programmer/Service (.1 FTE)": {
-              "value": "($15,000.00)",
+              "value": -15000,
               "abbreviation": "ITS Apps Prog/Serv (.1)"
             }
           },
           "KSDT": {
-            "value": "($107,479.00)",
+            "value": -107479,
             "abbreviation": "KSDT",
             "Expendable Funds": {
-              "value": "($99,872.00)",
+              "value": -99872,
               "abbreviation": "Exp Fds"
             },
             "Event Specialist III (.1 FTE)*": {
-              "value": "($7,607.00)",
+              "value": -7607,
               "abbreviation": "Evt Spec III (.1)"
             }
           },
           "College Councils": {
-            "value": "($63,510.00)",
+            "value": -63510,
             "abbreviation": "Coll Councils"
           },
           "UCSA Membership": {
-            "value": "($107,479.00)",
+            "value": -107479,
             "abbreviation": "UCSA Mem"
           }
         }
       },
       "CAREER EMPLOYEES": {
-        "value": "($1,777,457.00)",
+        "value": -1777457,
         "abbreviation": "Care Emp",
         "AS Administrative Staff": {
-          "value": "($1,065,008.00)",
+          "value": -1065008,
           "abbreviation": "AS Admin Staff",
           "Items": {
             "Student Life Development Specialist IV (1 FTE)*": {
-              "value": "($123,948.00)",
+              "value": -123948,
               "abbreviation": "SLDS IV"
             },
             "Student Life Development Specialist III (.8 FTE)*": {
-              "value": "($104,451.00)",
+              "value": -104451,
               "abbreviation": "SLDS III (.8)"
             },
             "AS Admin Asst. – Blank Asst. III (1 FTE)*": {
-              "value": "($98,531.00)",
+              "value": -98531,
               "abbreviation": "AS Adm Asst – BAsst III (1)"
             },
             "AS Admin Asst. – Blank Asst. III (.9 FTE)*": {
-              "value": "($58,665.00)",
+              "value": -58665,
               "abbreviation": "AS Adm Asst – BAsst III (.9)"
             },
             "ASGS Artist Sr. (1 FTE)*": [
               {
-                "value": "($106,885.00)",
+                "value": -106885,
                 "abbreviation": "ASGS Art Sr (1)"
               },
               {
-                "value": "($120,372.00)",
+                "value": -120372,
                 "abbreviation": "ASGS Art Sr (1)"
               }
             ],
             "Publication Production Specialist 3 (1 FTE)*": {
-              "value": "($135,208.00)",
+              "value": -135208,
               "abbreviation": "PPS3 (1)"
             },
             "Marketing Specialist III (.6 FTE)*": {
-              "value": "($78,160.00)",
+              "value": -78160,
               "abbreviation": "Mkt Spec III (.6)"
             },
             "Marketing Specialist II (1 FTE)*": {
-              "value": "($80,338.00)",
+              "value": -80338,
               "abbreviation": "Mkt Spec II (1)"
             },
             "ITS Applications Programmer (.75 FTE)*": {
-              "value": "($118,450.00)",
+              "value": -118450,
               "abbreviation": "ITS Apps Prog (.75)"
             },
             "Professional Development": {
-              "value": "($40,000.00)",
+              "value": -40000,
               "abbreviation": "Prof Dev"
             }
           }
         },
         "Student Life Business Office": {
-          "value": "($465,114.00)",
+          "value": -465114,
           "abbreviation": "SLBO",
           "Items": {
             "Human Resources – Blank Asst. III (.7 FTE)*": {
-              "value": "($65,240.00)",
+              "value": -65240,
               "abbreviation": "HR – BAsst III (.7)"
             },
             "Fund Manager – Blank Asst. III (.75 FTE)*": {
-              "value": "($75,551.00)",
+              "value": -75551,
               "abbreviation": "Fund Mngr – BAsst III (.75)"
             },
             "Fund Manager – Blank Asst. III (.5 FTE)*": [
               {
-                "value": "($53,768.00)",
+                "value": -53768,
                 "abbreviation": "Fund Mngr – BAsst III (.5)"
               },
               {
-                "value": "($51,449.00)",
+                "value": -51449,
                 "abbreviation": "Fund Mngr – BAsst III (.5)"
               },
               {
-                "value": "($50,328.00)",
+                "value": -50328,
                 "abbreviation": "Fund Mngr – BAsst III (.5)"
               }
             ],
             "Financial Analyst II (.5 FTE)*": {
-              "value": "($59,235.00)",
+              "value": -59235,
               "abbreviation": "Fin Anal II (.5)"
             },
             "Financial Services Analyst II (.5 FTE)*": {
-              "value": "($109,543.00)",
+              "value": -109543,
               "abbreviation": "Fin Serv Anal II (.5)"
             }
           }
         },
         "Campus Events Office": {
-          "value": "($247,335.00)",
+          "value": -247335,
           "abbreviation": "Campus Events Off",
           "Items": {
             "Event Specialist III (.1 FTE)*": {
-              "value": "($11,850.00)",
+              "value": -11850,
               "abbreviation": "Evt Spec III (.1)"
             },
             "Event Specialist III (.9 FTE)*": {
-              "value": "($119,493.00)",
+              "value": -119493,
               "abbreviation": "Evt Spec III (.9)"
             },
             "Event Specialist IV (.7 FTE)*": {
-              "value": "($115,992.00)",
+              "value": -115992,
               "abbreviation": "Evt Spec IV (.7)"
             }
           }
@@ -308,585 +308,623 @@
       }
     },
     "GENERAL OPERATIONS SUMMARY": {
-      "value": "($90,230.00)",
+      "value": -90230,
       "abbreviation": "Gen Ops Sum",
       "Administrative Supplies and Expenses": {
-        "value": "($53,980.00)",
+        "value": -53980,
         "abbreviation": "Adm Supp & Exp",
         "Items": {
           "Operating and Supplies": {
-            "value": "($23,980.00)",
+            "value": -23980,
             "abbreviation": "Oper & Supp"
           },
           "Administrative Support": {
-            "value": "($30,000.00)",
+            "value": -30000,
             "abbreviation": "Admin Supp"
           }
         }
       },
       "A.S. Graphic Studio": {
-        "value": "($28,250.00)",
+        "value": -28250,
         "abbreviation": "AS GS",
         "Items": {
           "Operating and Supplies": {
-            "value": "($5,000.00)",
+            "value": -5000,
             "abbreviation": "Oper & Supp"
           },
           "Software and Technology": {
-            "value": "($2,000.00)",
+            "value": -2000,
             "abbreviation": "Soft & Tech"
           },
           "Marketing and Outreach": {
-            "value": "($20,000.00)",
+            "value": -20000,
             "abbreviation": "Mkt & Out"
           },
           "Fluffy Maintenance": {
-            "value": "($750.00)",
+            "value": -750,
             "abbreviation": "Fluff Maint"
           },
           "Leadership Development": {
-            "value": "($500.00)",
+            "value": -500,
             "abbreviation": "Lead Dev"
           }
         }
       },
       "A.S. Elections": {
-        "value": "($8,000.00)",
+        "value": -8000,
         "abbreviation": "AS Elec",
         "Items": {
           "Operating and Supplies": {
-            "value": "($2,000.00)",
+            "value": -2000,
             "abbreviation": "Oper & Supp"
           },
           "Marketing and Outreach": {
-            "value": "($3,000.00)",
+            "value": -3000,
             "abbreviation": "Mkt & Out"
           },
           "Programming Unallocated": {
-            "value": "($3,000.00)",
+            "value": -3000,
             "abbreviation": "Prog Unalloc"
           }
         }
       }
     },
     "OFFICE OPERATIONS SUMMARY": {
-      "value": "($3,459,133.30)",
+      "value": -3459133,
       "abbreviation": "Off Ops Sum",
       "Office Operations": {
         "Office of the President": {
-          "value": "($645,836.60)",
+          "value": -645837,
           "abbreviation": "Off Pres",
           "Items": {
             "Office of the President": {
-              "value": "($70,999.60)",
+              "value": -71000,
               "abbreviation": "Off Pres"
             },
             "Projects and Initiatives": {
-              "value": "($35,071.60)",
+              "value": -35072,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($7,500.00)",
+              "value": -7500,
               "abbreviation": "Mkt & Out"
             },
             "Leadership Development and Operation": {
-              "value": "($1,500.00)",
+              "value": -1500,
               "abbreviation": "Lead Dev & Ops"
             },
             "Travel": {
-              "value": "($5,000.00)",
+              "value": -5000,
               "abbreviation": "Travel"
             },
             "New York Times": {
-              "value": "($21,928.00)",
+              "value": -21928,
               "abbreviation": "NY Times"
             }
           }
         },
         "Office of College Affairs": {
-          "value": "($100,000.00)",
+          "value": -100000,
           "abbreviation": "Off Coll Aff",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($26,000.00)",
+              "value": -26000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($400.00)",
+              "value": -400,
               "abbreviation": "Oper & Supp"
             },
             "College Council Project/Initiative Fund": {
-              "value": "($16,600.00)",
+              "value": -16600,
               "abbreviation": "Coll Counc Proj Fund"
             },
             "College Council Collaborative Fund": {
-              "value": "($15,000.00)",
+              "value": -15000,
               "abbreviation": "Coll Counc Collab Fund"
             },
             "Sun God Kits": {
-              "value": "($10,000.00)",
+              "value": -10000,
               "abbreviation": "Sun God Kits"
             },
             "Muir Musical": {
-              "value": "($30,000.00)",
+              "value": -30000,
               "abbreviation": "Muir Mus"
             }
           }
         },
         "Office of Food and Housing Resources": {
-          "value": "($220,987.00)",
+          "value": -220987,
           "abbreviation": "Off Food & Housing",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($34,000.00)",
+              "value": -34000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Mkt & Out"
             },
             "Professional Closet Program": {
-              "value": "($5,000.00)",
+              "value": -5000,
               "abbreviation": "Prof Clos Prog"
             },
             "Produce Distribution Program": {
-              "value": "($9,000.00)",
+              "value": -9000,
               "abbreviation": "Prod Dist Prog"
             },
             "Triton Food Pantry": {
-              "value": "($170,987.00)",
+              "value": -170987,
               "abbreviation": "Triton FP"
             }
           }
         },
         "Office of Health and Well–Being": {
-          "value": "($41,000.00)",
+          "value": -41000,
           "abbreviation": "Off Health & Well",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($17,000.00)",
+              "value": -17000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($4,500.00)",
+              "value": -4500,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($1,500.00)",
+              "value": -1500,
               "abbreviation": "Oper & Supp"
             },
             "Programming Unallocated": {
-              "value": "($7,000.00)",
+              "value": -7000,
               "abbreviation": "Prog Unalloc"
             },
             "Vending Machines": {
-              "value": "($7,000.00)",
+              "value": -7000,
               "abbreviation": "Vend Mach"
             },
             "Period Project": {
-              "value": "($4,000.00)",
+              "value": -4000,
               "abbreviation": "Per Proj"
             }
           }
         },
         "Office of Environmental Justice Affairs": {
-          "value": "($4,850.00)",
+          "value": -4850,
           "abbreviation": "Off Env Just Aff",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($1,800.00)",
+              "value": -1800,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($1,100.00)",
+              "value": -1100,
               "abbreviation": "Mkt & Out"
             },
             "Leadership Development": {
-              "value": "($350.00)",
+              "value": -350,
               "abbreviation": "Lead Dev"
             },
             "Programming Unallocated": {
-              "value": "($1,600.00)",
+              "value": -1600,
               "abbreviation": "Prog Unalloc"
             }
           }
         },
         "Office of Equity, Diversity, and Inclusion": {
-          "value": "($58,000.00)",
+          "value": -58000,
           "abbreviation": "Off Equity, Div & Inc",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Oper & Supp"
             },
             "A.S. EDI Commissions (6 × $2,000)": {
-              "value": "($12,000.00)",
+              "value": -12000,
               "abbreviation": "AS EDI Comms"
             },
             "A.S. EDI Collaborative Fund": {
-              "value": "($20,000.00)",
+              "value": -20000,
               "abbreviation": "AS EDI Collab Fund"
             },
             "A.S. EDI Cultural Celebration": {
-              "value": "($20,000.00)",
+              "value": -20000,
               "abbreviation": "AS EDI Cult Celebr"
             }
           }
         },
         "Office of Transportation and Transformation": {
-          "value": "($150,000.00)",
+          "value": -150000,
           "abbreviation": "Off Trans & Transf",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($3,500.00)",
+              "value": -3500,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($1,500.00)",
+              "value": -1500,
               "abbreviation": "Mkt & Out"
             },
             "Transportation and Transformation Programs": {
-              "value": "($45,000.00)",
+              "value": -45000,
               "abbreviation": "Trans & Transf Progs"
             },
             "Grocery Shuttle": {
-              "value": "($100,000.00)",
+              "value": -100000,
               "abbreviation": "Groc Shuttle"
             }
           }
         },
         "Office of the Executive Vice President": {
-          "value": "($17,600.00)",
+          "value": -17600,
           "abbreviation": "Off Exec VP",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($600.00)",
+              "value": -600,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($500.00)",
+              "value": -500,
               "abbreviation": "Oper & Supp"
             },
             "Transfer Fund": {
-              "value": "($14,000.00)",
+              "value": -14000,
               "abbreviation": "Trans Fund"
             },
             "Leadership Development": {
-              "value": "($500.00)",
+              "value": -500,
               "abbreviation": "Lead Dev"
             }
           }
         },
         "Office of External Affairs": {
-          "value": "($219,900.00)",
+          "value": -219900,
           "abbreviation": "Off Ext Aff",
           "Items": {
             "Office of External Affairs": {
-              "value": "($172,900.00)",
+              "value": -172900,
               "abbreviation": "Off Ext Aff"
             },
-            "Projects and Initiatives": {
-              "value": "($9,000.00)",
-              "abbreviation": "Proj & Init 1"
-            },
+            "Projects and Initiatives": [
+              {
+                "value": -9000,
+                "abbreviation": "Proj & Init 1"
+              },
+              {
+                "value": -4000,
+                "abbreviation": "Proj & Init 1"
+              },
+              {
+                "value": -1500,
+                "abbreviation": "Proj & Init 1"
+              },
+              {
+                "value": -2000,
+                "abbreviation": "Proj & Init 1"
+              }
+            ],
             "Programming": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Prog"
             },
             "Travel": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Travel"
             },
             "Civic Engagement": {
-              "value": "($34,000.00)",
+              "value": -34000,
               "abbreviation": "Civ Eng"
             },
             "Tritons Vote": {
-              "value": "($15,000.00)",
+              "value": -15000,
               "abbreviation": "Tritons Vote"
             },
             "Civic Engagement Fund": {
-              "value": "($15,000.00)",
+              "value": -15000,
               "abbreviation": "Civ Eng Fund"
             },
             "On–Campus Polling": {
-              "value": "($4,000.00)",
+              "value": -4000,
               "abbreviation": "On-Campus Poll"
             },
             "Disabled Students Commission": {
-              "value": "($3,500.00)",
+              "value": -3500,
               "abbreviation": "Dis Stud Comm"
             },
             "Projects and Initiatives 2": {
-              "value": "($1,500.00)",
+              "value": -2000,
               "abbreviation": "Proj & Init 2"
             },
-            "Marketing and Outreach 2": {
-              "value": "($3,000.00)",
-              "abbreviation": "Mkt & Out 2"
-            },
+            "Marketing and Outreach 2": [
+              {
+                "value": -3000,
+                "abbreviation": "Mkt & Out 2"
+              },
+              {
+                "value": -500,
+                "abbreviation": "Mkt & Out 2"
+              }
+            ],
             "Programming Unallocated": {
-              "value": "($1,500.00)",
+              "value": -1500,
               "abbreviation": "Prog Unalloc"
             },
             "Housing Affairs Commission": {
-              "value": "($4,000.00)",
+              "value": -4000,
               "abbreviation": "Hous Aff Comm"
             },
             "Projects and Initiatives 3": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Proj & Init 3"
             },
             "Marketing and Outreach 3": {
-              "value": "($500.00)",
+              "value": -500,
               "abbreviation": "Mkt & Out 3"
             },
             "Programming Unallocated 2": {
-              "value": "($1,500.00)",
+              "value": -1500,
               "abbreviation": "Prog Unalloc 2"
             },
             "Labor Affairs Commission": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Lab Aff Comm"
             },
             "Projects and Initiatives 4": {
-              "value": "($750.00)",
+              "value": -750,
               "abbreviation": "Proj & Init 4"
             },
             "Marketing and Outreach 4": {
-              "value": "($250.00)",
+              "value": -250,
               "abbreviation": "Mkt & Out 4"
             },
             "Programming Unallocated 3": {
-              "value": "($1,000.00)",
+              "value": -1000,
               "abbreviation": "Prog Unalloc 3"
             }
           }
         },
         "Office of Local Affairs": {
-          "value": "($47,000.00)",
+          "value": -47000,
           "abbreviation": "Off Local Aff",
           "Items": {
             "Projects and Initiatives": {
-              "value": "($12,000.00)",
+              "value": -12000,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($6,000.00)",
+              "value": -6000,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($3,000.00)",
+              "value": -3000,
               "abbreviation": "Oper & Supp"
             },
             "Leadership Development": {
-              "value": "($1,000.00)",
+              "value": -1000,
               "abbreviation": "Lead Dev"
             },
             "Local Organizing Fund": {
-              "value": "($25,000.00)",
+              "value": -25000,
               "abbreviation": "Local Org Fund"
             }
           }
         },
         "Office of Academic Affairs": {
-          "value": "($23,761.00)",
+          "value": -23761,
           "abbreviation": "Off Acad Aff",
           "Items": {
             "Office of Academic Affairs": {
-              "value": "($18,000.00)",
+              "value": -18000,
               "abbreviation": "Off Acad Aff"
             },
             "Projects and Initiatives": {
-              "value": "($9,300.00)",
+              "value": -9300,
               "abbreviation": "Proj & Init"
             },
             "Marketing and Outreach": {
-              "value": "($1,200.00)",
+              "value": -1200,
               "abbreviation": "Mkt & Out"
             },
             "Operating and Supplies": {
-              "value": "($2,000.00)",
+              "value": -2000,
               "abbreviation": "Oper & Supp"
             },
             "Programming Unallocated": {
-              "value": "($4,500.00)",
+              "value": -4500,
               "abbreviation": "Prog Unalloc"
             },
             "Leadership Development": {
-              "value": "($1,000.00)",
+              "value": -1000,
               "abbreviation": "Lead Dev"
             },
             "Office of Student Advocacy": {
-              "value": "($5,761.00)",
+              "value": -5761,
               "abbreviation": "Off Stud Adv"
             },
             "Programming Unallocated 2": {
-              "value": "($2,021.00)",
+              "value": -2021,
               "abbreviation": "Prog Unalloc 2"
             },
             "Marketing and Outreach 2": {
-              "value": "($2,465.00)",
+              "value": -2465,
               "abbreviation": "Mkt & Out 2"
             },
             "Operating and Supplies 2": {
-              "value": "($250.00)",
+              "value": -250,
               "abbreviation": "Oper & Supp 2"
             },
             "Leadership Development 2": {
-              "value": "($1,025.00)",
+              "value": -1025,
               "abbreviation": "Lead Dev 2"
             }
           }
         },
         "Office of Finance and Resources": {
-          "value": "($673,835.70)",
+          "value": -673836,
           "abbreviation": "Off Fin & Res",
           "Items": {
             "Office of Finance and Resources": {
-              "value": "($4,000.00)",
+              "value": -4000,
               "abbreviation": "Off Fin & Res",
               "Subitems": {
                 "Operating and Supplies": {
-                  "value": "($3,000.00)",
+                  "value": -3000,
                   "abbreviation": "Oper & Supp"
                 },
                 "Marketing and Outreach": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Mkt & Out"
                 },
                 "Leadership Development": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Lead Dev"
                 }
               }
             },
             "Office of Student Organizations": {
-              "value": "($576,200.00)",
+              "value": -576200,
               "abbreviation": "Off Stud Orgs",
               "Subitems": {
                 "Town Halls": {
-                  "value": "($2,200.00)",
+                  "value": -2200,
                   "abbreviation": "Town Halls"
                 },
                 "Operating and Supplies": {
-                  "value": "($4,500.00)",
+                  "value": -4500,
                   "abbreviation": "Oper & Supp"
                 },
                 "Leadership Development": {
-                  "value": "($1,500.00)",
+                  "value": -1500,
                   "abbreviation": "Lead Dev"
                 },
                 "Student Organization Projects": {
-                  "value": "($5,000.00)",
+                  "value": -5000,
                   "abbreviation": "Stud Org Proj"
                 },
                 "Student Organization Operating Unallocated": {
-                  "value": "($12,000.00)",
+                  "value": -12000,
                   "abbreviation": "Stud Org Oper Unalloc"
                 },
                 "Student Organization Programming Unallocated": {
-                  "value": "($521,000.00)",
+                  "value": -521000,
                   "abbreviation": "Stud Org Prog Unalloc"
                 },
-                "Fall Quarter 2024": {
-                  "value": "($185,000.00)",
-                  "abbreviation": "FQ 2024"
-                },
-                "Winter Quarter 2025": {
-                  "value": "($162,000.00)",
-                  "abbreviation": "WQ 2025"
-                },
-                "Spring Quarter 2025": {
-                  "value": "($174,000.00)",
-                  "abbreviation": "SQ 2025"
-                },
+                "Fall Quarter 2024": [
+                  {
+                    "value": -185000,
+                    "abbreviation": "FQ 2024"
+                  },
+                  {
+                    "value": -10000,
+                    "abbreviation": "FQ 2024"
+                  }
+                ],
+                "Winter Quarter 2025": [
+                  {
+                    "value": -162000,
+                    "abbreviation": "WQ 2025"
+                  },
+                  {
+                    "value": -10000,
+                    "abbreviation": "WQ 2025"
+                  }
+                ],
+                "Spring Quarter 2025": [
+                  {
+                    "value": -174000,
+                    "abbreviation": "SQ 2025"
+                  },
+                  {
+                    "value": -10000,
+                    "abbreviation": "SQ 2025"
+                  }
+                ],
                 "Student Organization Tournament and Competition Unallocated": {
-                  "value": "($30,000.00)",
+                  "value": -30000,
                   "abbreviation": "Stud Org Tourney Unalloc"
                 }
               }
             },
             "Office of Enterprises and Services": {
-              "value": "($93,635.70)",
+              "value": -93636,
               "abbreviation": "Off Ent & Serv",
               "Subitems": {
                 "Projects and Initiatives": {
-                  "value": "($8,455.77)",
+                  "value": -8456,
                   "abbreviation": "Proj & Init"
                 },
                 "Marketing and Outreach": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Mkt & Out"
                 },
                 "Operating and Supplies": {
-                  "value": "($2,433.00)",
+                  "value": -2433,
                   "abbreviation": "Oper & Supp"
                 },
                 "Programming Unallocated": {
-                  "value": "($1,000.00)",
+                  "value": -1000,
                   "abbreviation": "Prog Unalloc"
                 },
                 "Enterprise Operating Funds": {
-                  "value": "($32,609.23)",
+                  "value": -32609,
                   "abbreviation": "Ent Oper Fnds"
                 },
                 "A.S. Safe Rides": {
-                  "value": "($27,600.00)",
+                  "value": -27600,
                   "abbreviation": "AS Safe Rides"
                 },
                 "Made TO Order": {
-                  "value": "($4,509.23)",
+                  "value": -4509,
                   "abbreviation": "MTO Order"
                 },
                 "Enterprise Development Fund": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Ent Dev Fund"
                 }
               }
             },
             "Triton Television (TTV)": {
-              "value": "($52,161.79)",
+              "value": -52162,
               "abbreviation": "Triton TV",
               "Subitems": {
                 "Equipment": {
-                  "value": "($22,580.12)",
+                  "value": -22580,
                   "abbreviation": "Equip"
                 },
                 "Studio Repairs": {
-                  "value": "($2,400.00)",
+                  "value": -2400,
                   "abbreviation": "Stud Rep"
                 },
                 "Marketing and Outreach": {
-                  "value": "($3,200.00)",
+                  "value": -3200,
                   "abbreviation": "Mkt & Out"
                 },
                 "Operating and Supplies": {
-                  "value": "($6,059.57)",
+                  "value": -6060,
                   "abbreviation": "Oper & Supp"
                 },
                 "Programming": {
-                  "value": "($7,438.60)",
+                  "value": -7439,
                   "abbreviation": "Prog"
                 },
                 "UCSDFTF": {
-                  "value": "($6,482.41)",
+                  "value": -6482,
                   "abbreviation": "UCSDFTF"
                 }
               }
@@ -894,135 +932,135 @@
           }
         },
         "Office of Communications": {
-          "value": "($1,837,200.00)",
+          "value": -1837200,
           "abbreviation": "Off Comm",
           "Items": {
             "Office of Communications": {
-              "value": "($123,500.00)",
+              "value": -123500,
               "abbreviation": "Off Comm",
               "Subitems": {
                 "Projects and Initiatives": {
-                  "value": "($15,000.00)",
+                  "value": -15000,
                   "abbreviation": "Proj & Init"
                 },
                 "Marketing and Outreach": {
-                  "value": "($40,000.00)",
+                  "value": -40000,
                   "abbreviation": "Mkt & Out"
                 },
                 "Operating and Supplies": {
-                  "value": "($3,500.00)",
+                  "value": -3500,
                   "abbreviation": "Oper & Supp"
                 },
                 "Leadership Development": {
-                  "value": "($1,000.00)",
+                  "value": -1000,
                   "abbreviation": "Lead Dev"
                 },
                 "Programming Allocated; Triton Dine (3)": {
-                  "value": "($60,000.00)",
+                  "value": -60000,
                   "abbreviation": "Prog Alloc; Triton Dine (3)"
                 },
                 "Town Halls (8)": {
-                  "value": "($4,000.00)",
+                  "value": -4000,
                   "abbreviation": "Town Halls (8)"
                 }
               }
             },
             "Office of Concert and Events": {
-              "value": "($1,596,700.00)",
+              "value": -1596700,
               "abbreviation": "Off Concert & Events",
               "Subitems": {
                 "Marketing and Outreach": {
-                  "value": "($6,500.00)",
+                  "value": -6500,
                   "abbreviation": "Mkt & Out"
                 },
                 "Operating and Supplies (Equipment)": {
-                  "value": "($1,200.00)",
+                  "value": -1200,
                   "abbreviation": "Oper & Supp (Equip)"
                 },
                 "Music Licensing Fees": {
-                  "value": "($12,000.00)",
+                  "value": -12000,
                   "abbreviation": "Music Lic Fees"
                 },
                 "Special Events": {
-                  "value": "($70,000.00)",
+                  "value": -70000,
                   "abbreviation": "Spec Events"
                 },
                 "Leadership Development": {
-                  "value": "($4,800.00)",
+                  "value": -4800,
                   "abbreviation": "Lead Dev"
                 },
                 "Programming Allocated": {
-                  "value": "($1,502,200.00)",
+                  "value": -1502200,
                   "abbreviation": "Prog Alloc"
                 },
                 "Sun God Festival": {
-                  "value": "($1,022,200.00)",
+                  "value": -1022200,
                   "abbreviation": "Sun God Fest"
                 },
                 "Sun God Festival Contingency": {
-                  "value": "($25,000.00)",
+                  "value": -25000,
                   "abbreviation": "Sun God Fest Cont"
                 },
                 "Horizon": {
-                  "value": "($200,000.00)",
+                  "value": -200000,
                   "abbreviation": "Horizon"
                 },
                 "Day One Fest": {
-                  "value": "($120,000.00)",
+                  "value": -120000,
                   "abbreviation": "Day One Fest"
                 },
                 "Bear Gardens (4)": {
-                  "value": "($100,000.00)",
+                  "value": -100000,
                   "abbreviation": "Bear Gardens (4)"
                 },
                 "Bear Garden Senior Sendoff": {
-                  "value": "($35,000.00)",
+                  "value": -35000,
                   "abbreviation": "Bear Garden Sen Send"
                 }
               }
             },
             "Office of Spirit and Athletics": {
-              "value": "($117,000.00)",
+              "value": -117000,
               "abbreviation": "Off Spirit & Athl",
               "Subitems": {
                 "Marketing and Outreach": {
-                  "value": "($750.00)",
+                  "value": -750,
                   "abbreviation": "Mkt & Out"
                 },
                 "Programs & Initiatives": {
-                  "value": "($30,000.00)",
+                  "value": -30000,
                   "abbreviation": "Progs & Init"
                 },
                 "Athletic Programming": {
-                  "value": "($10,000.00)",
+                  "value": -10000,
                   "abbreviation": "Athl Prog"
                 },
                 "Collaborative Funding": {
-                  "value": "($6,925.00)",
+                  "value": -6925,
                   "abbreviation": "Collab Fund"
                 },
                 "Leadership Development": {
-                  "value": "($1,325.00)",
+                  "value": -1325,
                   "abbreviation": "Lead Dev"
                 },
                 "Programming Allocated": {
-                  "value": "($68,000.00)",
+                  "value": -68000,
                   "abbreviation": "Prog Alloc"
                 },
                 "Battle of the Bands": {
-                  "value": "($13,000.00)",
+                  "value": -13000,
                   "abbreviation": "Battle Bands"
                 },
                 "Spirit Night": {
-                  "value": "($10,000.00)",
+                  "value": -10000,
                   "abbreviation": "Spirit Night"
                 },
                 "Vegas Night": {
-                  "value": "($25,000.00)",
+                  "value": -25000,
                   "abbreviation": "Vegas Night"
                 },
                 "Spring into Spring": {
-                  "value": "($20,000.00)",
+                  "value": -20000,
                   "abbreviation": "Spr into Spr"
                 }
               }
@@ -1030,47 +1068,47 @@
           }
         },
         "Office of Personnel Affairs": {
-          "value": "($41,000.00)",
+          "value": -41000,
           "abbreviation": "Off Pers Aff",
           "Items": {
             "Office of Personnel Affairs": {
-              "value": "($41,000.00)",
+              "value": -41000,
               "abbreviation": "Off Pers Aff",
               "Subitems": {
                 "Projects and Initiatives": {
-                  "value": "($5,000.00)",
+                  "value": -5000,
                   "abbreviation": "Proj & Init"
                 },
                 "Marketing and Outreach": {
-                  "value": "($12,000.00)",
+                  "value": -12000,
                   "abbreviation": "Mkt & Out"
                 },
                 "Operating and Supplies": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Oper & Supp"
                 },
                 "A.S. Community Development": {
-                  "value": "($8,000.00)",
+                  "value": -8000,
                   "abbreviation": "AS Comm Dev"
                 },
                 "Leadership Development": {
-                  "value": "($10,000.00)",
+                  "value": -10000,
                   "abbreviation": "Lead Dev"
                 },
                 "Fellowship Program": {
-                  "value": "($5,500.00)",
+                  "value": -5500,
                   "abbreviation": "Fell Prog"
                 },
                 "Programming Unallocated": {
-                  "value": "($4,000.00)",
+                  "value": -4000,
                   "abbreviation": "Prog Unalloc"
                 },
                 "Leadership Development 2": {
-                  "value": "($500.00)",
+                  "value": -500,
                   "abbreviation": "Lead Dev 2"
                 },
                 "Operating and Supplies 2": {
-                  "value": "($1,000.00)",
+                  "value": -1000,
                   "abbreviation": "Oper & Supp 2"
                 }
               }
@@ -1078,39 +1116,39 @@
           }
         },
         "Triton Television (TTV)": {
-          "value": "($24,550.00)",
+          "value": -24550,
           "abbreviation": "Triton TV",
           "Items": {
             "Triton Television (TTV)": {
-              "value": "($24,550.00)",
+              "value": -24550,
               "abbreviation": "Triton TV",
               "Subitems": {
                 "Station Manager(s)": {
-                  "value": "($8,400.00)",
+                  "value": -8400,
                   "abbreviation": "Stn Mngr(s)"
                 },
                 "Director of Internal Affairs": {
-                  "value": "($2,800.00)",
+                  "value": -2800,
                   "abbreviation": "Dir Int. Ops."
                 },
                 "Director of External Affairs": {
-                  "value": "($2,400.00)",
+                  "value": -2400,
                   "abbreviation": "Dir Ext. Aff."
                 },
                 "Staff Development Coordinator": {
-                  "value": "($2,400.00)",
+                  "value": -2400,
                   "abbreviation": "Staff Dev Coord"
                 },
                 "Film Festival Coordinator": {
-                  "value": "($1,350.00)",
+                  "value": -1350,
                   "abbreviation": "Film Fest Coord"
                 },
                 "Project Manager": {
-                  "value": "($2,400.00)",
+                  "value": -2400,
                   "abbreviation": "Proj Mngr"
                 },
                 "A.S. Senior Project Manager(s)": {
-                  "value": "($4,800.00)",
+                  "value": -4800,
                   "abbreviation": "AS Sr Proj Mngr"
                 }
               }
@@ -1118,11 +1156,11 @@
           }
         },
         "Elections": {
-          "value": "($800.00)",
+          "value": -800,
           "abbreviation": "Elections",
           "Items": {
             "Elections Manager": {
-              "value": "($800.00)",
+              "value": -800,
               "abbreviation": "Elections Mngr"
             }
           }
@@ -1130,7 +1168,7 @@
         "General": {
           "Items": {
             "Stipend Benefits (1.8%)": {
-              "value": "($8,000.00)",
+              "value": -8000,
               "abbreviation": "Stip Benefits"
             }
           }
@@ -1138,98 +1176,98 @@
       }
     },
     "STUDENT SALARIES SUMMARY": {
-      "value": "($729,498.11)",
+      "value": -729498,
       "abbreviation": "Stud Sal Sum",
       "Administrative Student Salaries": {
-        "value": "($259,008.11)",
+        "value": -259008,
         "abbreviation": "Admin Stud Sal",
         "Items": {
           "SLBO Office Assistant": {
-            "value": "($12,800.00)",
+            "value": -12800,
             "abbreviation": "SLBO Off Asst"
           },
           "Executive Assistant to the President": {
-            "value": "($5,678.40)",
+            "value": -5678,
             "abbreviation": "Exec Asst to Pres"
           },
           "Triton Food Pantry Lead Manager": {
-            "value": "($6,720.00)",
+            "value": -6720,
             "abbreviation": "Triton FP Lead Mngr"
           },
           "Triton Food Pantry Manager": {
-            "value": "($13,440.00)",
+            "value": -13440,
             "abbreviation": "Triton FP Mngr"
           },
           "Triton Food Pantry Pop-Up Manager": {
-            "value": "($7,246.80)",
+            "value": -7247,
             "abbreviation": "Triton FP Pop-Up Mngr"
           },
           "Graphic Artist": [
             {
-              "value": "($31,749.03)",
+              "value": -31749,
               "abbreviation": "Graph Art"
             },
             {
-              "value": "($18,846.88)",
+              "value": -18847,
               "abbreviation": "Graph Art"
             }
           ],
           "Sr. Graphic Artist": [
             {
-              "value": "($11,469.03)",
+              "value": -11469,
               "abbreviation": "Sr Graph Art"
             },
             {
-              "value": "($4,107.24)",
+              "value": -4107,
               "abbreviation": "Sr Graph Art"
             }
           ],
           "Webmaster/Computer Programmer": {
-            "value": "($2,106.00)",
+            "value": -2106,
             "abbreviation": "Web/Comp Prog"
           },
           "Public Relations": {
-            "value": "($17,877.00)",
+            "value": -17877,
             "abbreviation": "Pub Rel"
           },
           "A.S. Mascot": {
-            "value": "($5,626.50)",
+            "value": -5627,
             "abbreviation": "AS Mascot"
           },
           "TO Manager": {
-            "value": "($7,146.00)",
+            "value": -7146,
             "abbreviation": "TO Mngr"
           },
           "TO Asst Manager": {
-            "value": "($5,967.50)",
+            "value": -5968,
             "abbreviation": "TO Asst Mngr"
           },
           "Sales Associates": {
-            "value": "($33,366.60)",
+            "value": -33367,
             "abbreviation": "Sales Assts"
           },
           "Made TO Order Manager": [
             {
-              "value": "($6,095.10)",
+              "value": -6095,
               "abbreviation": "MTO Order Mngr"
             },
             {
-              "value": "($2,216.40)",
+              "value": -2216,
               "abbreviation": "MTO Order Mngr"
             }
           ],
           "Made TO Order Sales Associate": [
             {
-              "value": "($20,917.50)",
+              "value": -20918,
               "abbreviation": "MTO Order Sales Asst"
             },
             {
-              "value": "($6,066.00)",
+              "value": -6066,
               "abbreviation": "MTO Order Sales Asst"
             }
           ],
           "Student Salary Benefits": {
-            "value": "($3,295.32)",
+            "value": -3295,
             "abbreviation": "Stud Sal Benefits"
           }
         }
@@ -1237,145 +1275,145 @@
     },
     "STUDENT STIPENDS": {
       "Cabinet Stipends": {
-        "value": "($130,725.00)",
+        "value": -130725,
         "abbreviation": "Cab Stip",
         "Items": {
           "President": {
-            "value": "($12,600.00)",
+            "value": -12600,
             "abbreviation": "Pres"
           },
           "Executive Vice President": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "Exec VP"
           },
           "Vice President External Affairs": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "VP Ext Aff"
           },
           "Vice President Academic Affairs": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "VP Acad Aff"
           },
           "Chief Financial Officer": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "CFO"
           },
           "Chief Communications Officer": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "CCO"
           },
           "Chief Personnel Officer": {
-            "value": "($10,500.00)",
+            "value": -10500,
             "abbreviation": "CPO"
           },
           "Associate Vice President, Concerts and Events": {
-            "value": "($5,250.00)",
+            "value": -5250,
             "abbreviation": "Assoc VP, Concerts & Events"
           },
           "Associate Vice President, Student Organizations": {
-            "value": "($5,250.00)",
+            "value": -5250,
             "abbreviation": "Assoc VP, Stud Orgs"
           },
           "Associate Vice President, Student Advocacy": {
-            "value": "($5,250.00)",
+            "value": -5250,
             "abbreviation": "Assoc VP, Stud Adv"
           },
           "Associate Vice President, College Affairs": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Coll Aff"
           },
           "Associate Vice President, Enterprises and Services": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Ent & Serv"
           },
           "Associate Vice President, Environmental Justice Affairs": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Env Just Aff"
           },
           "Associate Vice President, Equity, Diversity, and Inclusion": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Equity, Div & Inc"
           },
           "Associate Vice President, Food and Housing Resources": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Food & Housing"
           },
           "Associate Vice President, Health and Well–Being": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Health & Well"
           },
           "Associate Vice President, Local Affairs": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Local Aff"
           },
           "Associate Vice President, Spirit and Athletics": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Spirit & Athl"
           },
           "Associate Vice President, Transportation and Transformation": {
-            "value": "($4,375.00)",
+            "value": -4375,
             "abbreviation": "Assoc VP, Trans & Transf"
           }
         }
       },
       "Senate Stipends": {
-        "value": "($54,810.00)",
+        "value": -54810,
         "abbreviation": "Senate Stip",
         "Items": {
           "Campus–Wide Senators": {
-            "value": "($9,450.00)",
+            "value": -9450,
             "abbreviation": "Campus–Wide Sens"
           },
           "International Senator": {
-            "value": "($1,890.00)",
+            "value": -1890,
             "abbreviation": "Intl Senator"
           },
           "Out–of–State Senator": {
-            "value": "($1,890.00)",
+            "value": -1890,
             "abbreviation": "Out–of–State Sen"
           },
           "First Year Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "1st Yr Sens"
           },
           "Transfer Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Transfer Sens"
           },
           "Off–Campus Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Off–Campus Sens"
           },
           "Revelle Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Revelle Sens"
           },
           "Muir Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Muir Sens"
           },
           "Marshall Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Marshall Sens"
           },
           "Warren Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Warren Sens"
           },
           "Roosevelt Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "Roosevelt Sens"
           },
           "Sixth Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "6th Sens"
           },
           "Seventh Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "7th Sens"
           },
           "Eighth Senators": {
-            "value": "($3,780.00)",
+            "value": -3780,
             "abbreviation": "8th Sens"
           }
         }
@@ -1383,461 +1421,461 @@
     },
     "STAFF STIPENDS": {
       "Office of the President": {
-        "value": "($9,920.00)",
+        "value": -9920,
         "abbreviation": "Off Pres",
         "Items": {
           "Executive Director / Chief of Staff": {
-            "value": "($2,480.00)",
+            "value": -2480,
             "abbreviation": "Exec Dir/Chf Staff"
           },
           "Director of Programs and Initiatives": {
-            "value": "($1,860.00)",
+            "value": -1860,
             "abbreviation": "Dir Progs & Init"
           },
           "Director of Media and Outreach": {
-            "value": "($1,860.00)",
+            "value": -1860,
             "abbreviation": "Dir Media & Out"
           },
           "Director of Alumni Relations": {
-            "value": "($1,860.00)",
+            "value": -1860,
             "abbreviation": "Dir Alum Rel"
           },
           "Director of Internal Affairs": {
-            "value": "($1,860.00)",
+            "value": -1860,
             "abbreviation": "Dir Int. Ops."
           }
         }
       },
       "Office of College Affairs": {
-        "value": "($2,200.00)",
+        "value": -2200,
         "abbreviation": "Off Coll Aff",
         "Items": {
           "Director of Staff": {
-            "value": "($990.00)",
+            "value": -990,
             "abbreviation": "Dir Staff"
           },
           "Director of Marketing": {
-            "value": "($660.00)",
+            "value": -660,
             "abbreviation": "Dir Mkt"
           },
           "Director of Programming": {
-            "value": "($550.00)",
+            "value": -550,
             "abbreviation": "Dir Prog"
           }
         }
       },
       "Office of Food and Housing Resources": {
-        "value": "($7,260.00)",
+        "value": -7260,
         "abbreviation": "Off Food & Housing",
         "Items": {
           "Chief of Staff": {
-            "value": "($2,400.00)",
+            "value": -2400,
             "abbreviation": "Chf Staff"
           },
           "Director of Food Affairs": {
-            "value": "($1,800.00)",
+            "value": -1800,
             "abbreviation": "Dir Food Aff"
           },
           "Director of External Affairs": {
-            "value": "($1,800.00)",
+            "value": -1800,
             "abbreviation": "Dir Ext. Aff"
           },
           "Marketing Strategist": {
-            "value": "($1,260.00)",
+            "value": -1260,
             "abbreviation": "Mkt Strat"
           }
         }
       },
       "Office of Equity, Diversity, and Inclusion": {
-        "value": "($20,480.00)",
+        "value": -20480,
         "abbreviation": "Off Equity, Div & Inc",
         "Items": {
           "Chief of Staff": {
-            "value": "($2,400.00)",
+            "value": -2400,
             "abbreviation": "Chf Staff"
           },
           "Director of Internal Affairs": {
-            "value": "($2,100.00)",
+            "value": -2100,
             "abbreviation": "Dir Int. Ops."
           },
           "Director of External Affairs": {
-            "value": "($2,100.00)",
+            "value": -2100,
             "abbreviation": "Dir Ext. Aff"
           },
           "Women’s Commission Chair": {
-            "value": "($1,650.00)",
+            "value": -1650,
             "abbreviation": "Wom Comm Ch"
           },
           "Undocumented Students Commission Chair": {
-            "value": "($1,650.00)",
+            "value": -1650,
             "abbreviation": "Undoc Stud Comm Ch"
           },
           "BIPOC Commission Chair": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "BIPOC Comm Ch"
           },
           "LGBTQIA+ Commission Chair": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "LGBTQIA+ Comm Ch"
           },
           "Student With Dependents Commission Chair": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "Stud w/ Dep Comm Ch"
           },
           "International Students Commission Chair": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "Intl Stud Comm Ch"
           },
           "Marketing & Outreach Director": {
-            "value": "($1,790.00)",
+            "value": -1790,
             "abbreviation": "Mkt & Out Dir"
           },
           "SAAC Liaison(s)": {
-            "value": "($3,750.00)",
+            "value": -3750,
             "abbreviation": "SAAC Liaison"
           },
           "DOC Intern(s)": {
-            "value": "($1,000.00)",
+            "value": -1000,
             "abbreviation": "DOC Intern"
           }
         }
       },
       "Office of Environmental Justice Affairs": {
-        "value": "($9,000.00)",
+        "value": -9000,
         "abbreviation": "Off Env Just Aff",
         "Items": {
           "Chief of Staff": {
-            "value": "($2,000.00)",
+            "value": -2000,
             "abbreviation": "Chf Staff"
           },
           "Director of Programs and Initiatives": {
-            "value": "($1,500.00)",
+            "value": -1500,
             "abbreviation": "Dir Progs & Init"
           },
           "Director of Media and Outreach": {
-            "value": "($1,500.00)",
+            "value": -1500,
             "abbreviation": "Dir Media & Out"
           },
           "Event Programming Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Evt Prog Coord"
           },
           "Outreach Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Out Coord"
           },
           "Population Advocate(s)": {
-            "value": "($750.00)",
+            "value": -750,
             "abbreviation": "Pop Adv"
           },
           "Sustainability Intern": {
-            "value": "($500.00)",
+            "value": -500,
             "abbreviation": "Sust Intern"
           },
           "Environmental Justice Intern": {
-            "value": "($1,500.00)",
+            "value": -1500,
             "abbreviation": "Env Just Intern"
           }
         }
       },
       "Office of Health and Well–Being": {
-        "value": "($11,830.00)",
+        "value": -11830,
         "abbreviation": "Off Health & Well",
         "Items": {
           "Chief of Staff": {
-            "value": "($1,840.00)",
+            "value": -1840,
             "abbreviation": "Chf Staff"
           },
           "Director of Sexual Health": {
-            "value": "($1,380.00)",
+            "value": -1380,
             "abbreviation": "Dir Sex Health"
           },
           "Director of Student Health": {
-            "value": "($1,380.00)",
+            "value": -1380,
             "abbreviation": "Dir Stud Health"
           },
           "Director of Mental Health": {
-            "value": "($1,380.00)",
+            "value": -1380,
             "abbreviation": "Dir Ment Health"
           },
           "Outreach Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Out Coord"
           },
           "Marketing Strategist": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Mkt Strat"
           },
           "Sexual Health Advocate(s)": {
-            "value": "($1,200.00)",
+            "value": -1200,
             "abbreviation": "Sex Health Adv"
           },
           "Student Health Advocate(s)": {
-            "value": "($1,200.00)",
+            "value": -1200,
             "abbreviation": "Stud Health Adv"
           },
           "Mental Health Advocate(s)": {
-            "value": "($1,200.00)",
+            "value": -1200,
             "abbreviation": "Ment Health Adv"
           }
         }
       },
       "Office of Transportation and Transformation": {
-        "value": "($3,700.00)",
+        "value": -3700,
         "abbreviation": "Off Trans & Transf",
         "Items": {
           "Chief of Staff": {
-            "value": "($1,600.00)",
+            "value": -1600,
             "abbreviation": "Chf Staff"
           },
           "Director of Communications": {
-            "value": "($1,200.00)",
+            "value": -1200,
             "abbreviation": "Dir Comm"
           },
           "Outreach and Media Coordinator": {
-            "value": "($900.00)",
+            "value": -900,
             "abbreviation": "Out & Media Coord"
           }
         }
       },
       "Office of the Executive Vice President": {
-        "value": "($3,125.00)",
+        "value": -3125,
         "abbreviation": "Off Exec VP",
         "Items": {
           "Chief of Staff": {
-            "value": "($2,000.00)",
+            "value": -2000,
             "abbreviation": "Chf Staff"
           },
           "Media Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Media Coord"
           }
         }
       },
       "Office of External Affairs": {
-        "value": "($65,285.00)",
+        "value": -65285,
         "abbreviation": "Off Ext Aff",
         "Items": {
           "Office of External Affairs": {
-            "value": "($53,660.00)",
+            "value": -53660,
             "abbreviation": "Off Ext Aff"
           },
           "Triton Lobby Corps": {
-            "value": "($9,450.00)",
+            "value": -9450,
             "abbreviation": "Triton Lobby"
           },
           "Housing Affairs Commission": {
-            "value": "($1,600.00)",
+            "value": -1600,
             "abbreviation": "Hous Aff Comm"
           },
           "Disabled Students Commission": {
-            "value": "($2,000.00)",
+            "value": -2000,
             "abbreviation": "Dis Stud Comm"
           },
           "Labor Affairs Commission": {
-            "value": "($900.00)",
+            "value": -900,
             "abbreviation": "Lab Aff Comm"
           }
         }
       },
       "Office of Local Affairs": {
-        "value": "($15,675.00)",
+        "value": -15675,
         "abbreviation": "Off Local Aff",
         "Items": {
           "Chief of Staff": {
-            "value": "($2,400.00)",
+            "value": -2400,
             "abbreviation": "Chf Staff"
           },
           "Government Affairs Director": {
-            "value": "($1,800.00)",
+            "value": -1800,
             "abbreviation": "Gov Aff Dir"
           },
           "Community Affairs Director": {
-            "value": "($1,800.00)",
+            "value": -1800,
             "abbreviation": "Comm Aff Dir"
           },
           "Marketing Affairs Director": {
-            "value": "($1,800.00)",
+            "value": -1800,
             "abbreviation": "Mkt Aff Dir"
           },
           "Government Affairs Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Gov Aff Coord"
           },
           "Community Affairs Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Comm Aff Coord"
           },
           "Event Programming Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Evt Prog Coord"
           },
           "Lobbying Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Lobby Coord"
           },
           "Advocacy Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Advoc Coord"
           },
           "Community Empowerment Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Comm Emp Coord"
           },
           "Urban Development Coordinator": {
-            "value": "($1,125.00)",
+            "value": -1125,
             "abbreviation": "Urban Dev Coord"
           }
         }
       },
       "Office of Academic Affairs": {
-        "value": "($19,205.00)",
+        "value": -19205,
         "abbreviation": "Off Acad Aff",
         "Items": {
           "Director(s) of Academic Divisions": {
-            "value": "($11,040.00)",
+            "value": -11040,
             "abbreviation": "Dir Acad Div"
           },
           "Multimedia Coordinator": {
-            "value": "($1,035.00)",
+            "value": -1035,
             "abbreviation": "Mult Media Coord"
           },
           "Director of Internal Affairs": {
-            "value": "($1,610.00)",
+            "value": -1610,
             "abbreviation": "Dir Int. Ops."
           },
           "Director of External Affairs": {
-            "value": "($1,610.00)",
+            "value": -1610,
             "abbreviation": "Dir Ext. Aff."
           },
           "Director of Programs and Initiatives": {
-            "value": "($1,380.00)",
+            "value": -1380,
             "abbreviation": "Dir Progs & Init"
           },
           "Director of Retention": {
-            "value": "($1,265.00)",
+            "value": -1265,
             "abbreviation": "Dir Retent"
           },
           "Director of Advocacy": {
-            "value": "($1,265.00)",
+            "value": -1265,
             "abbreviation": "Dir Advoc"
           }
         }
       },
       "Office of Student Advocacy": {
-        "value": "($17,060.00)",
+        "value": -17060,
         "abbreviation": "Off Stud Adv",
         "Items": {
           "Outreach Advocate": {
-            "value": "($1,260.00)",
+            "value": -1260,
             "abbreviation": "Outreach Adv"
           },
           "Director of Internal Affairs": {
-            "value": "($2,100.00)",
+            "value": -2100,
             "abbreviation": "Dir Int. Ops."
           },
           "Director of External Affairs": {
-            "value": "($2,100.00)",
+            "value": -2100,
             "abbreviation": "Dir Ext. Aff."
           },
           "Student Advocate Returning": {
-            "value": "($6,000.00)",
+            "value": -6000,
             "abbreviation": "Stud Adv Ret"
           },
           "Student Advocate": {
-            "value": "($5,600.00)",
+            "value": -5600,
             "abbreviation": "Stud Adv"
           }
         }
       },
       "Office of Finance and Resources": {
-        "value": "($20,260.00)",
+        "value": -20260,
         "abbreviation": "Off Fin & Res",
         "Items": {
           "Office of Finance and Resources": {
-            "value": "($9,185.00)",
+            "value": -9185,
             "abbreviation": "Off Fin & Res"
           },
           "Office of Student Organizations": {
-            "value": "($6,450.00)",
+            "value": -6450,
             "abbreviation": "Off Stud Orgs"
           },
           "Office of Enterprises and Services": {
-            "value": "($4,625.00)",
+            "value": -4625,
             "abbreviation": "Off Ent & Serv"
           }
         }
       },
       "Office of Communications": {
-        "value": "($46,490.00)",
+        "value": -46490,
         "abbreviation": "Off Comm",
         "Items": {
           "Office of Communications": {
-            "value": "($20,200.00)",
+            "value": -20200,
             "abbreviation": "Off Comm"
           },
           "Office of Concerts and Events": {
-            "value": "($26,290.00)",
+            "value": -26290,
             "abbreviation": "Off Concert & Events"
           },
           "Office of Spirit and Athletics": {
-            "value": "($12,600.00)",
+            "value": -12600,
             "abbreviation": "Off Spirit & Athl"
           }
         }
       },
       "Office of Personnel Affairs": {
-        "value": "($3,190.00)",
+        "value": -3190,
         "abbreviation": "Off Pers Aff",
         "Items": {
           "Director of Internal Operations": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "Dir Int. Ops."
           },
           "Programming Coordinator": {
-            "value": "($770.00)",
+            "value": -770,
             "abbreviation": "Prog Coord"
           },
           "Fellowship Director": {
-            "value": "($1,210.00)",
+            "value": -1210,
             "abbreviation": "Fell Dir"
           }
         }
       },
       "Triton Television (TTV)": {
-        "value": "($24,550.00)",
+        "value": -24550,
         "abbreviation": "Triton TV",
         "Items": {
           "Triton Television (TTV)": {
-            "value": "($24,550.00)",
+            "value": -24550,
             "abbreviation": "Triton TV",
             "Subitems": {
               "Station Manager(s)": {
-                "value": "($8,400.00)",
+                "value": -8400,
                 "abbreviation": "Stn Mngr(s)"
               },
               "Director of Internal Affairs": {
-                "value": "($2,800.00)",
+                "value": -2800,
                 "abbreviation": "Dir Int. Ops."
               },
               "Director of External Affairs": {
-                "value": "($2,400.00)",
+                "value": -2400,
                 "abbreviation": "Dir Ext. Aff."
               },
               "Staff Development Coordinator": {
-                "value": "($2,400.00)",
+                "value": -2400,
                 "abbreviation": "Staff Dev Coord"
               },
               "Film Festival Coordinator": {
-                "value": "($1,350.00)",
+                "value": -1350,
                 "abbreviation": "Film Fest Coord"
               },
               "Project Manager": {
-                "value": "($2,400.00)",
+                "value": -2400,
                 "abbreviation": "Proj Mngr"
               },
               "A.S. Senior Project Manager(s)": {
-                "value": "($4,800.00)",
+                "value": -4800,
                 "abbreviation": "AS Sr Proj Mngr"
               }
             }
@@ -1845,11 +1883,11 @@
         }
       },
       "Elections": {
-        "value": "($800.00)",
+        "value": -800,
         "abbreviation": "Elections",
         "Items": {
           "Elections Manager": {
-            "value": "($800.00)",
+            "value": -800,
             "abbreviation": "Elections Mngr"
           }
         }
@@ -1857,7 +1895,7 @@
       "General": {
         "Items": {
           "Stipend Benefits (1.8%)": {
-            "value": "($8,000.00)",
+            "value": -8000,
             "abbreviation": "Stip Benefits"
           }
         }
