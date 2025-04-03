@@ -1,0 +1,79 @@
+{
+  "Total Budget": {
+    "value": 15000000,
+    "Items": {
+      "Carry Forwards": {
+        "value": 2000000,
+        "Items": {
+          "Unallocated": {
+            "value": 500000
+          },
+          "Emergency Fund": {
+            "value": 1500000
+          }
+        }
+      },
+      "Operating Budget": {
+        "value": 13000000,
+        "Items": {
+          "Student Services": {
+            "value": 4000000,
+            "Items": {
+              "Student Organizations": {
+                "value": 2000000
+              },
+              "Student Events": {
+                "value": 1500000
+              },
+              "Student Support": {
+                "value": 500000
+              }
+            }
+          },
+          "Academic Support": {
+            "value": 3500000,
+            "Items": {
+              "Tutoring Services": {
+                "value": 1500000
+              },
+              "Academic Resources": {
+                "value": 1000000
+              },
+              "Research Support": {
+                "value": 1000000
+              }
+            }
+          },
+          "Administrative": {
+            "value": 2500000,
+            "Items": {
+              "Staff Salaries": {
+                "value": 1500000
+              },
+              "Office Operations": {
+                "value": 500000
+              },
+              "Technology": {
+                "value": 500000
+              }
+            }
+          },
+          "Campus Life": {
+            "value": 3000000,
+            "Items": {
+              "Campus Events": {
+                "value": 1200000
+              },
+              "Student Activities": {
+                "value": 1000000
+              },
+              "Campus Facilities": {
+                "value": 800000
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
