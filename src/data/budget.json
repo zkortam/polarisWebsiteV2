@@ -6,12 +6,8 @@
       "Items": {
         "abbreviation": "Items",
         "Total Reserves": {
-          "value": -1189556,
+          "value": 1189556,
           "abbreviation": "Tot Res."
-        },
-        "Mandate Reserves": {
-          "value": -1189556,
-          "abbreviation": "Mand Res."
         }
       }
     }
@@ -23,27 +19,23 @@
       "Items": {
         "abbreviation": "Items",
         "Total A.S. Carryforward": {
-          "value": -165105,
+          "value": 165105,
           "abbreviation": "Tot AS C.fwd"
         },
-        "2024–2025 A.S. Carryforward": {
-          "value": -165105,
-          "abbreviation": "2024–25 AS C.fwd"
-        },
         "Auxiliary Carryforward": {
-          "value": -429322,
+          "value": 429322,
           "abbreviation": "Aux C.fwd"
         },
         "2024–2025 SPACES Carryforward": {
-          "value": -284480,
+          "value": 284480,
           "abbreviation": "2024–25 SPACES C.fwd"
         },
         "2024–2025 KSDT Carryforward": {
-          "value": -44842,
+          "value": 44842,
           "abbreviation": "2024–25 KSDT C.fwd"
         },
         "2024–2025 SSC Carryforward": {
-          "value": -100000,
+          "value": 100000,
           "abbreviation": "2024–25 SSC C.fwd"
         }
       }

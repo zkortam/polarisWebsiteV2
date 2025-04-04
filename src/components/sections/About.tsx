@@ -26,7 +26,7 @@ const visionPoints = [
   {
     title: "Inclusivity & Diversity",
     description: "We champion the voices and needs of all students, from all backgrounds and disciplines.",
-    icon: "🌈"
+    icon: "🧑"
   }
 ];
 
