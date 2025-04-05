@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency, calculatePercentage, getColorForIndex } from "@/lib/utils";
-import { parseBudgetData } from "@/lib/budgetParser";
 
 // Define types for our budget data
 type BudgetItem = {
@@ -162,9 +161,8 @@ export function BudgetVisualizer() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data/data.txt');
-        const rawData = await response.text();
-        const data = parseBudgetData(rawData);
+        const response = await fetch('/data/data.json');
+        const data = await response.json();
         setBudgetData(data);
         setCurrentData(data);
         setLoading(false);
@@ -172,7 +170,7 @@ export function BudgetVisualizer() {
         // Prepare initial chart data
         const topLevelData = Object.entries(data).map(([key, value]) => ({
           name: key,
-          value: typeof value === 'object' && 'value' in value ? (value.value as number) : 0
+          value: typeof value === 'object' && value !== null && 'value' in value ? (value.value as number) || 0 : 0
         }));
         setChartData(topLevelData);
       } catch (error) {
