@@ -176,7 +176,7 @@ export function Hero() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="flex justify-center mb-6">
               <Image 
-                src="/images/logo.png" 
+                src="/PolarisLogo.png" 
                 alt="Polaris Logo" 
                 width={120} 
                 height={120} 
@@ -219,7 +219,7 @@ export function Hero() {
             className="flex justify-center mb-6"
           >
             <Image 
-              src="/images/logo.png" 
+              src="/PolarisLogo.png" 
               alt="Polaris Logo" 
               width={120} 
               height={120} 
