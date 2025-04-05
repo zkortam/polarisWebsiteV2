@@ -65,10 +65,11 @@ export function Navbar() {
   }, [isMobileMenuOpen, mounted]);
 
   const navLinks = [
-    { label: "Home", href: "/#home" },
-    { label: "About", href: "/#about" },
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
     { label: "Platform", href: "/platform" },
-    { label: "Team", href: "/#team" },
+    { label: "Team", href: "/team" },
+    { label: "Budget", href: "/budget" },
   ];
 
   if (!mounted) {
