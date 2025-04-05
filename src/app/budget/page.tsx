@@ -42,6 +42,31 @@ const formatCurrency = (value: number) => {
   }).format(Math.abs(value));
 };
 
+// Calculate total student-related expenses
+const studentExpenses = {
+  "Student Services": Math.abs(budgetData.budgetSummary.studentPayrollStipends),
+  "Student Organizations": Math.abs(budgetData.officeOperations.studentOrganizations.amount),
+  "Academic Programs": Math.abs(budgetData.lockedInAllocations.academicPrograms),
+  "Return to Aid": Math.abs(budgetData.lockedInAllocations.returnToAid),
+};
+
+// Calculate administrative expenses
+const adminExpenses = {
+  "Career Employees": Math.abs(budgetData.budgetSummary.careerEmployees),
+  "Office Operations": Math.abs(budgetData.budgetSummary.officeOperations),
+  "General Operations": Math.abs(budgetData.budgetSummary.generalOperations),
+  "Senate Operations": Math.abs(budgetData.budgetSummary.senateOperations),
+};
+
+// Calculate questionable expenses
+const questionableExpenses = {
+  "New York Times Subscription": Math.abs(budgetData.officeOperations.presidentsOffice.newYorkTimes),
+  "Conference Travel": Math.abs(budgetData.officeOperations.externalAffairs.conferenceTravel),
+  "Board VP Travel": Math.abs(budgetData.officeOperations.externalAffairs.boardVPTravel),
+  "ABC Conference": Math.abs(budgetData.officeOperations.externalAffairs.abcConference),
+  "Festival Contingency": Math.abs(budgetData.officeOperations.concertsAndEvents.festivalContingency),
+};
+
 // Prepare data for income sources
 const incomeData = Object.entries(budgetData.budgetSummary)
   .filter(([key]) => key === "asRevenue")
@@ -72,6 +97,24 @@ const officeOperationsData = Object.entries(budgetData.officeOperations).map(
   })
 );
 
+// Prepare data for student vs admin comparison
+const studentVsAdminData = [
+  {
+    name: "Student-Focused",
+    value: Object.values(studentExpenses).reduce((a, b) => a + b, 0),
+  },
+  {
+    name: "Administrative",
+    value: Object.values(adminExpenses).reduce((a, b) => a + b, 0),
+  },
+];
+
+// Prepare data for questionable expenses
+const questionableExpensesData = Object.entries(questionableExpenses).map(([name, value]) => ({
+  name,
+  value,
+}));
+
 // Colors for charts
 const COLORS = [
   "#0088FE",
@@ -85,6 +128,12 @@ const COLORS = [
   "#A4DE6C",
   "#D0ED57",
 ];
+
+// Calculate total income and expenses
+const totalIncome = Math.abs(budgetData.budgetSummary.asRevenue);
+const totalExpenses = Object.entries(budgetData.budgetSummary)
+  .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
+  .reduce((sum, [_, value]) => sum + Math.abs(value), 0);
 
 export default function BudgetPage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -126,7 +175,7 @@ export default function BudgetPage() {
           >
             <h3 className="text-lg font-semibold mb-2">Total Income</h3>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(Math.abs(budgetData.budgetSummary.asRevenue))}
+              {formatCurrency(totalIncome)}
             </p>
           </motion.div>
           <motion.div
@@ -137,18 +186,14 @@ export default function BudgetPage() {
           >
             <h3 className="text-lg font-semibold mb-2">Total Expenses</h3>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(
-                Object.entries(budgetData.budgetSummary)
-                  .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
-                  .reduce((sum, [_, value]) => sum + Math.abs(value), 0)
-              )}
+              {formatCurrency(totalExpenses)}
             </p>
           </motion.div>
         </div>
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-4 mb-8">
-          {["overview", "income", "expenses", "operations"].map((tab) => (
+          {["overview", "income", "expenses", "operations", "analysis"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -173,12 +218,33 @@ export default function BudgetPage() {
               className="space-y-8"
             >
               <div>
-                <h3 className="text-xl font-semibold mb-4">Income Sources</h3>
+                <h3 className="text-xl font-semibold mb-4">Income vs Expenses</h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={[
+                        { name: "Income", value: totalIncome },
+                        { name: "Expenses", value: totalExpenses },
+                      ]}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                      <Bar dataKey="value" fill="#8884d8" name="Amount" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Student vs Administrative Spending</h3>
                 <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={incomeData}
+                        data={studentVsAdminData}
                         dataKey="value"
                         nameKey="name"
                         cx="50%"
@@ -188,34 +254,16 @@ export default function BudgetPage() {
                           `${name}: ${(percent * 100).toFixed(0)}%`
                         }
                       >
-                        {incomeData.map((_, index) => (
+                        {studentVsAdminData.map((_, index) => (
                           <Cell
                             key={`cell-${index}`}
                             fill={COLORS[index % COLORS.length]}
                           />
                         ))}
                       </Pie>
-                      <Tooltip
-                        formatter={(value) => formatCurrency(value as number)}
-                      />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Major Expense Categories</h3>
-                <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={expenseData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
                       <Tooltip formatter={(value) => formatCurrency(value as number)} />
                       <Legend />
-                      <Bar dataKey="value" fill="#8884d8" name="Amount" />
-                    </BarChart>
+                    </PieChart>
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -298,6 +346,100 @@ export default function BudgetPage() {
                     <Bar dataKey="value" fill="#82ca9d" name="Amount" />
                   </BarChart>
                 </ResponsiveContainer>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "analysis" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Questionable Expenses</h3>
+                <p className="text-foreground/70 mb-4">
+                  These expenses raise concerns about budget allocation and transparency:
+                </p>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={questionableExpensesData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                      <Bar dataKey="value" fill="#ff8042" name="Amount" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Student-Focused Expenses</h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={Object.entries(studentExpenses).map(([name, value]) => ({
+                          name,
+                          value,
+                        }))}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={150}
+                        label={({ name, percent }) =>
+                          `${name}: ${(percent * 100).toFixed(0)}%`
+                        }
+                      >
+                        {Object.keys(studentExpenses).map((_, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Administrative Expenses</h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={Object.entries(adminExpenses).map(([name, value]) => ({
+                          name,
+                          value,
+                        }))}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={150}
+                        label={({ name, percent }) =>
+                          `${name}: ${(percent * 100).toFixed(0)}%`
+                        }
+                      >
+                        {Object.keys(adminExpenses).map((_, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </motion.div>
           )}
