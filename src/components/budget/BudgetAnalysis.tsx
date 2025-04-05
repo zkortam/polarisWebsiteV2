@@ -597,34 +597,57 @@ const BudgetAnalysis: React.FC = () => {
   
   const sankeyData = {
     nodes: [
-      { name: "Total Revenue", color: COLORS.revenue },
-      { name: "Student Funding", color: COLORS.studentFunding },
-      { name: "Administrative Costs", color: COLORS.adminCosts },
-      { name: "Events & Activities", color: COLORS.events },
-      { name: "Other Expenses", color: COLORS.other },
+      { name: "Total Revenue", fill: COLORS.revenue },
+      { name: "Student Funding", fill: COLORS.studentFunding },
+      { name: "Administrative Costs", fill: COLORS.adminCosts },
+      { name: "Events & Activities", fill: COLORS.events },
+      { name: "Other Expenses", fill: COLORS.other },
     ],
     links: [
       {
         source: 0,
         target: 1,
         value: metrics.clubFunding,
+        fill: COLORS.studentFunding,
       },
       {
         source: 0,
         target: 2,
         value: metrics.adminExpenses,
+        fill: COLORS.adminCosts,
       },
       {
         source: 0,
         target: 3,
         value: metrics.oneDayEvents,
+        fill: COLORS.events,
       },
       {
         source: 0,
         target: 4,
         value: metrics.marketingExpenses,
+        fill: COLORS.other,
       },
     ],
+  };
+
+  // Custom Sankey component with colored links
+  const CustomSankey = () => {
+    return (
+      <Sankey
+        data={sankeyData}
+        node={{
+          opacity: 0.8,
+          className: "text-white",
+        }}
+        link={{
+          opacity: 0.6,
+        }}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      >
+        <SankeyTooltip content={<CustomSankeyTooltip />} />
+      </Sankey>
+    );
   };
 
   const CustomSankeyTooltip = ({ active, payload }: any) => {
@@ -717,21 +740,7 @@ const BudgetAnalysis: React.FC = () => {
             <CardContent>
               <div className="h-[400px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <Sankey
-                    data={sankeyData}
-                    node={{
-                      fill: "#8884d8",
-                      opacity: 0.8,
-                      className: "text-white",
-                    }}
-                    link={{
-                      fill: "#8884d8",
-                      opacity: 0.4,
-                    }}
-                    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-                  >
-                    <SankeyTooltip content={<CustomSankeyTooltip />} />
-                  </Sankey>
+                  <CustomSankey />
                 </ResponsiveContainer>
               </div>
             </CardContent>
