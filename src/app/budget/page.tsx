@@ -58,6 +58,30 @@ const adminExpenses = {
   "Senate Operations": Math.abs(budgetData.budgetSummary.senateOperations),
 };
 
+// Calculate marketing-related expenses
+const marketingExpenses = Object.entries(budgetData.officeOperations)
+  .reduce((total, [_, value]: [string, any]) => {
+    if (value.marketingOutreach) {
+      return total + Math.abs(value.marketingOutreach);
+    }
+    return total;
+  }, 0);
+
+// Calculate travel-related expenses
+const travelExpenses = Object.entries(budgetData.officeOperations)
+  .reduce((total, [_, value]: [string, any]) => {
+    if (value.conferenceTravel) {
+      return total + Math.abs(value.conferenceTravel);
+    }
+    if (value.boardVPTravel) {
+      return total + Math.abs(value.boardVPTravel);
+    }
+    if (value.travel) {
+      return total + Math.abs(value.travel);
+    }
+    return total;
+  }, 0);
+
 // Calculate questionable expenses
 const questionableExpenses = {
   "New York Times Subscription": Math.abs(budgetData.officeOperations.presidentsOffice.newYorkTimes),
@@ -65,6 +89,8 @@ const questionableExpenses = {
   "Board VP Travel": Math.abs(budgetData.officeOperations.externalAffairs.boardVPTravel),
   "ABC Conference": Math.abs(budgetData.officeOperations.externalAffairs.abcConference),
   "Festival Contingency": Math.abs(budgetData.officeOperations.concertsAndEvents.festivalContingency),
+  "Marketing Expenses": marketingExpenses,
+  "Travel Expenses": travelExpenses,
 };
 
 // Prepare data for income sources
@@ -365,6 +391,23 @@ export default function BudgetPage() {
             While we strive for accuracy, some figures may be estimates or subject to change. 
             For the most up-to-date and official budget information, please refer to official AS documentation.
           </p>
+        </motion.div>
+
+        {/* Budget Concerns */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 shadow-sm mb-8 w-full border border-amber-200 dark:border-amber-800"
+        >
+          <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-300 mb-2">Budget Concerns</h3>
+          <ul className="list-disc pl-5 space-y-1 text-amber-800/80 dark:text-amber-300/80">
+            <li>Over <strong>{formatCurrency(marketingExpenses)}</strong> is allocated to marketing-related expenses</li>
+            <li>Significant travel expenses totaling <strong>{formatCurrency(travelExpenses)}</strong></li>
+            <li>Large allocation to SunGod Festival: <strong>{formatCurrency(Math.abs(budgetData.officeOperations.concertsAndEvents.sunGodFestival))}</strong></li>
+            <li>High administrative costs compared to direct student services</li>
+            <li>Multiple conference and travel expenses that may not directly benefit the student body</li>
+          </ul>
         </motion.div>
 
         {/* Tabs */}
@@ -716,6 +759,35 @@ export default function BudgetPage() {
                       <Legend />
                       <Bar dataKey="value" fill="#ff8042" name="Amount" />
                     </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Marketing vs. Student Services</h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { name: "Marketing Expenses", value: marketingExpenses },
+                          { name: "Student Services", value: Object.values(studentExpenses).reduce((a, b) => a + b, 0) - marketingExpenses },
+                        ]}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={150}
+                        label={({ name, percent }) =>
+                          `${name}: ${(percent * 100).toFixed(0)}%`
+                        }
+                      >
+                        <Cell fill="#ff8042" />
+                        <Cell fill="#82ca9d" />
+                      </Pie>
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                    </PieChart>
                   </ResponsiveContainer>
                 </div>
               </div>
