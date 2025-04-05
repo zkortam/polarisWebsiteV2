@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle, DollarSign, TrendingDown, Users, Calendar, Plane, ChevronLeft, ChevronRight, Home } from "lucide-react";
 import { formatCurrency, calculatePercentage, getColorForIndex } from "@/lib/utils";
+import { parseBudgetData } from "@/lib/budgetParser";
 
 // Define types for our budget data
 type BudgetItem = {
@@ -196,8 +197,9 @@ const BudgetAnalysis: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data/budget.json');
-        const data = await response.json();
+        const response = await fetch('/data/data.txt');
+        const rawData = await response.text();
+        const data = parseBudgetData(rawData);
         setBudgetData(data);
         setLoading(false);
       } catch (error) {

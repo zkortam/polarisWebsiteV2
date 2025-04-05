@@ -149,121 +149,73 @@ const StarBackground = () => {
   );
 };
 
-export function Hero() {
-  const [mounted, setMounted] = useState(false);
-  
-  // Initialize effects
-  useEffect(() => {
-    setMounted(true);
-    
-    // Handle scroll for parallax effect
-    const handleScroll = () => {
-      // Scroll handling if needed
-    };
-    
-    window.addEventListener("scroll", handleScroll);
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  
-  // Static UI for server-side rendering
-  if (!mounted) {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/80">
-        <div className="container mx-auto px-4 z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="flex justify-center mb-6">
-              <Image 
-                src="/images/logo.png" 
-                alt="Polaris Logo" 
-                width={120} 
-                height={120} 
-                className="rounded-full"
-              />
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              POLARIS
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-foreground/80">
-              Guiding UCSD into a brighter future with innovative solutions, responsible governance, and a commitment to enhancing the student experience.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="group">
-                Learn More
-                <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button size="lg" variant="outline">
-                Get Involved
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-  
+export const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/80">
-      {/* Canvas-based star background */}
-      <StarBackground />
-      
-      {/* Content */}
-      <div className="container mx-auto px-4 z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="flex justify-center mb-6"
-          >
-            <Image 
-              src="/images/logo.png" 
-              alt="Polaris Logo" 
-              width={120} 
-              height={120} 
-              className="rounded-full"
-            />
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              POLARIS
-            </h1>
-          </motion.div>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-8 text-foreground/80"
-          >
-            Guiding UCSD into a brighter future with innovative solutions, responsible governance, and a commitment to enhancing the student experience.
-          </motion.p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Button size="lg" className="group">
-              Learn More
-              <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button size="lg" variant="outline">
-              Get Involved
-            </Button>
-          </motion.div>
-        </div>
+    <div className="relative min-h-screen flex flex-col items-center justify-center">
+      {/* Fixed star background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/20 to-black" />
+        <div className="absolute inset-0 bg-[url('/stars.png')] bg-repeat opacity-50" />
       </div>
-    </section>
+
+      {/* Content */}
+      <div className="relative z-10 text-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-8"
+        >
+          <Image
+            src="/Polarislogo.png"
+            alt="Polaris Logo"
+            width={200}
+            height={200}
+            className="mx-auto"
+            priority
+          />
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-4xl md:text-6xl font-bold text-white mb-6"
+        >
+          Welcome to Polaris
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-xl md:text-2xl text-gray-300 mb-8"
+        >
+          Your Gateway to Student Government
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+        >
+          <a
+            href="#about"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors"
+          >
+            Learn More
+          </a>
+          <a
+            href="#contact"
+            className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-3 rounded-lg transition-colors"
+          >
+            Get Involved
+          </a>
+        </motion.div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Hero;
