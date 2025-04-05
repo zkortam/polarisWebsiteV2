@@ -2,16 +2,57 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+
+// Voting Popup Component
+const VotingPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-background rounded-lg p-6 max-w-md w-full shadow-xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">Voting Information</h3>
+              <Button variant="ghost" size="icon" onClick={onClose}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-foreground/80 mb-4">
+              Voting for the Polaris election will begin on April 7th. Stay tuned for more information about how to cast your vote!
+            </p>
+            <Button className="w-full" onClick={onClose}>
+              Got it
+            </Button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [showVotingPopup, setShowVotingPopup] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -136,7 +177,10 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button 
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={() => setShowVotingPopup(true)}
+            >
               Vote Now
             </Button>
           </nav>
@@ -176,12 +220,21 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full">
+            <Button 
+              className="bg-primary text-primary-foreground hover:bg-primary/90 w-full"
+              onClick={() => {
+                setShowVotingPopup(true);
+                setIsMobileMenuOpen(false);
+              }}
+            >
               Vote Now
             </Button>
           </nav>
         </div>
       </motion.div>
+
+      {/* Voting Popup */}
+      <VotingPopup isOpen={showVotingPopup} onClose={() => setShowVotingPopup(false)} />
     </header>
   );
 }

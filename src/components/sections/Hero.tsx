@@ -192,7 +192,6 @@ const StarBackground = () => {
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
-  const [showVotingPopup, setShowVotingPopup] = useState(false);
   const router = useRouter();
   
   // Initialize effects
@@ -226,10 +225,6 @@ export function Hero() {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  const handleVoteNow = () => {
-    setShowVotingPopup(true);
-  };
   
   // Static UI for server-side rendering
   if (!mounted) {
@@ -260,23 +255,17 @@ export function Hero() {
               <Button size="lg" variant="outline" onClick={handleGetInvolved}>
                 Get Involved
               </Button>
-              <Button size="lg" variant="default" onClick={handleVoteNow}>
-                Vote Now
-              </Button>
             </div>
           </div>
         </div>
-        <VotingPopup isOpen={showVotingPopup} onClose={() => setShowVotingPopup(false)} />
       </section>
     );
   }
   
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/80">
-      {/* Canvas-based star background */}
       <StarBackground />
       
-      {/* Content */}
       <div className="container mx-auto px-4 z-10">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -326,13 +315,9 @@ export function Hero() {
             <Button size="lg" variant="outline" onClick={handleGetInvolved}>
               Get Involved
             </Button>
-            <Button size="lg" variant="default" onClick={handleVoteNow}>
-              Vote Now
-            </Button>
           </motion.div>
         </div>
       </div>
-      <VotingPopup isOpen={showVotingPopup} onClose={() => setShowVotingPopup(false)} />
     </section>
   );
 }
