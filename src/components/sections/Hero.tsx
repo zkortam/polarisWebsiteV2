@@ -1,11 +1,52 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+// Voting Popup Component
+const VotingPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-background rounded-lg p-6 max-w-md w-full shadow-xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">Voting Information</h3>
+              <Button variant="ghost" size="icon" onClick={onClose}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-foreground/80 mb-4">
+              Voting for the Polaris election will begin on April 7th. Stay tuned for more information about how to cast your vote!
+            </p>
+            <Button className="w-full" onClick={onClose}>
+              Got it
+            </Button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 // Canvas-based star background component
 const StarBackground = () => {
@@ -36,14 +77,14 @@ const StarBackground = () => {
       this.size = Math.random() * 1.5 + 0.5; // Smaller stars
       this.speedX = (Math.random() - 0.5) * 0.2; // Slower movement
       this.speedY = (Math.random() - 0.5) * 0.2;
-      this.brightness = Math.random() * 0.3 + 0.2; // More faded stars
+      this.brightness = Math.random() * 0.4 + 0.3; // 25% brighter stars
       this.pulseSpeed = Math.random() * 0.01 + 0.005; // Slower pulsing
       this.pulseOffset = Math.random() * Math.PI * 2;
     }
 
     update(canvas: HTMLCanvasElement) {
       // Subtle pulsing effect
-      this.brightness = 0.2 + Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.1;
+      this.brightness = 0.3 + Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.15; // Brighter base and pulse
       
       this.x += this.speedX;
       this.y += this.speedY;
@@ -151,6 +192,8 @@ const StarBackground = () => {
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [showVotingPopup, setShowVotingPopup] = useState(false);
+  const router = useRouter();
   
   // Initialize effects
   useEffect(() => {
@@ -167,6 +210,26 @@ export function Hero() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLearnMore = () => {
+    // Scroll to the About section
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleGetInvolved = () => {
+    // Scroll to the Contact section
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleVoteNow = () => {
+    setShowVotingPopup(true);
+  };
   
   // Static UI for server-side rendering
   if (!mounted) {
@@ -190,16 +253,20 @@ export function Hero() {
               Guiding UCSD into a brighter future with innovative solutions, responsible governance, and a commitment to enhancing the student experience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={handleLearnMore}>
                 Learn More
                 <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" onClick={handleGetInvolved}>
                 Get Involved
+              </Button>
+              <Button size="lg" variant="default" onClick={handleVoteNow}>
+                Vote Now
               </Button>
             </div>
           </div>
         </div>
+        <VotingPopup isOpen={showVotingPopup} onClose={() => setShowVotingPopup(false)} />
       </section>
     );
   }
@@ -252,16 +319,20 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button size="lg" className="group">
+            <Button size="lg" className="group" onClick={handleLearnMore}>
               Learn More
               <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" onClick={handleGetInvolved}>
               Get Involved
+            </Button>
+            <Button size="lg" variant="default" onClick={handleVoteNow}>
+              Vote Now
             </Button>
           </motion.div>
         </div>
       </div>
+      <VotingPopup isOpen={showVotingPopup} onClose={() => setShowVotingPopup(false)} />
     </section>
   );
 }
