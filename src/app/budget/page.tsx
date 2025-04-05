@@ -247,6 +247,22 @@ const getDetailedBreakdown = (category: string) => {
       return [{ name: "Referendums And Aid", value: Math.abs(budgetData.budgetSummary.referendumsAndAid) }];
     case "Mandated Reserves":
       return [{ name: "Mandated Reserves", value: Math.abs(budgetData.budgetSummary.mandatedReserves) }];
+    case "Income":
+      return [
+        { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
+        { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
+        { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
+      ];
+    case "Expenses":
+      return Object.entries(budgetData.budgetSummary)
+        .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
+        .map(([name, value]) => ({
+          name: name
+            .split(/(?=[A-Z])/)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" "),
+          value: Math.abs(value),
+        }));
     default:
       return [];
   }
@@ -286,6 +302,7 @@ export default function BudgetPage() {
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [detailedData, setDetailedData] = useState<any[]>([]);
   const [subcategoryData, setSubcategoryData] = useState<any[]>([]);
+  const [summaryDrillDown, setSummaryDrillDown] = useState<string | null>(null);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
@@ -308,6 +325,16 @@ export default function BudgetPage() {
       setSelectedCategory(null);
       setDetailedData([]);
     }
+  };
+
+  const handleSummaryDrillDown = (category: string) => {
+    setSummaryDrillDown(category);
+    setDetailedData(getDetailedBreakdown(category));
+  };
+
+  const handleSummaryBack = () => {
+    setSummaryDrillDown(null);
+    setDetailedData([]);
   };
 
   return (
@@ -438,34 +465,87 @@ export default function BudgetPage() {
             >
               <div>
                 <h3 className="text-xl font-semibold mb-4">Budget Summary</h3>
-                <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={[
-                        { name: "Income", value: totalIncome },
-                        { name: "Expenses", value: totalExpenses },
-                        { name: "Deficit", value: deficit },
-                      ]}
+                {summaryDrillDown ? (
+                  <>
+                    <button
+                      onClick={handleSummaryBack}
+                      className="mb-4 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors"
                     >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
-                      <Bar 
-                        dataKey="value" 
-                        fill="#8884d8" 
-                        name="Amount" 
-                      />
-                      <Bar 
-                        dataKey="value" 
-                        fill="#ef4444" 
-                        name="Deficit" 
-                        data={[{ name: "Deficit", value: deficit }]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+                      ← Back to Summary
+                    </button>
+                    <div className="h-[400px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={detailedData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis 
+                            dataKey="name" 
+                            angle={-45} 
+                            textAnchor="end" 
+                            height={100}
+                            interval={0}
+                          />
+                          <YAxis 
+                            tickFormatter={(value) => formatCurrency(value)} 
+                            width={120}
+                          />
+                          <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                          <Legend />
+                          <Bar 
+                            dataKey="value" 
+                            fill="#8884d8" 
+                            name="Amount" 
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </>
+                ) : (
+                  <div className="h-[400px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={[
+                          { name: "Total Income", value: totalIncome },
+                          { name: "Total Expenses", value: totalExpenses },
+                          { name: "Deficit", value: deficit },
+                        ]}
+                        onClick={(data) => {
+                          if (data && data.activePayload && data.activePayload[0]) {
+                            const category = data.activePayload[0].payload.name;
+                            if (category === "Total Income") {
+                              handleSummaryDrillDown("Income");
+                            } else if (category === "Total Expenses") {
+                              handleSummaryDrillDown("Expenses");
+                            }
+                          }
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="name" 
+                          interval={0}
+                        />
+                        <YAxis 
+                          tickFormatter={(value) => formatCurrency(value)} 
+                          width={120}
+                        />
+                        <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                        <Legend />
+                        <Bar 
+                          dataKey="value" 
+                          fill="#8884d8" 
+                          name="Amount" 
+                        />
+                        <Bar 
+                          dataKey="value" 
+                          fill="#ef4444" 
+                          name="Deficit" 
+                          data={[{ name: "Deficit", value: deficit }]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -676,8 +756,17 @@ export default function BudgetPage() {
                     style={{ cursor: selectedSubcategory ? 'default' : 'pointer' }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                    <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                    <XAxis 
+                      dataKey="name" 
+                      angle={-45} 
+                      textAnchor="end" 
+                      height={100}
+                      interval={0}
+                    />
+                    <YAxis 
+                      tickFormatter={(value) => formatCurrency(value)} 
+                      width={120}
+                    />
                     <Tooltip formatter={(value) => formatCurrency(value as number)} />
                     <Legend />
                     <Bar dataKey="value" fill="#8884d8" name="Amount" />
@@ -753,8 +842,17 @@ export default function BudgetPage() {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={questionableExpensesData}>
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                      <XAxis 
+                        dataKey="name" 
+                        angle={-45} 
+                        textAnchor="end" 
+                        height={100}
+                        interval={0}
+                      />
+                      <YAxis 
+                        tickFormatter={(value) => formatCurrency(value)} 
+                        width={120}
+                      />
                       <Tooltip formatter={(value) => formatCurrency(value as number)} />
                       <Legend />
                       <Bar dataKey="value" fill="#ff8042" name="Amount" />
