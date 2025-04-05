@@ -787,21 +787,20 @@ const BudgetAnalysis: React.FC = () => {
                     className="h-[300px]"
                   >
                     <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
+                      <PieChart width={400} height={400}>
                         <Pie
-                          data={chartData.studentVsAdmin}
-                          cx="50%"
-                          cy="50%"
+                          data={chartData?.studentVsAdmin || []}
+                          cx={200}
+                          cy={200}
                           labelLine={false}
-                          outerRadius={100}
+                          outerRadius={150}
                           fill="#8884d8"
                           dataKey="value"
+                          nameKey="name"
                           label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                          onClick={handleStudentVsAdminDrillDown}
-                          style={{ cursor: 'pointer' }}
                         >
-                          {chartData.studentVsAdmin.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                          {chartData?.studentVsAdmin?.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={getColorForIndex(index)} />
                           ))}
                         </Pie>
                         <Tooltip 
@@ -891,7 +890,9 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        data={chartData.spendingComparison}
+                        width={600}
+                        height={300}
+                        data={chartData?.spendingComparison || []}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
@@ -988,9 +989,10 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        data={chartData.travelData}
-                        layout="vertical"
-                        margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+                        width={600}
+                        height={300}
+                        data={chartData?.travelData || []}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
@@ -1085,9 +1087,10 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        data={chartData.questionableData}
-                        layout="vertical"
-                        margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+                        width={600}
+                        height={300}
+                        data={chartData?.questionableData || []}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
@@ -1136,8 +1139,8 @@ const BudgetAnalysis: React.FC = () => {
             <AlertTitle>Questionable Spending Priorities</AlertTitle>
             <AlertDescription>
               The AS budget includes several questionable expenses that may not align with student priorities. 
-              For example, AS spends {formatCurrency(chartData.questionableData[0]?.value || 0)} on 
-              {chartData.questionableData[0]?.name.toLowerCase() || "questionable items"}, 
+              For example, AS spends {formatCurrency(chartData?.questionableData?.[0]?.value || 0)} on 
+              {chartData?.questionableData?.[0]?.name?.toLowerCase() || "questionable items"}, 
               which could be reallocated to support more student programs and services.
             </AlertDescription>
           </Alert>
@@ -1155,21 +1158,21 @@ const BudgetAnalysis: React.FC = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              <strong>Significant Deficit:</strong> AS is spending {formatCurrency(Math.abs(metrics.deficit))} 
+              <strong>Significant Deficit:</strong> AS is spending {formatCurrency(Math.abs(metrics?.deficit || 0))} 
               more than it's bringing in, which could lead to future budget cuts or increased fees.
             </li>
             <li>
               <strong>High Administrative Overhead:</strong> For every dollar spent on student organizations, 
-              AS spends {(metrics.adminExpenses / metrics.clubFunding).toFixed(2)} dollars on administrative costs.
+              AS spends {((metrics?.adminExpenses || 0) / (metrics?.clubFunding || 1)).toFixed(2)} dollars on administrative costs.
             </li>
             <li>
               <strong>Event vs. Club Funding Disparity:</strong> AS spends 
-              {(metrics.oneDayEvents / metrics.clubFunding).toFixed(2)}x more on a few one-day events than 
+              {((metrics?.oneDayEvents || 0) / (metrics?.clubFunding || 1)).toFixed(2)}x more on a few one-day events than 
               it does on supporting hundreds of student clubs for the entire year.
             </li>
             <li>
               <strong>Questionable Expenses:</strong> The budget includes several questionable expenses that 
-              may not align with student priorities, such as {chartData.questionableData[0]?.name.toLowerCase() || "questionable items"}.
+              may not align with student priorities, such as {chartData?.questionableData?.[0]?.name?.toLowerCase() || "questionable items"}.
             </li>
           </ul>
           <p>
