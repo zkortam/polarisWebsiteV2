@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { BudgetVisualizer } from "@/components/budget/BudgetVisualizer";
+import { BudgetAnalysis } from "@/components/budget/BudgetAnalysis";
 
 export default function BudgetPage() {
   return (
-    <div className="container mx-auto py-12 px-4">
-      <h1 className="text-4xl font-bold mb-8 text-gradient">AS Budget Visualizer</h1>
-      <p className="text-lg mb-8 text-foreground/70">
-        Explore the Associated Students budget data in an interactive way. Click on categories to dive deeper into the details.
+    <div className="container mx-auto py-12">
+      <h1 className="text-4xl font-bold mb-4">AS Budget Analysis</h1>
+      <p className="text-xl text-muted-foreground mb-8">
+        An interactive analysis of the AS budget, highlighting key spending patterns and areas of concern.
       </p>
-      <BudgetVisualizer />
+      <BudgetAnalysis />
     </div>
   );
 } 

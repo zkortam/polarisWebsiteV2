@@ -1,77 +1,104 @@
 {
-  "Total Budget": {
-    "value": 15000000,
-    "Items": {
-      "Carry Forwards": {
-        "value": 2000000,
-        "Items": {
-          "Unallocated": {
-            "value": 500000
-          },
-          "Emergency Fund": {
-            "value": 1500000
-          }
+  "BUDGET SUMMARY": {
+    "General": {
+      "Items": {
+        "2024–2025 AS Revenue": {
+          "value": 8834339.00
+        },
+        "2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))": {
+          "value": -587367.41
         }
-      },
-      "Operating Budget": {
-        "value": 13000000,
-        "Items": {
-          "Student Services": {
-            "value": 4000000,
-            "Items": {
-              "Student Organizations": {
-                "value": 2000000
-              },
-              "Student Events": {
-                "value": 1500000
-              },
-              "Student Support": {
-                "value": 500000
-              }
-            }
-          },
-          "Academic Support": {
-            "value": 3500000,
-            "Items": {
-              "Tutoring Services": {
-                "value": 1500000
-              },
-              "Academic Resources": {
-                "value": 1000000
-              },
-              "Research Support": {
-                "value": 1000000
-              }
-            }
-          },
-          "Administrative": {
-            "value": 2500000,
-            "Items": {
-              "Staff Salaries": {
-                "value": 1500000
-              },
-              "Office Operations": {
-                "value": 500000
-              },
-              "Technology": {
-                "value": 500000
-              }
-            }
-          },
-          "Campus Life": {
-            "value": 3000000,
-            "Items": {
-              "Campus Events": {
-                "value": 1200000
-              },
-              "Student Activities": {
-                "value": 1000000
-              },
-              "Campus Facilities": {
-                "value": 800000
-              }
-            }
-          }
+      }
+    }
+  },
+  "OPERATING RESERVES": {
+    "General": {
+      "Items": {
+        "Total Reserves": {
+          "value": 1189555.55
+        }
+      }
+    }
+  },
+  "EXPENDITURES": {
+    "Marketing": {
+      "Items": {
+        "Social Media": {
+          "value": 125000.00
+        },
+        "Print Materials": {
+          "value": 75000.00
+        },
+        "Digital Advertising": {
+          "value": 100000.00
+        }
+      }
+    },
+    "Administration": {
+      "Items": {
+        "Staff Salaries": {
+          "value": 2500000.00
+        },
+        "Office Supplies": {
+          "value": 50000.00
+        },
+        "Utilities": {
+          "value": 75000.00
+        }
+      }
+    },
+    "Events": {
+      "Items": {
+        "Sun God Festival": {
+          "value": 750000.00
+        },
+        "Bear Gardens": {
+          "value": 150000.00
+        },
+        "Day One": {
+          "value": 100000.00
+        },
+        "Horizon": {
+          "value": 50000.00
+        }
+      }
+    },
+    "Student Organizations": {
+      "Items": {
+        "Club Funding": {
+          "value": 500000.00
+        },
+        "Leadership Development": {
+          "value": 75000.00
+        }
+      }
+    },
+    "Travel": {
+      "Items": {
+        "Conference Attendance": {
+          "value": 150000.00
+        },
+        "Leadership Retreats": {
+          "value": 75000.00
+        },
+        "Student Government Travel": {
+          "value": 50000.00
+        }
+      }
+    },
+    "Questionable Expenses": {
+      "Items": {
+        "New York Times Subscription": {
+          "value": 25000.00
+        },
+        "Fluffy the Bear Mascot": {
+          "value": 15000.00
+        },
+        "Vending Machine Contracts": {
+          "value": 100000.00
+        },
+        "Period Project": {
+          "value": 50000.00
         }
       }
     }
