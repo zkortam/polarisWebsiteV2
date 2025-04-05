@@ -336,8 +336,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       } else if (category === "Administration") {
         // Get detailed admin expenses data
         const adminData = findItemsByKeyword(budgetData, "admin");
@@ -347,8 +346,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       }
     } else {
       // Deeper level drill-down
@@ -389,8 +387,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       } else if (category === "Administration") {
         const adminData = findItemsByKeyword(budgetData, "admin");
         detailedData = adminData
@@ -399,8 +396,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       } else if (category === "One-Day Events") {
         const eventsData = [
           ...findItemsByKeyword(budgetData, "sun god"),
@@ -414,8 +410,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       } else if (category === "Club Funding") {
         const clubData = findItemsByKeyword(budgetData, "student organization");
         detailedData = clubData
@@ -424,8 +419,7 @@ const BudgetAnalysis: React.FC = () => {
             value: Math.abs(item.value),
             path: item.path
           }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 10);
+          .sort((a, b) => b.value - a.value);
       }
     } else {
       // Deeper level drill-down
@@ -670,6 +664,79 @@ const BudgetAnalysis: React.FC = () => {
     return null;
   };
   
+  // Add a back button to all drill-down views
+  const renderBackButton = () => {
+    if (drillDownLevel > 0) {
+      return (
+        <button 
+          onClick={handleGoBack}
+          className="flex items-center text-sm text-blue-500 hover:text-blue-700 mb-4"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back
+        </button>
+      );
+    }
+    return null;
+  };
+
+  // Update the drill-down chart rendering in each tab
+  const renderDrillDownChart = () => {
+    return (
+      <motion.div
+        key="drill-down-chart"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="h-[300px]"
+      >
+        {renderBackButton()}
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={drillDownData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+            <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+            <Tooltip formatter={(value: number) => formatCurrency(value)} />
+            <Legend />
+            <Bar 
+              dataKey="value" 
+              fill={CHART_COLORS[2]} 
+              onClick={handleDrillDownClick}
+              style={{ cursor: 'pointer' }}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </motion.div>
+    );
+  };
+
+  // Generic drill-down click handler
+  const handleDrillDownClick = (entry: any) => {
+    if (!entry || !entry.path) return;
+    
+    // Determine which drill-down handler to use based on the current tab
+    switch (activeTab) {
+      case "student-vs-admin":
+        handleStudentVsAdminDrillDown(entry);
+        break;
+      case "spending":
+        handleSpendingComparisonDrillDown(entry);
+        break;
+      case "travel":
+        handleTravelDrillDown(entry);
+        break;
+      case "questionable":
+        handleQuestionableDrillDown(entry);
+        break;
+      default:
+        break;
+    }
+  };
+  
   return (
     <div className="space-y-8 p-6">
       {/* Summary Alert */}
@@ -821,28 +888,7 @@ const BudgetAnalysis: React.FC = () => {
                     </ResponsiveContainer>
                   </motion.div>
                 ) : (
-                  <motion.div
-                    key="drill-down-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={drillDownData}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                        <Legend />
-                        <Bar dataKey="value" fill={CHART_COLORS[0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
+                  renderDrillDownChart()
                 )}
               </AnimatePresence>
             </CardContent>
@@ -919,28 +965,7 @@ const BudgetAnalysis: React.FC = () => {
                     </ResponsiveContainer>
                   </motion.div>
                 ) : (
-                  <motion.div
-                    key="drill-down-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={drillDownData}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                        <Legend />
-                        <Bar dataKey="value" fill={CHART_COLORS[1]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
+                  renderDrillDownChart()
                 )}
               </AnimatePresence>
             </CardContent>
@@ -1018,28 +1043,7 @@ const BudgetAnalysis: React.FC = () => {
                     </ResponsiveContainer>
                   </motion.div>
                 ) : (
-                  <motion.div
-                    key="drill-down-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={drillDownData}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                        <Legend />
-                        <Bar dataKey="value" fill={CHART_COLORS[2]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
+                  renderDrillDownChart()
                 )}
               </AnimatePresence>
             </CardContent>
@@ -1116,28 +1120,7 @@ const BudgetAnalysis: React.FC = () => {
                     </ResponsiveContainer>
                   </motion.div>
                 ) : (
-                  <motion.div
-                    key="drill-down-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={drillDownData}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                        <Legend />
-                        <Bar dataKey="value" fill={CHART_COLORS[3]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
+                  renderDrillDownChart()
                 )}
               </AnimatePresence>
             </CardContent>
