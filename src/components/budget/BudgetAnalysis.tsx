@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line
+  PieChart, Pie, Cell, Sankey, Tooltip as SankeyTooltip
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, DollarSign, TrendingDown, Users, Calendar, Plane } from "lucide-react";
+import { AlertTriangle, DollarSign, TrendingDown, Users, Calendar, Plane, ChevronLeft, ChevronRight, Home } from "lucide-react";
 import { formatCurrency, calculatePercentage, getColorForIndex } from "@/lib/utils";
 
 // Define types for our budget data
@@ -65,16 +65,58 @@ const findItemsByKeyword = (data: BudgetData, keyword: string): { path: string[]
   return results;
 };
 
-// Helper function to calculate total value for a category
-const calculateTotalForCategory = (data: BudgetData, category: string): number => {
-  if (!data[category]) return 0;
+// Helper function to get items at a specific path
+const getItemsAtPath = (data: BudgetData, path: string[]): any[] => {
+  if (!data || path.length === 0) return [];
   
-  if ('value' in data[category]) {
-    return data[category].value;
+  let current = data;
+  for (const segment of path) {
+    if (!current[segment]) return [];
+    current = current[segment];
   }
   
-  if (data[category].Items) {
-    return Object.values(data[category].Items).reduce((sum: number, item: any) => {
+  // If we've reached a leaf node with a value, return it
+  if (typeof current === 'object' && 'value' in current) {
+    return [{ path, value: current.value }];
+  }
+  
+  // If we've reached an Items object, return its children
+  if (current.Items) {
+    return Object.entries(current.Items).map(([key, value]) => {
+      if (typeof value === 'object' && 'value' in value) {
+        return { path: [...path, key], value: value.value };
+      }
+      return null;
+    }).filter(Boolean);
+  }
+  
+  // If we've reached a category, return its subcategories
+  return Object.entries(current)
+    .filter(([key]) => key !== 'abbreviation' && key !== 'Items')
+    .map(([key, value]) => {
+      if (typeof value === 'object') {
+        return { path: [...path, key], value: calculateTotalForCategory(data, [...path, key].join('.')) };
+      }
+      return null;
+    }).filter(Boolean);
+};
+
+// Helper function to calculate total value for a category
+const calculateTotalForCategory = (data: BudgetData, categoryPath: string): number => {
+  const path = categoryPath.split('.');
+  let current: any = data;
+  
+  for (const segment of path) {
+    if (!current[segment]) return 0;
+    current = current[segment];
+  }
+  
+  if ('value' in current) {
+    return current.value;
+  }
+  
+  if (current.Items) {
+    return Object.values(current.Items).reduce((sum: number, item: any) => {
       if (typeof item === 'object' && 'value' in item) {
         return sum + item.value;
       }
@@ -85,11 +127,61 @@ const calculateTotalForCategory = (data: BudgetData, category: string): number =
   return 0;
 };
 
-// Main component
-export function BudgetAnalysis() {
+const COLORS = {
+  revenue: "#4CAF50",
+  studentFunding: "#2196F3",
+  adminCosts: "#F44336",
+  events: "#FFC107",
+  other: "#9C27B0",
+};
+
+const CHART_COLORS = [
+  "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8",
+  "#82CA9D", "#FFC658", "#FF7C43", "#A4DE6C", "#D0ED57"
+];
+
+// Add a Breadcrumb component to show the drill-down path
+const Breadcrumb: React.FC<{
+  history: Array<{level: number, category: string, path: string[]}>,
+  onNavigate: (index: number) => void
+}> = ({ history, onNavigate }) => {
+  if (history.length <= 1) return null;
+  
+  return (
+    <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
+      <button 
+        onClick={() => onNavigate(0)}
+        className="flex items-center hover:text-primary"
+      >
+        <Home className="h-4 w-4 mr-1" />
+        <span>Overview</span>
+      </button>
+      
+      {history.slice(1).map((item, index) => (
+        <React.Fragment key={index}>
+          <ChevronRight className="h-4 w-4" />
+          <button 
+            onClick={() => onNavigate(index + 1)}
+            className="hover:text-primary"
+          >
+            {item.category}
+          </button>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
+const BudgetAnalysis: React.FC = () => {
   const [budgetData, setBudgetData] = useState<BudgetData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<string>("overview");
+  
+  // Drill-down state
+  const [drillDownLevel, setDrillDownLevel] = useState<number>(0);
+  const [drillDownCategory, setDrillDownCategory] = useState<string>("");
+  const [drillDownData, setDrillDownData] = useState<any[]>([]);
+  const [drillDownHistory, setDrillDownHistory] = useState<Array<{level: number, category: string, path: string[]}>>([]);
   
   // Load budget data
   useEffect(() => {
@@ -219,6 +311,261 @@ export function BudgetAnalysis() {
     };
   };
   
+  // Handle drill-down for student vs admin
+  const handleStudentVsAdminDrillDown = (entry: any) => {
+    if (!budgetData) return;
+    
+    const category = entry.name;
+    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
+    
+    // Update drill-down state
+    setDrillDownCategory(category);
+    setDrillDownLevel(drillDownLevel + 1);
+    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
+    
+    let detailedData: any[] = [];
+    
+    if (drillDownLevel === 0) {
+      // First level drill-down
+      if (category === "Student-Focused") {
+        // Get detailed student funding data
+        const studentOrgData = findItemsByKeyword(budgetData, "student organization");
+        detailedData = studentOrgData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      } else if (category === "Administration") {
+        // Get detailed admin expenses data
+        const adminData = findItemsByKeyword(budgetData, "admin");
+        detailedData = adminData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      }
+    } else {
+      // Deeper level drill-down
+      const path = entry.path || [];
+      detailedData = getItemsAtPath(budgetData, path)
+        .map(item => ({
+          name: item.path[item.path.length - 1],
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+    }
+    
+    setDrillDownData(detailedData);
+  };
+  
+  // Handle drill-down for spending comparison
+  const handleSpendingComparisonDrillDown = (entry: any) => {
+    if (!budgetData) return;
+    
+    const category = entry.name;
+    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
+    
+    // Update drill-down state
+    setDrillDownCategory(category);
+    setDrillDownLevel(drillDownLevel + 1);
+    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
+    
+    let detailedData: any[] = [];
+    
+    if (drillDownLevel === 0) {
+      // First level drill-down
+      if (category === "Marketing") {
+        const marketingData = findItemsByKeyword(budgetData, "marketing");
+        detailedData = marketingData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      } else if (category === "Administration") {
+        const adminData = findItemsByKeyword(budgetData, "admin");
+        detailedData = adminData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      } else if (category === "One-Day Events") {
+        const eventsData = [
+          ...findItemsByKeyword(budgetData, "sun god"),
+          ...findItemsByKeyword(budgetData, "bear garden"),
+          ...findItemsByKeyword(budgetData, "day one"),
+          ...findItemsByKeyword(budgetData, "horizon")
+        ];
+        detailedData = eventsData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      } else if (category === "Club Funding") {
+        const clubData = findItemsByKeyword(budgetData, "student organization");
+        detailedData = clubData
+          .map(item => ({
+            name: item.path[item.path.length - 1],
+            value: Math.abs(item.value),
+            path: item.path
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+      }
+    } else {
+      // Deeper level drill-down
+      const path = entry.path || [];
+      detailedData = getItemsAtPath(budgetData, path)
+        .map(item => ({
+          name: item.path[item.path.length - 1],
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+    }
+    
+    setDrillDownData(detailedData);
+  };
+  
+  // Handle drill-down for travel expenses
+  const handleTravelDrillDown = (entry: any) => {
+    if (!budgetData) return;
+    
+    const category = entry.name;
+    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
+    
+    // Update drill-down state
+    setDrillDownCategory(category);
+    setDrillDownLevel(drillDownLevel + 1);
+    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
+    
+    let detailedData: any[] = [];
+    
+    if (drillDownLevel === 0) {
+      // First level drill-down
+      const travelData = findItemsByKeyword(budgetData, "travel")
+        .filter(item => item.path[item.path.length - 1] === category)
+        .map(item => ({
+          name: item.path.slice(0, -1).join(" > "),
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+      
+      detailedData = travelData;
+    } else {
+      // Deeper level drill-down
+      const path = entry.path || [];
+      detailedData = getItemsAtPath(budgetData, path)
+        .map(item => ({
+          name: item.path[item.path.length - 1],
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+    }
+    
+    setDrillDownData(detailedData);
+  };
+  
+  // Handle drill-down for questionable expenses
+  const handleQuestionableDrillDown = (entry: any) => {
+    if (!budgetData) return;
+    
+    const category = entry.name;
+    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
+    
+    // Update drill-down state
+    setDrillDownCategory(category);
+    setDrillDownLevel(drillDownLevel + 1);
+    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
+    
+    let detailedData: any[] = [];
+    
+    if (drillDownLevel === 0) {
+      // First level drill-down
+      const keyword = category.toLowerCase().replace(/\s+/g, "");
+      const questionableData = findItemsByKeyword(budgetData, keyword)
+        .map(item => ({
+          name: item.path.slice(0, -1).join(" > "),
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+      
+      detailedData = questionableData;
+    } else {
+      // Deeper level drill-down
+      const path = entry.path || [];
+      detailedData = getItemsAtPath(budgetData, path)
+        .map(item => ({
+          name: item.path[item.path.length - 1],
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+    }
+    
+    setDrillDownData(detailedData);
+  };
+  
+  // Update the handleGoBack function to support navigation to any level
+  const handleNavigateToLevel = (level: number) => {
+    if (level < 0 || level >= drillDownHistory.length) return;
+    
+    const newHistory = drillDownHistory.slice(0, level + 1);
+    const targetLevel = newHistory[newHistory.length - 1];
+    
+    setDrillDownLevel(targetLevel.level);
+    setDrillDownCategory(targetLevel.category);
+    setDrillDownHistory(newHistory);
+    
+    // If going back to top level, reset drill-down data
+    if (targetLevel.level === 0) {
+      setDrillDownData([]);
+    } else {
+      // Otherwise, get data for the target level
+      const path = targetLevel.path || [];
+      const levelData = getItemsAtPath(budgetData!, path)
+        .map(item => ({
+          name: item.path[item.path.length - 1],
+          value: Math.abs(item.value),
+          path: item.path
+        }))
+        .sort((a, b) => b.value - a.value);
+      
+      setDrillDownData(levelData);
+    }
+  };
+  
+  // Keep the original handleGoBack function for backward compatibility
+  const handleGoBack = () => {
+    if (drillDownHistory.length > 1) {
+      handleNavigateToLevel(drillDownHistory.length - 2);
+    } else {
+      // Reset to top level
+      setDrillDownLevel(0);
+      setDrillDownCategory("");
+      setDrillDownHistory([]);
+      setDrillDownData([]);
+    }
+  };
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -248,14 +595,60 @@ export function BudgetAnalysis() {
     );
   }
   
-  // Colors for charts
-  const COLORS = [
-    "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", 
-    "#82CA9D", "#FFC658", "#FF7C43", "#A4DE6C", "#D0ED57"
-  ];
+  const sankeyData = {
+    nodes: [
+      { name: "Total Revenue", color: COLORS.revenue },
+      { name: "Student Funding", color: COLORS.studentFunding },
+      { name: "Administrative Costs", color: COLORS.adminCosts },
+      { name: "Events & Activities", color: COLORS.events },
+      { name: "Other Expenses", color: COLORS.other },
+    ],
+    links: [
+      {
+        source: 0,
+        target: 1,
+        value: metrics.clubFunding,
+      },
+      {
+        source: 0,
+        target: 2,
+        value: metrics.adminExpenses,
+      },
+      {
+        source: 0,
+        target: 3,
+        value: metrics.oneDayEvents,
+      },
+      {
+        source: 0,
+        target: 4,
+        value: metrics.marketingExpenses,
+      },
+    ],
+  };
+
+  const CustomSankeyTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-white/90 dark:bg-gray-800/90 p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+          <p className="font-semibold text-gray-900 dark:text-white">
+            {data.source.name} → {data.target.name}
+          </p>
+          <p className="text-gray-700 dark:text-gray-300">
+            {formatCurrency(data.value)}
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {calculatePercentage(data.value, metrics.revenue)}% of total revenue
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
   
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-6">
       {/* Summary Alert */}
       <Alert variant="destructive" className="mb-6">
         <AlertTriangle className="h-4 w-4" />
@@ -265,6 +658,12 @@ export function BudgetAnalysis() {
           This means AS is spending more than it's bringing in, which could lead to future budget cuts.
         </AlertDescription>
       </Alert>
+      
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb 
+        history={drillDownHistory} 
+        onNavigate={handleNavigateToLevel} 
+      />
       
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -301,9 +700,9 @@ export function BudgetAnalysis() {
       
       {/* Tabs for different analyses */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-5 mb-8">
+        <TabsList className="grid w-full grid-cols-5 mb-8">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="student">Student vs Admin</TabsTrigger>
+          <TabsTrigger value="student-vs-admin">Student vs Admin</TabsTrigger>
           <TabsTrigger value="spending">Spending Comparison</TabsTrigger>
           <TabsTrigger value="travel">Travel Expenses</TabsTrigger>
           <TabsTrigger value="questionable">Questionable Expenses</TabsTrigger>
@@ -314,50 +713,26 @@ export function BudgetAnalysis() {
           <Card>
             <CardHeader>
               <CardTitle>Income vs Expenditures</CardTitle>
-              <CardDescription>
-                A comparison of AS revenue versus the deficit (money spent over revenue)
-              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
+              <div className="h-[400px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData.incomeVsExpenditures}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {chartData.incomeVsExpenditures.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      formatter={(value: number) => formatCurrency(value)}
-                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                    />
-                    <Legend />
-                  </PieChart>
+                  <Sankey
+                    data={sankeyData}
+                    node={{
+                      fill: "#8884d8",
+                      opacity: 0.8,
+                      className: "text-white",
+                    }}
+                    link={{
+                      fill: "#8884d8",
+                      opacity: 0.4,
+                    }}
+                    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                  >
+                    <SankeyTooltip content={<CustomSankeyTooltip />} />
+                  </Sankey>
                 </ResponsiveContainer>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Revenue:</span>
-                  <span>{formatCurrency(metrics.revenue)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Deficit:</span>
-                  <span className="text-red-500">{formatCurrency(Math.abs(metrics.deficit))}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Total Expenditures:</span>
-                  <span>{formatCurrency(metrics.totalExpenditures)}</span>
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -375,55 +750,93 @@ export function BudgetAnalysis() {
         </TabsContent>
         
         {/* Student vs Admin Tab */}
-        <TabsContent value="student" className="space-y-6">
+        <TabsContent value="student-vs-admin" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Student-Focused vs Administrative Costs</CardTitle>
-              <CardDescription>
-                A comparison of money spent directly on students versus administrative overhead
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>
+                  {drillDownLevel === 0 
+                    ? "Student-Focused vs Administrative Costs" 
+                    : `Details: ${drillDownCategory}`}
+                </CardTitle>
+                {drillDownLevel > 0 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on items to see more details
+                  </p>
+                )}
+              </div>
+              {drillDownLevel > 0 && (
+                <button 
+                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
+                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Back
+                </button>
+              )}
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData.studentVsAdmin}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {chartData.studentVsAdmin.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      formatter={(value: number) => formatCurrency(value)}
-                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                    />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Student-Focused Spending:</span>
-                  <span>{formatCurrency(metrics.clubFunding)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Administrative Costs:</span>
-                  <span>{formatCurrency(metrics.adminExpenses)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Ratio (Admin:Student):</span>
-                  <span>{(metrics.adminExpenses / metrics.clubFunding).toFixed(2)}:1</span>
-                </div>
-              </div>
+              <AnimatePresence mode="wait">
+                {drillDownLevel === 0 ? (
+                  <motion.div
+                    key="student-vs-admin-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={chartData.studentVsAdmin}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          onClick={handleStudentVsAdminDrillDown}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {chartData.studentVsAdmin.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          formatter={(value: number) => formatCurrency(value)}
+                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
+                        />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="drill-down-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={drillDownData}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar dataKey="value" fill={CHART_COLORS[0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </CardContent>
           </Card>
           
@@ -442,47 +855,84 @@ export function BudgetAnalysis() {
         {/* Spending Comparison Tab */}
         <TabsContent value="spending" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Spending Comparison</CardTitle>
-              <CardDescription>
-                A comparison of marketing, administration, one-day events, and club funding
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>
+                  {drillDownLevel === 0 
+                    ? "Spending Comparison" 
+                    : `Details: ${drillDownCategory}`}
+                </CardTitle>
+                {drillDownLevel > 0 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on items to see more details
+                  </p>
+                )}
+              </div>
+              {drillDownLevel > 0 && (
+                <button 
+                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
+                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Back
+                </button>
+              )}
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData.spendingComparison}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              <AnimatePresence mode="wait">
+                {drillDownLevel === 0 ? (
+                  <motion.div
+                    key="spending-comparison-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                    <Legend />
-                    <Bar dataKey="value" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Marketing Expenses:</span>
-                  <span>{formatCurrency(metrics.marketingExpenses)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Administrative Expenses:</span>
-                  <span>{formatCurrency(metrics.adminExpenses)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">One-Day Events:</span>
-                  <span>{formatCurrency(metrics.oneDayEvents)}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Club Funding:</span>
-                  <span>{formatCurrency(metrics.clubFunding)}</span>
-                </div>
-              </div>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData.spendingComparison}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar 
+                          dataKey="value" 
+                          fill={CHART_COLORS[0]} 
+                          onClick={handleSpendingComparisonDrillDown}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="drill-down-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={drillDownData}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar dataKey="value" fill={CHART_COLORS[1]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </CardContent>
           </Card>
           
@@ -502,37 +952,85 @@ export function BudgetAnalysis() {
         {/* Travel Expenses Tab */}
         <TabsContent value="travel" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Travel Expenses</CardTitle>
-              <CardDescription>
-                Top travel-related expenses in the AS budget
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>
+                  {drillDownLevel === 0 
+                    ? "Travel Expenses" 
+                    : `Details: ${drillDownCategory}`}
+                </CardTitle>
+                {drillDownLevel > 0 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on items to see more details
+                  </p>
+                )}
+              </div>
+              {drillDownLevel > 0 && (
+                <button 
+                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
+                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Back
+                </button>
+              )}
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData.travelData}
-                    layout="vertical"
-                    margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+              <AnimatePresence mode="wait">
+                {drillDownLevel === 0 ? (
+                  <motion.div
+                    key="travel-expenses-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                    <YAxis type="category" dataKey="name" width={90} />
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                    <Legend />
-                    <Bar dataKey="value" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              
-              <div className="mt-6">
-                <h3 className="font-medium mb-2">Total Travel Expenses: {formatCurrency(metrics.travelExpenses)}</h3>
-                <p className="text-sm text-muted-foreground">
-                  This represents money spent on travel for AS officials and staff, which could potentially 
-                  be reduced to allocate more funds to student programs.
-                </p>
-              </div>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData.travelData}
+                        layout="vertical"
+                        margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <YAxis type="category" dataKey="name" width={90} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar 
+                          dataKey="value" 
+                          fill={CHART_COLORS[1]} 
+                          onClick={handleTravelDrillDown}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="drill-down-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={drillDownData}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar dataKey="value" fill={CHART_COLORS[2]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </CardContent>
           </Card>
           
@@ -551,38 +1049,85 @@ export function BudgetAnalysis() {
         {/* Questionable Expenses Tab */}
         <TabsContent value="questionable" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Questionable Expenses</CardTitle>
-              <CardDescription>
-                Expenses that may raise concerns about budget priorities
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>
+                  {drillDownLevel === 0 
+                    ? "Questionable Expenses" 
+                    : `Details: ${drillDownCategory}`}
+                </CardTitle>
+                {drillDownLevel > 0 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on items to see more details
+                  </p>
+                )}
+              </div>
+              {drillDownLevel > 0 && (
+                <button 
+                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
+                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Back
+                </button>
+              )}
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData.questionableData}
-                    layout="vertical"
-                    margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+              <AnimatePresence mode="wait">
+                {drillDownLevel === 0 ? (
+                  <motion.div
+                    key="questionable-expenses-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                    <YAxis type="category" dataKey="name" width={90} />
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                    <Legend />
-                    <Bar dataKey="value" fill="#ff8042" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              
-              <div className="mt-6 space-y-4">
-                {chartData.questionableData.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <span className="font-medium">{item.name}:</span>
-                    <span>{formatCurrency(item.value)}</span>
-                  </div>
-                ))}
-              </div>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData.questionableData}
+                        layout="vertical"
+                        margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <YAxis type="category" dataKey="name" width={90} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar 
+                          dataKey="value" 
+                          fill={CHART_COLORS[2]} 
+                          onClick={handleQuestionableDrillDown}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="drill-down-chart"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={drillDownData}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
+                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <Legend />
+                        <Bar dataKey="value" fill={CHART_COLORS[3]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </CardContent>
           </Card>
           
@@ -635,4 +1180,6 @@ export function BudgetAnalysis() {
       </Card>
     </div>
   );
-} 
+};
+
+export default BudgetAnalysis; 
