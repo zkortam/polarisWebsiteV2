@@ -345,11 +345,25 @@ export default function BudgetPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-transparent rounded-lg p-4 shadow-lg mb-8 border-2 border-red-500 max-w-md mx-auto"
+          className="bg-transparent rounded-lg p-4 shadow-lg mb-8 border-2 border-red-500 w-full"
         >
           <h3 className="text-lg font-bold text-red-700 dark:text-red-300 mb-1">Budget Deficit</h3>
           <p className="text-2xl font-bold text-red-700 dark:text-red-300">
             {formatCurrency(deficit)}
+          </p>
+        </motion.div>
+
+        {/* Data Disclaimer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="bg-card/50 rounded-lg p-4 shadow-sm mb-8 w-full text-sm text-foreground/70"
+        >
+          <p className="italic">
+            <strong>Disclaimer:</strong> The budget data presented on this page is for informational purposes only. 
+            While we strive for accuracy, some figures may be estimates or subject to change. 
+            For the most up-to-date and official budget information, please refer to official AS documentation.
           </p>
         </motion.div>
 
