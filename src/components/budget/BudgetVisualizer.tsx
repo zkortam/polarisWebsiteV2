@@ -107,6 +107,7 @@ const BudgetBarChart = ({ data }: { data: { name: string; value: number }[] }) =
           <Progress 
             value={Math.abs(item.value) / maxValue * 100} 
             className={item.value < 0 ? "bg-red-200" : "bg-green-200"}
+            indicatorClassName={item.value < 0 ? "bg-red-500" : "bg-green-500"}
           />
         </div>
       ))}
@@ -161,7 +162,7 @@ export function BudgetVisualizer() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data/data.json');
+        const response = await fetch('/data/budget.json');
         const data = await response.json();
         setBudgetData(data);
         setCurrentData(data);
@@ -170,7 +171,7 @@ export function BudgetVisualizer() {
         // Prepare initial chart data
         const topLevelData = Object.entries(data).map(([key, value]) => ({
           name: key,
-          value: typeof value === 'object' && value !== null && 'value' in value ? (value.value as number) || 0 : 0
+          value: typeof value === 'object' && 'value' in value ? value.value : 0
         }));
         setChartData(topLevelData);
       } catch (error) {
@@ -184,8 +185,6 @@ export function BudgetVisualizer() {
 
   // Handle navigation
   const handleNavigate = (index: number) => {
-    if (!budgetData) return;
-    
     if (index === -1) {
       // Go back one level
       if (navigationPath.length > 0) {
@@ -196,24 +195,21 @@ export function BudgetVisualizer() {
         // Update current data based on new path
         let newData = budgetData;
         for (const pathItem of newPath) {
-          if (newData && typeof newData === 'object') {
-            newData = newData[pathItem];
-          }
+          newData = newData[pathItem];
         }
         setCurrentData(newData);
         
         // Update chart data
-        if (newData && typeof newData === 'object' && 'Items' in newData) {
+        if (newData.Items) {
           const itemsData = Object.entries(newData.Items).map(([key, value]) => ({
             name: key,
-            value: typeof value === 'object' && value !== null && 'value' in value ? 
-              (value.value as number) || 0 : 0
+            value: typeof value === 'object' && 'value' in value ? value.value : 0
           }));
           setChartData(itemsData);
         } else {
           const topLevelData = Object.entries(budgetData).map(([key, value]) => ({
             name: key,
-            value: typeof value === 'object' && 'value' in value ? (value.value as number) : 0
+            value: typeof value === 'object' && 'value' in value ? value.value : 0
           }));
           setChartData(topLevelData);
         }
@@ -226,18 +222,15 @@ export function BudgetVisualizer() {
       // Update current data based on new path
       let newData = budgetData;
       for (const pathItem of newPath) {
-        if (newData && typeof newData === 'object') {
-          newData = newData[pathItem];
-        }
+        newData = newData[pathItem];
       }
       setCurrentData(newData);
       
       // Update chart data
-      if (newData && typeof newData === 'object' && 'Items' in newData) {
+      if (newData.Items) {
         const itemsData = Object.entries(newData.Items).map(([key, value]) => ({
           name: key,
-          value: typeof value === 'object' && value !== null && 'value' in value ? 
-            (value.value as number) || 0 : 0
+          value: typeof value === 'object' && 'value' in value ? value.value : 0
         }));
         setChartData(itemsData);
       }
@@ -257,8 +250,7 @@ export function BudgetVisualizer() {
       if (newData.Items) {
         const itemsData = Object.entries(newData.Items).map(([key, value]) => ({
           name: key,
-          value: typeof value === 'object' && value !== null && 'value' in value ? 
-            (value.value as number) || 0 : 0
+          value: typeof value === 'object' && 'value' in value ? value.value : 0
         }));
         setChartData(itemsData);
       }
@@ -352,9 +344,9 @@ export function BudgetVisualizer() {
                                 <h4 className="font-medium">{key}</h4>
                                 <ChevronRight className="h-4 w-4 text-foreground/50" />
                               </div>
-                              {typeof value === 'object' && value !== null && 'value' in value && (
-                                <p className={`text-sm mt-2 ${(value.value as number) < 0 ? "text-red-500" : "text-green-500"}`}>
-                                  {formatCurrency(value.value as number)}
+                              {typeof value === 'object' && 'value' in value && (
+                                <p className={`text-sm mt-2 ${value.value < 0 ? "text-red-500" : "text-green-500"}`}>
+                                  {formatCurrency(value.value)}
                                 </p>
                               )}
                             </CardContent>

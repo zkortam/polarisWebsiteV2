@@ -7,7 +7,6 @@ import { Platform } from "@/components/sections/Platform";
 import { Team } from "@/components/sections/Team";
 import { Contact } from "@/components/sections/Contact";
 import { LoadingScreen } from "@/components/shared/LoadingScreen";
-import Image from "next/image";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -40,32 +39,11 @@ export default function Home() {
           contentVisible ? "opacity-100" : "opacity-0"
         } transition-opacity duration-700`}
       >
-        <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-          {/* Fixed star background */}
-          <div className="fixed inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/20 to-black" />
-            <div className="absolute inset-0 bg-[url('/stars.png')] bg-repeat opacity-50" />
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 text-center px-4">
-            <div className="mb-8">
-              <Image
-                src="/Polarislogo.png"
-                alt="Polaris Logo"
-                width={200}
-                height={200}
-                className="mx-auto"
-                priority
-              />
-            </div>
-            <Hero />
-            <About />
-            <Platform />
-            <Team />
-            <Contact />
-          </div>
-        </div>
+        <Hero />
+        <About />
+        <Platform />
+        <Team />
+        <Contact />
       </main>
     </>
   );
