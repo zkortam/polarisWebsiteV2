@@ -1,32 +1,64 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell, Sankey, Tooltip as SankeyTooltip
+  PieChart, Pie, Cell, LineChart, Line
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, DollarSign, TrendingDown, Users, Calendar, Plane, ChevronLeft, ChevronRight, Home } from "lucide-react";
+import { AlertTriangle, DollarSign, TrendingDown, Users, Calendar, Plane } from "lucide-react";
 import { formatCurrency, calculatePercentage, getColorForIndex } from "@/lib/utils";
 
-// Define types for our budget data
-type BudgetItem = {
-  value: number;
-  abbreviation?: string;
-  [key: string]: any;
-};
+interface OfficeOperation {
+  amount: number;
+  projectsInitiatives?: number;
+  marketingOutreach?: number;
+  leadershipDevelopment?: number;
+  [key: string]: number | undefined;
+}
 
-type BudgetCategory = {
-  abbreviation?: string;
-  Items?: Record<string, BudgetItem>;
-  [key: string]: any;
-};
-
-type BudgetData = Record<string, BudgetCategory>;
+interface BudgetData {
+  totalReserves: number;
+  income: {
+    totalCarryforward: number;
+    asCarryforward: number;
+    auxiliaryCarryforward: number;
+    spacesCarryforward: number;
+    asRevenue: number;
+  };
+  expensesSummary: {
+    referendumsAndAid: number;
+    careerEmployees: number;
+    mandatedReserves: number;
+    generalOperations: number;
+    officeOperations: number;
+    senateOperations: number;
+    studentPayrollStipends: number;
+    remainingFunds: number;
+  };
+  officeOperations: Record<string, OfficeOperation>;
+  studentSalariesAndStipends: {
+    administrativeSalaries: number;
+    cabinetStipends: {
+      total: number;
+      president: number;
+      executiveVP: number;
+      [key: string]: number;
+    };
+    senateStipends: {
+      total: number;
+      [key: string]: number;
+    };
+    staffStipends: {
+      total: number;
+      [key: string]: number;
+    };
+  };
+}
 
 // Helper function to find all items with a specific keyword in their path
 const findItemsByKeyword = (data: BudgetData, keyword: string): { path: string[], value: number }[] => {
@@ -59,73 +91,22 @@ const findItemsByKeyword = (data: BudgetData, keyword: string): { path: string[]
         }
       });
     }
-    
-    // Also search through Subitems if they exist
-    if (obj.Subitems) {
-      Object.entries(obj.Subitems).forEach(([key, value]) => {
-        if (typeof value === 'object') {
-          search(value, [...path, key]);
-        }
-      });
-    }
   };
   
   search(data);
   return results;
 };
 
-// Helper function to get items at a specific path
-const getItemsAtPath = (data: BudgetData, path: string[]): any[] => {
-  if (!data || path.length === 0) return [];
-  
-  let current = data;
-  for (const segment of path) {
-    if (!current[segment]) return [];
-    current = current[segment];
-  }
-  
-  // If we've reached a leaf node with a value, return it
-  if (typeof current === 'object' && 'value' in current) {
-    return [{ path, value: current.value }];
-  }
-  
-  // If we've reached an Items object, return its children
-  if (current.Items) {
-    return Object.entries(current.Items).map(([key, value]) => {
-      if (typeof value === 'object' && 'value' in value) {
-        return { path: [...path, key], value: value.value };
-      }
-      return null;
-    }).filter(Boolean);
-  }
-  
-  // If we've reached a category, return its subcategories
-  return Object.entries(current)
-    .filter(([key]) => key !== 'abbreviation' && key !== 'Items')
-    .map(([key, value]) => {
-      if (typeof value === 'object') {
-        return { path: [...path, key], value: calculateTotalForCategory(data, [...path, key].join('.')) };
-      }
-      return null;
-    }).filter(Boolean);
-};
-
 // Helper function to calculate total value for a category
-const calculateTotalForCategory = (data: BudgetData, categoryPath: string): number => {
-  const path = categoryPath.split('.');
-  let current: any = data;
+const calculateTotalForCategory = (data: BudgetData, category: string): number => {
+  if (!data[category]) return 0;
   
-  for (const segment of path) {
-    if (!current[segment]) return 0;
-    current = current[segment];
+  if ('value' in data[category]) {
+    return data[category].value;
   }
   
-  if ('value' in current) {
-    return current.value;
-  }
-  
-  if (current.Items) {
-    return Object.values(current.Items).reduce((sum: number, item: any) => {
+  if (data[category].Items) {
+    return Object.values(data[category].Items).reduce((sum: number, item: any) => {
       if (typeof item === 'object' && 'value' in item) {
         return sum + item.value;
       }
@@ -136,1196 +117,274 @@ const calculateTotalForCategory = (data: BudgetData, categoryPath: string): numb
   return 0;
 };
 
-const COLORS = {
-  revenue: "#4CAF50",
-  studentFunding: "#2196F3",
-  adminCosts: "#F44336",
-  events: "#FFC107",
-  other: "#9C27B0",
-};
+// Main component
+export function BudgetAnalysis() {
+  const [data, setData] = useState<BudgetData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const CHART_COLORS = [
-  "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8",
-  "#82CA9D", "#FFC658", "#FF7C43", "#A4DE6C", "#D0ED57"
-];
-
-// Add a Breadcrumb component to show the drill-down path
-const Breadcrumb: React.FC<{
-  history: Array<{level: number, category: string, path: string[]}>,
-  onNavigate: (index: number) => void
-}> = ({ history, onNavigate }) => {
-  if (history.length <= 1) return null;
-  
-  return (
-    <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
-      <button 
-        onClick={() => onNavigate(0)}
-        className="flex items-center hover:text-primary"
-      >
-        <Home className="h-4 w-4 mr-1" />
-        <span>Overview</span>
-      </button>
-      
-      {history.slice(1).map((item, index) => (
-        <React.Fragment key={index}>
-          <ChevronRight className="h-4 w-4" />
-          <button 
-            onClick={() => onNavigate(index + 1)}
-            className="hover:text-primary"
-          >
-            {item.category}
-          </button>
-        </React.Fragment>
-      ))}
-    </div>
-  );
-};
-
-const BudgetAnalysis: React.FC = () => {
-  const [budgetData, setBudgetData] = useState<BudgetData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<string>("overview");
-  
-  // Drill-down state
-  const [drillDownLevel, setDrillDownLevel] = useState<number>(0);
-  const [drillDownCategory, setDrillDownCategory] = useState<string>("");
-  const [drillDownData, setDrillDownData] = useState<any[]>([]);
-  const [drillDownHistory, setDrillDownHistory] = useState<Array<{level: number, category: string, path: string[]}>>([]);
-  
-  // Load budget data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('/data/data.json');
-        const data = await response.json();
-        setBudgetData(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error loading budget data:", error);
+        if (!response.ok) {
+          throw new Error('Failed to fetch budget data');
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
-  
-  // Calculate key metrics
-  const calculateMetrics = () => {
-    if (!budgetData) return null;
-    
-    // Get revenue and deficit
-    const revenue = budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 AS Revenue"]?.value || 0;
-    const deficit = budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 Remaining Funds (AS Revenue – (Referendums, Return to Aid, Employees, Expendable Funds))"]?.value || 0;
-    const reserves = budgetData["OPERATING RESERVES"]?.General?.Items?.["Total Reserves"]?.value || 0;
-    
-    // Calculate total expenditures
-    const totalExpenditures = Math.abs(revenue + deficit);
-    
-    // Find marketing expenses
-    const marketingExpenses = findItemsByKeyword(budgetData, "marketing")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    
-    // Find administration expenses
-    const adminExpenses = findItemsByKeyword(budgetData, "admin")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    
-    // Find travel expenses
-    const travelExpenses = findItemsByKeyword(budgetData, "travel")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    
-    // Find one-day events - specifically look for each event
-    const sunGodFestival = findItemsByKeyword(budgetData, "sun god")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    const bearGarden = findItemsByKeyword(budgetData, "bear garden")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    const dayOne = findItemsByKeyword(budgetData, "day one")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    const horizon = findItemsByKeyword(budgetData, "horizon")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    
-    const oneDayEvents = sunGodFestival + bearGarden + dayOne + horizon;
-    
-    // Find club funding
-    const clubFunding = findItemsByKeyword(budgetData, "student organization")
-      .reduce((sum, item) => sum + Math.abs(item.value), 0);
-    
-    // Find questionable expenses
-    const questionableExpenses = [
-      ...findItemsByKeyword(budgetData, "new york times"),
-      ...findItemsByKeyword(budgetData, "fluffy"),
-      ...findItemsByKeyword(budgetData, "vending"),
-      ...findItemsByKeyword(budgetData, "period project")
-    ];
-    
-    return {
-      revenue,
-      deficit,
-      reserves,
-      totalExpenditures,
-      marketingExpenses,
-      adminExpenses,
-      travelExpenses,
-      oneDayEvents,
-      sunGodFestival,
-      bearGarden,
-      dayOne,
-      horizon,
-      clubFunding,
-      questionableExpenses
-    };
-  };
-  
-  // Prepare data for charts
-  const prepareChartData = () => {
-    if (!budgetData) return null;
-    
-    const metrics = calculateMetrics();
-    if (!metrics) return null;
-    
-    // Income vs Expenditures
-    const incomeVsExpenditures = [
-      { name: "Revenue", value: metrics.revenue },
-      { name: "Deficit", value: Math.abs(metrics.deficit) }
-    ];
-    
-    // Student vs Administration
-    const studentVsAdmin = [
-      { name: "Student-Focused", value: metrics.clubFunding },
-      { name: "Administration", value: metrics.adminExpenses }
-    ];
-    
-    // Marketing, Admin, Events vs Club Funding
-    const spendingComparison = [
-      { name: "Marketing", value: metrics.marketingExpenses },
-      { name: "Administration", value: metrics.adminExpenses },
-      { name: "One-Day Events", value: metrics.oneDayEvents },
-      { name: "Club Funding", value: metrics.clubFunding }
-    ];
-    
-    // Travel expenses
-    const travelData = findItemsByKeyword(budgetData, "travel")
-      .map(item => ({
-        name: item.path[item.path.length - 1],
-        value: Math.abs(item.value)
-      }))
-      .sort((a, b) => b.value - a.value);
-    
-    // Questionable expenses
-    const questionableData = metrics.questionableExpenses
-      .map(item => ({
-        name: item.path[item.path.length - 1],
-        value: Math.abs(item.value)
-      }))
-      .sort((a, b) => b.value - a.value);
-    
-    return {
-      incomeVsExpenditures,
-      studentVsAdmin,
-      spendingComparison,
-      travelData,
-      questionableData
-    };
-  };
-  
-  // Handle drill-down for student vs admin
-  const handleStudentVsAdminDrillDown = (entry: any) => {
-    if (!budgetData) return;
-    
-    const category = entry.name;
-    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
-    
-    // Update drill-down state
-    setDrillDownCategory(category);
-    setDrillDownLevel(drillDownLevel + 1);
-    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
-    
-    let detailedData: any[] = [];
-    
-    if (drillDownLevel === 0) {
-      // First level drill-down
-      if (category === "Student-Focused") {
-        // Get detailed student funding data
-        const studentOrgData = findItemsByKeyword(budgetData, "student organization");
-        detailedData = studentOrgData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      } else if (category === "Administration") {
-        // Get detailed admin expenses data
-        const adminData = findItemsByKeyword(budgetData, "admin");
-        detailedData = adminData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      }
-    } else {
-      // Deeper level drill-down
-      const path = entry.path || [];
-      detailedData = getItemsAtPath(budgetData, path)
-        .map(item => ({
-          name: item.path[item.path.length - 1],
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-    }
-    
-    setDrillDownData(detailedData);
-  };
-  
-  // Handle drill-down for spending comparison
-  const handleSpendingComparisonDrillDown = (entry: any) => {
-    if (!budgetData) return;
-    
-    const category = entry.name;
-    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
-    
-    // Update drill-down state
-    setDrillDownCategory(category);
-    setDrillDownLevel(drillDownLevel + 1);
-    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
-    
-    let detailedData: any[] = [];
-    
-    if (drillDownLevel === 0) {
-      // First level drill-down
-      if (category === "Marketing") {
-        const marketingData = findItemsByKeyword(budgetData, "marketing");
-        detailedData = marketingData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      } else if (category === "Administration") {
-        const adminData = findItemsByKeyword(budgetData, "admin");
-        detailedData = adminData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      } else if (category === "One-Day Events") {
-        const eventsData = [
-          ...findItemsByKeyword(budgetData, "sun god"),
-          ...findItemsByKeyword(budgetData, "bear garden"),
-          ...findItemsByKeyword(budgetData, "day one"),
-          ...findItemsByKeyword(budgetData, "horizon")
-        ];
-        detailedData = eventsData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      } else if (category === "Club Funding") {
-        const clubData = findItemsByKeyword(budgetData, "student organization");
-        detailedData = clubData
-          .map(item => ({
-            name: item.path[item.path.length - 1],
-            value: Math.abs(item.value),
-            path: item.path
-          }))
-          .sort((a, b) => b.value - a.value);
-      }
-    } else {
-      // Deeper level drill-down
-      const path = entry.path || [];
-      detailedData = getItemsAtPath(budgetData, path)
-        .map(item => ({
-          name: item.path[item.path.length - 1],
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-    }
-    
-    setDrillDownData(detailedData);
-  };
-  
-  // Handle drill-down for travel expenses
-  const handleTravelDrillDown = (entry: any) => {
-    if (!budgetData) return;
-    
-    const category = entry.name;
-    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
-    
-    // Update drill-down state
-    setDrillDownCategory(category);
-    setDrillDownLevel(drillDownLevel + 1);
-    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
-    
-    let detailedData: any[] = [];
-    
-    if (drillDownLevel === 0) {
-      // First level drill-down
-      const travelData = findItemsByKeyword(budgetData, "travel")
-        .filter(item => item.path[item.path.length - 1] === category)
-        .map(item => ({
-          name: item.path.slice(0, -1).join(" > "),
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-      
-      detailedData = travelData;
-    } else {
-      // Deeper level drill-down
-      const path = entry.path || [];
-      detailedData = getItemsAtPath(budgetData, path)
-        .map(item => ({
-          name: item.path[item.path.length - 1],
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-    }
-    
-    setDrillDownData(detailedData);
-  };
-  
-  // Handle drill-down for questionable expenses
-  const handleQuestionableDrillDown = (entry: any) => {
-    if (!budgetData) return;
-    
-    const category = entry.name;
-    const currentPath = drillDownLevel === 0 ? [] : drillDownHistory[drillDownHistory.length - 1].path;
-    
-    // Update drill-down state
-    setDrillDownCategory(category);
-    setDrillDownLevel(drillDownLevel + 1);
-    setDrillDownHistory([...drillDownHistory, { level: drillDownLevel, category, path: currentPath }]);
-    
-    let detailedData: any[] = [];
-    
-    if (drillDownLevel === 0) {
-      // First level drill-down
-      const keyword = category.toLowerCase().replace(/\s+/g, "");
-      const questionableData = findItemsByKeyword(budgetData, keyword)
-        .map(item => ({
-          name: item.path.slice(0, -1).join(" > "),
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-      
-      detailedData = questionableData;
-    } else {
-      // Deeper level drill-down
-      const path = entry.path || [];
-      detailedData = getItemsAtPath(budgetData, path)
-        .map(item => ({
-          name: item.path[item.path.length - 1],
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-    }
-    
-    setDrillDownData(detailedData);
-  };
-  
-  // Update the handleGoBack function to support navigation to any level
-  const handleNavigateToLevel = (level: number) => {
-    if (level < 0 || level >= drillDownHistory.length) return;
-    
-    const newHistory = drillDownHistory.slice(0, level + 1);
-    const targetLevel = newHistory[newHistory.length - 1];
-    
-    setDrillDownLevel(targetLevel.level);
-    setDrillDownCategory(targetLevel.category);
-    setDrillDownHistory(newHistory);
-    
-    // If going back to top level, reset drill-down data
-    if (targetLevel.level === 0) {
-      setDrillDownData([]);
-    } else {
-      // Otherwise, get data for the target level
-      const path = targetLevel.path || [];
-      const levelData = getItemsAtPath(budgetData!, path)
-        .map(item => ({
-          name: item.path[item.path.length - 1],
-          value: Math.abs(item.value),
-          path: item.path
-        }))
-        .sort((a, b) => b.value - a.value);
-      
-      setDrillDownData(levelData);
-    }
-  };
-  
-  // Keep the original handleGoBack function for backward compatibility
-  const handleGoBack = () => {
-    if (drillDownHistory.length > 1) {
-      handleNavigateToLevel(drillDownHistory.length - 2);
-    } else {
-      // Reset to top level
-      setDrillDownLevel(0);
-      setDrillDownCategory("");
-      setDrillDownHistory([]);
-      setDrillDownData([]);
-    }
-  };
-  
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <div>Loading budget analysis...</div>;
   }
-  
-  if (!budgetData) {
-    return (
-      <div className="text-center py-12">
-        <h2 className="text-2xl font-bold mb-4">Error Loading Budget Data</h2>
-        <p className="text-foreground/70">Please try again later.</p>
-      </div>
-    );
+
+  if (error || !data) {
+    return <div>Error loading budget data: {error}</div>;
   }
-  
-  const metrics = calculateMetrics();
-  const chartData = prepareChartData();
-  
-  if (!metrics || !chartData) {
-    return (
-      <div className="text-center py-12">
-        <h2 className="text-2xl font-bold mb-4">Error Processing Budget Data</h2>
-        <p className="text-foreground/70">Please try again later.</p>
-      </div>
-    );
-  }
-  
-  // Update the sankeyData structure to show more detailed revenue sources and their connections
-  const sankeyData = {
-    nodes: [
-      { name: "Total Revenue", fill: COLORS.revenue },
-      { name: "Student Fees", fill: COLORS.revenue },
-      { name: "Auxiliary Carryforwards", fill: COLORS.revenue },
-      { name: "Other Revenue", fill: COLORS.revenue },
-      { name: "Student Funding", fill: COLORS.studentFunding },
-      { name: "Administrative Costs", fill: COLORS.adminCosts },
-      { name: "Events & Activities", fill: COLORS.events },
-      { name: "Marketing", fill: COLORS.other },
-      { name: "Travel", fill: COLORS.other },
-      { name: "Other Expenses", fill: COLORS.other },
-    ],
-    links: [
-      // Revenue breakdown
-      {
-        source: 0,
-        target: 1,
-        value: budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 AS Revenue"]?.value || 0,
-        fill: COLORS.revenue,
-      },
-      {
-        source: 0,
-        target: 2,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0,
-        fill: COLORS.revenue,
-      },
-      {
-        source: 0,
-        target: 3,
-        value: (budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 AS Revenue"]?.value || 0) - 
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0),
-        fill: COLORS.revenue,
-      },
-      
-      // Student funding
-      {
-        source: 1,
-        target: 4,
-        value: metrics.clubFunding,
-        fill: COLORS.studentFunding,
-      },
-      
-      // Administrative costs
-      {
-        source: 1,
-        target: 5,
-        value: metrics.adminExpenses,
-        fill: COLORS.adminCosts,
-      },
-      
-      // Events & activities
-      {
-        source: 1,
-        target: 6,
-        value: metrics.oneDayEvents,
-        fill: COLORS.events,
-      },
-      
-      // Marketing
-      {
-        source: 1,
-        target: 7,
-        value: metrics.marketingExpenses,
-        fill: COLORS.other,
-      },
-      
-      // Travel
-      {
-        source: 1,
-        target: 8,
-        value: metrics.travelExpenses,
-        fill: COLORS.other,
-      },
-      
-      // Other expenses
-      {
-        source: 1,
-        target: 9,
-        value: metrics.totalExpenditures - metrics.clubFunding - metrics.adminExpenses - 
-               metrics.oneDayEvents - metrics.marketingExpenses - metrics.travelExpenses,
-        fill: COLORS.other,
-      },
-      
-      // Auxiliary carryforwards connections
-      {
-        source: 2,
-        target: 4,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Student Organizations Carryforward"]?.value || 0,
-        fill: COLORS.studentFunding,
-      },
-      {
-        source: 2,
-        target: 5,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Administrative Carryforward"]?.value || 0,
-        fill: COLORS.adminCosts,
-      },
-      {
-        source: 2,
-        target: 6,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Events Carryforward"]?.value || 0,
-        fill: COLORS.events,
-      },
-      {
-        source: 2,
-        target: 7,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Marketing Carryforward"]?.value || 0,
-        fill: COLORS.other,
-      },
-      {
-        source: 2,
-        target: 8,
-        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Travel Carryforward"]?.value || 0,
-        fill: COLORS.other,
-      },
-      {
-        source: 2,
-        target: 9,
-        value: (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0) - 
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Student Organizations Carryforward"]?.value || 0) -
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Administrative Carryforward"]?.value || 0) -
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Events Carryforward"]?.value || 0) -
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Marketing Carryforward"]?.value || 0) -
-               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Travel Carryforward"]?.value || 0),
-        fill: COLORS.other,
-      },
-    ],
-  };
 
-  // Custom Sankey component with colored links
-  const CustomSankey = () => {
-    return (
-      <Sankey
-        data={sankeyData}
-        node={{
-          opacity: 0.8,
-          className: "text-white",
-        }}
-        link={{
-          opacity: 0.6,
-        }}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-      >
-        <SankeyTooltip content={<CustomSankeyTooltip />} />
-      </Sankey>
-    );
-  };
+  const totalIncome = data.income.asRevenue + data.income.totalCarryforward + 
+    data.income.asCarryforward + data.income.auxiliaryCarryforward + 
+    data.income.spacesCarryforward;
 
-  const CustomSankeyTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      const totalRevenue = metrics.revenue + (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0);
-      
-      return (
-        <div className="bg-white/90 dark:bg-gray-800/90 p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-          <p className="font-semibold text-gray-900 dark:text-white">
-            {data.source.name} → {data.target.name}
-          </p>
-          <p className="text-gray-700 dark:text-gray-300">
-            {formatCurrency(data.value)}
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {calculatePercentage(data.value, totalRevenue)}% of total budget
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  const totalExpenses = Object.values(data.expensesSummary).reduce((acc, val) => acc + val, 0);
   
-  // Add a back button to all drill-down views
-  const renderBackButton = () => {
-    if (drillDownLevel > 0) {
-      return (
-        <button 
-          onClick={handleGoBack}
-          className="flex items-center text-sm text-blue-500 hover:text-blue-700 mb-4"
-        >
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Back
-        </button>
-      );
-    }
-    return null;
-  };
+  const deficit = data.expensesSummary.remainingFunds;
 
-  // Update the drill-down chart rendering in each tab
-  const renderDrillDownChart = () => {
-    return (
-      <motion.div
-        key="drill-down-chart"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="h-[300px]"
-      >
-        {renderBackButton()}
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={drillDownData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-              dataKey="name" 
-              angle={-45} 
-              textAnchor="end" 
-              height={100} 
-              interval={0}
-              tick={{ fontSize: 12 }}
-            />
-            <YAxis 
-              tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
-              width={80}
-            />
-            <Tooltip 
-              formatter={(value: number) => formatCurrency(value)}
-              contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-            />
-            <Legend />
-            <Bar 
-              dataKey="value" 
-              fill={CHART_COLORS[2]} 
-              onClick={handleDrillDownClick}
-              style={{ cursor: 'pointer' }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </motion.div>
-    );
-  };
+  // Prepare data for spending comparison chart
+  const spendingComparison = [
+    { name: 'Career Employees', amount: Math.abs(data.expensesSummary.careerEmployees) },
+    { name: 'Office Operations', amount: Math.abs(data.expensesSummary.officeOperations) },
+    { name: 'Student Payroll', amount: Math.abs(data.expensesSummary.studentPayrollStipends) },
+    { name: 'General Operations', amount: Math.abs(data.expensesSummary.generalOperations) },
+  ];
 
-  // Generic drill-down click handler
-  const handleDrillDownClick = (entry: any) => {
-    if (!entry || !entry.path) return;
-    
-    // Determine which drill-down handler to use based on the current tab
-    switch (activeTab) {
-      case "student-vs-admin":
-        handleStudentVsAdminDrillDown(entry);
-        break;
-      case "spending":
-        handleSpendingComparisonDrillDown(entry);
-        break;
-      case "travel":
-        handleTravelDrillDown(entry);
-        break;
-      case "questionable":
-        handleQuestionableDrillDown(entry);
-        break;
-      default:
-        break;
-    }
-  };
+  // Prepare data for office spending pie chart
+  const officeSpending = Object.entries(data.officeOperations)
+    .map(([name, details]) => ({
+      name: name.replace(/([A-Z])/g, ' $1').trim(), // Add spaces before capital letters
+      value: Math.abs(details.amount)
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  // Prepare data for student vs admin spending
+  const studentRelatedSpending = Math.abs(data.studentSalariesAndStipends.administrativeSalaries + 
+    data.studentSalariesAndStipends.cabinetStipends.total +
+    data.studentSalariesAndStipends.senateStipends.total);
   
+  const adminSpending = Math.abs(data.expensesSummary.careerEmployees);
+
+  const spendingComparison2 = [
+    { name: 'Student Related', value: studentRelatedSpending },
+    { name: 'Administrative', value: adminSpending }
+  ];
+
   return (
-    <div className="space-y-8 p-6">
-      {/* Summary Alert */}
-      <Alert variant="destructive" className="mb-6">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Budget Deficit Alert</AlertTitle>
-        <AlertDescription>
-          The AS budget shows a significant deficit of {formatCurrency(Math.abs(metrics.deficit))}. 
-          This means AS is spending more than it's bringing in, which could lead to future budget cuts.
-        </AlertDescription>
-      </Alert>
-      
-      {/* Breadcrumb Navigation */}
-      <Breadcrumb 
-        history={drillDownHistory} 
-        onNavigate={handleNavigateToLevel} 
-      />
-      
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-8">
+      {/* Overview Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+          <CardHeader>
+            <CardTitle>Total Revenue</CardTitle>
+            <CardDescription>AS Revenue and Carryforwards</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(metrics.revenue)}</div>
-            <p className="text-xs text-muted-foreground mt-1">2024-2025 AS Revenue</p>
+            <div className="text-2xl font-bold">{formatCurrency(data.income.asRevenue)}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Deficit</CardTitle>
+          <CardHeader>
+            <CardTitle>Operating Reserves</CardTitle>
+            <CardDescription>Total reserves available</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">{formatCurrency(Math.abs(metrics.deficit))}</div>
-            <p className="text-xs text-muted-foreground mt-1">Money spent over revenue</p>
+            <div className="text-2xl font-bold">{formatCurrency(data.totalReserves)}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Operating Reserves</CardTitle>
+          <CardHeader>
+            <CardTitle>Current Deficit</CardTitle>
+            <CardDescription>Remaining funds after expenses</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(metrics.reserves)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Money in the bank</p>
+            <div className="text-2xl font-bold text-red-500">{formatCurrency(deficit)}</div>
           </CardContent>
         </Card>
       </div>
-      
-      {/* Tabs for different analyses */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 mb-8">
+
+      {/* Alert for significant deficit */}
+      {deficit < -500000 && (
+        <Alert variant="destructive">
+          <AlertTitle>Significant Budget Deficit Detected</AlertTitle>
+          <AlertDescription>
+            The current budget shows a deficit of {formatCurrency(deficit)}. This requires immediate attention and potential reallocation of funds.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Main Analysis Tabs */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="student-vs-admin">Student vs Admin</TabsTrigger>
-          <TabsTrigger value="spending">Spending Comparison</TabsTrigger>
-          <TabsTrigger value="travel">Travel Expenses</TabsTrigger>
-          <TabsTrigger value="questionable">Questionable Expenses</TabsTrigger>
+          <TabsTrigger value="spending-comparison">Spending Comparison</TabsTrigger>
+          <TabsTrigger value="office-breakdown">Office Breakdown</TabsTrigger>
+          <TabsTrigger value="student-admin">Student vs Admin</TabsTrigger>
         </TabsList>
-        
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
+
+        <TabsContent value="overview">
           <Card>
             <CardHeader>
-              <CardTitle>Income vs Expenditures</CardTitle>
+              <CardTitle>Budget Overview</CardTitle>
+              <CardDescription>Total income vs expenses breakdown</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[400px] w-full">
+              <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <CustomSankey />
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Income', value: totalIncome },
+                        { name: 'Expenses', value: Math.abs(totalExpenses) }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={160}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      <Cell fill="#4ade80" />
+                      <Cell fill="#f43f5e" />
+                    </Pie>
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  </PieChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-          
-          <Alert>
-            <DollarSign className="h-4 w-4" />
-            <AlertTitle>Budget Analysis</AlertTitle>
-            <AlertDescription>
-              The AS budget shows a significant deficit of {formatCurrency(Math.abs(metrics.deficit))}, 
-              meaning AS is spending more than it's bringing in. This could lead to future budget cuts 
-              or increased fees for students. The total revenue is {formatCurrency(metrics.revenue)}, 
-              but total expenditures are {formatCurrency(metrics.totalExpenditures)}.
-            </AlertDescription>
-          </Alert>
         </TabsContent>
-        
-        {/* Student vs Admin Tab */}
-        <TabsContent value="student-vs-admin" className="space-y-6">
+
+        <TabsContent value="spending-comparison">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>
-                  {drillDownLevel === 0 
-                    ? "Student-Focused vs Administrative Costs" 
-                    : `Details: ${drillDownCategory}`}
-                </CardTitle>
-                {drillDownLevel > 0 && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click on items to see more details
-                  </p>
-                )}
-              </div>
-              {drillDownLevel > 0 && (
-                <button 
-                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
-                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Back
-                </button>
-              )}
+            <CardHeader>
+              <CardTitle>Spending Comparison</CardTitle>
+              <CardDescription>Breakdown of major expense categories</CardDescription>
             </CardHeader>
             <CardContent>
-              <AnimatePresence mode="wait">
-                {drillDownLevel === 0 ? (
-                  <motion.div
-                    key="student-vs-admin-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={chartData?.studentVsAdmin || []}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={120}
-                          fill="#8884d8"
-                          dataKey="value"
-                          nameKey="name"
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                        >
-                          {chartData?.studentVsAdmin?.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getColorForIndex(index)} />
-                          ))}
-                        </Pie>
-                        <Tooltip 
-                          formatter={(value: number) => formatCurrency(value)}
-                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                        />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </motion.div>
-                ) : (
-                  renderDrillDownChart()
-                )}
-              </AnimatePresence>
+              <div className="h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={spendingComparison}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                    <Bar dataKey="amount" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
-          
-          <Alert>
-            <Users className="h-4 w-4" />
-            <AlertTitle>Administrative Overhead</AlertTitle>
-            <AlertDescription>
-              For every {formatCurrency(metrics.clubFunding / 10)} spent on student organizations, 
-              AS spends {formatCurrency(metrics.adminExpenses / 10)} on administrative costs. 
-              This high administrative overhead ratio of {(metrics.adminExpenses / metrics.clubFunding).toFixed(2)}:1 
-              suggests inefficiency in how student fees are being allocated.
-            </AlertDescription>
-          </Alert>
         </TabsContent>
-        
-        {/* Spending Comparison Tab */}
-        <TabsContent value="spending" className="space-y-6">
+
+        <TabsContent value="office-breakdown">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>
-                  {drillDownLevel === 0 
-                    ? "Spending Comparison" 
-                    : `Details: ${drillDownCategory}`}
-                </CardTitle>
-                {drillDownLevel > 0 && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click on items to see more details
-                  </p>
-                )}
-              </div>
-              {drillDownLevel > 0 && (
-                <button 
-                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
-                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Back
-                </button>
-              )}
+            <CardHeader>
+              <CardTitle>Office Spending Breakdown</CardTitle>
+              <CardDescription>Detailed view of office operation costs</CardDescription>
             </CardHeader>
             <CardContent>
-              <AnimatePresence mode="wait">
-                {drillDownLevel === 0 ? (
-                  <motion.div
-                    key="spending-comparison-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={chartData?.spendingComparison || []}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis 
-                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
-                          width={80}
-                        />
-                        <Tooltip 
-                          formatter={(value: number) => formatCurrency(value)}
-                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                        />
-                        <Legend />
-                        <Bar 
-                          dataKey="value" 
-                          fill={CHART_COLORS[0]} 
-                          onClick={handleSpendingComparisonDrillDown}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
-                ) : (
-                  renderDrillDownChart()
-                )}
-              </AnimatePresence>
+              <div className="h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={officeSpending}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={160}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {officeSpending.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getColorForIndex(index)} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
-          
-          <Alert>
-            <Calendar className="h-4 w-4" />
-            <AlertTitle>Event vs. Club Funding Disparity</AlertTitle>
-            <AlertDescription>
-              AS spends {formatCurrency(metrics.oneDayEvents)} on one-day events like Sun God Festival, 
-              Bear Gardens, and Day One, while only allocating {formatCurrency(metrics.clubFunding)} 
-              for student organizations for the entire year. This means AS spends 
-              {(metrics.oneDayEvents / metrics.clubFunding).toFixed(2)}x more on a few events than 
-              it does on supporting hundreds of student clubs and organizations.
-            </AlertDescription>
-          </Alert>
         </TabsContent>
-        
-        {/* Travel Expenses Tab */}
-        <TabsContent value="travel" className="space-y-6">
+
+        <TabsContent value="student-admin">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>
-                  {drillDownLevel === 0 
-                    ? "Travel Expenses" 
-                    : `Details: ${drillDownCategory}`}
-                </CardTitle>
-                {drillDownLevel > 0 && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click on items to see more details
-                  </p>
-                )}
-              </div>
-              {drillDownLevel > 0 && (
-                <button 
-                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
-                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Back
-                </button>
-              )}
+            <CardHeader>
+              <CardTitle>Student vs Administrative Spending</CardTitle>
+              <CardDescription>Comparison of student-related and administrative expenses</CardDescription>
             </CardHeader>
             <CardContent>
-              <AnimatePresence mode="wait">
-                {drillDownLevel === 0 ? (
-                  <motion.div
-                    key="travel-expenses-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={chartData?.travelData || []}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                        layout="vertical"
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                          type="number" 
-                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
-                          width={80}
-                        />
-                        <YAxis 
-                          type="category" 
-                          dataKey="name" 
-                          width={150}
-                          tick={{ fontSize: 12 }}
-                        />
-                        <Tooltip 
-                          formatter={(value: number) => formatCurrency(value)}
-                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                        />
-                        <Legend />
-                        <Bar 
-                          dataKey="value" 
-                          fill={CHART_COLORS[1]} 
-                          onClick={handleTravelDrillDown}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
-                ) : (
-                  renderDrillDownChart()
-                )}
-              </AnimatePresence>
-            </CardContent>
-          </Card>
-          
-          <Alert>
-            <Plane className="h-4 w-4" />
-            <AlertTitle>Travel Expense Concerns</AlertTitle>
-            <AlertDescription>
-              AS spends {formatCurrency(metrics.travelExpenses)} on travel expenses, which is 
-              {(metrics.travelExpenses / metrics.clubFunding * 100).toFixed(1)}% of the total club funding. 
-              While some travel is necessary for AS representatives to attend conferences and meetings, 
-              the amount spent on travel could be reviewed for potential savings.
-            </AlertDescription>
-          </Alert>
-        </TabsContent>
-        
-        {/* Questionable Expenses Tab */}
-        <TabsContent value="questionable" className="space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>
-                  {drillDownLevel === 0 
-                    ? "Questionable Expenses" 
-                    : `Details: ${drillDownCategory}`}
-                </CardTitle>
-                {drillDownLevel > 0 && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click on items to see more details
-                  </p>
-                )}
+              <div className="h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={spendingComparison2}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                    <Bar dataKey="value" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
-              {drillDownLevel > 0 && (
-                <button 
-                  onClick={() => handleNavigateToLevel(drillDownHistory.length - 2)}
-                  className="flex items-center text-sm text-blue-500 hover:text-blue-700"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Back
-                </button>
+              {studentRelatedSpending < adminSpending && (
+                <Alert className="mt-4">
+                  <AlertTitle>Spending Disparity Detected</AlertTitle>
+                  <AlertDescription>
+                    Administrative spending ({formatCurrency(adminSpending)}) significantly exceeds 
+                    student-related spending ({formatCurrency(studentRelatedSpending)}).
+                  </AlertDescription>
+                </Alert>
               )}
-            </CardHeader>
-            <CardContent>
-              <AnimatePresence mode="wait">
-                {drillDownLevel === 0 ? (
-                  <motion.div
-                    key="questionable-expenses-chart"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-[300px]"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={chartData?.questionableData || []}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                        layout="vertical"
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                          type="number" 
-                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
-                          width={80}
-                        />
-                        <YAxis 
-                          type="category" 
-                          dataKey="name" 
-                          width={150}
-                          tick={{ fontSize: 12 }}
-                        />
-                        <Tooltip 
-                          formatter={(value: number) => formatCurrency(value)}
-                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
-                        />
-                        <Legend />
-                        <Bar 
-                          dataKey="value" 
-                          fill={CHART_COLORS[2]} 
-                          onClick={handleQuestionableDrillDown}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </motion.div>
-                ) : (
-                  renderDrillDownChart()
-                )}
-              </AnimatePresence>
             </CardContent>
           </Card>
-          
-          <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Questionable Spending Priorities</AlertTitle>
-            <AlertDescription>
-              The AS budget includes several questionable expenses that may not align with student priorities. 
-              For example, AS spends {formatCurrency(chartData?.questionableData?.[0]?.value || 0)} on 
-              {chartData?.questionableData?.[0]?.name?.toLowerCase() || "questionable items"}, 
-              which could be reallocated to support more student programs and services.
-            </AlertDescription>
-          </Alert>
         </TabsContent>
       </Tabs>
-      
-      {/* Conclusion */}
-      <Card className="mt-8">
+
+      {/* Key Findings */}
+      <Card>
         <CardHeader>
-          <CardTitle>Budget Mismanagement Summary</CardTitle>
+          <CardTitle>Key Findings</CardTitle>
+          <CardDescription>Important budget insights and potential issues</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p>
-            The AS budget analysis reveals several concerning patterns that suggest budget mismanagement:
-          </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>
-              <strong>Significant Deficit:</strong> AS is spending {formatCurrency(Math.abs(metrics?.deficit || 0))} 
-              more than it's bringing in, which could lead to future budget cuts or increased fees.
-            </li>
-            <li>
-              <strong>High Administrative Overhead:</strong> For every dollar spent on student organizations, 
-              AS spends {((metrics?.adminExpenses || 0) / (metrics?.clubFunding || 1)).toFixed(2)} dollars on administrative costs.
-            </li>
-            <li>
-              <strong>Event vs. Club Funding Disparity:</strong> AS spends 
-              {((metrics?.oneDayEvents || 0) / (metrics?.clubFunding || 1)).toFixed(2)}x more on a few one-day events than 
-              it does on supporting hundreds of student clubs for the entire year.
-            </li>
-            <li>
-              <strong>Questionable Expenses:</strong> The budget includes several questionable expenses that 
-              may not align with student priorities, such as {chartData?.questionableData?.[0]?.name?.toLowerCase() || "questionable items"}.
-            </li>
-          </ul>
-          <p>
-            These findings suggest that AS could improve its budget management by reducing administrative overhead, 
-            reallocating funds from one-day events to ongoing student programs, and eliminating questionable expenses.
-          </p>
+          <div className="space-y-2">
+            {deficit < 0 && (
+              <div className="flex items-center space-x-2">
+                <Badge variant="destructive">Critical</Badge>
+                <span>Current budget deficit of {formatCurrency(deficit)}</span>
+              </div>
+            )}
+            {studentRelatedSpending < adminSpending && (
+              <div className="flex items-center space-x-2">
+                <Badge variant="default">Warning</Badge>
+                <span>Administrative spending exceeds student-related spending by {formatCurrency(adminSpending - studentRelatedSpending)}</span>
+              </div>
+            )}
+            <div className="flex items-center space-x-2">
+              <Badge variant="default">Info</Badge>
+              <span>Largest office budget: {formatCurrency(Math.max(...Object.values(data.officeOperations).map(office => Math.abs(office.amount))))}</span>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
   );
-};
-
-export default BudgetAnalysis; 
+} 
