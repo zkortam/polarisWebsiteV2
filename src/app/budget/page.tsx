@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BudgetAnalysis } from "@/components/budget/BudgetAnalysis";
+import BudgetAnalysis from "@/components/budget/BudgetAnalysis";
 
 export default function BudgetPage() {
   return (
