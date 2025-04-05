@@ -97,26 +97,6 @@ const findItemsByKeyword = (data: BudgetData, keyword: string): { path: string[]
   return results;
 };
 
-// Helper function to calculate total value for a category
-const calculateTotalForCategory = (data: BudgetData, category: string): number => {
-  if (!data[category]) return 0;
-  
-  if ('value' in data[category]) {
-    return data[category].value;
-  }
-  
-  if (data[category].Items) {
-    return Object.values(data[category].Items).reduce((sum: number, item: any) => {
-      if (typeof item === 'object' && 'value' in item) {
-        return sum + item.value;
-      }
-      return sum;
-    }, 0);
-  }
-  
-  return 0;
-};
-
 // Main component
 export function BudgetAnalysis() {
   const [data, setData] = useState<BudgetData | null>(null);
