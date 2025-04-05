@@ -33,13 +33,18 @@ import {
 import budgetData from "@/data/data.json";
 
 // Helper function to format currency
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
+const formatCurrency = (value: number, percentage?: number) => {
+  const formattedValue = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(Math.abs(value));
+  
+  if (percentage !== undefined) {
+    return `${formattedValue} (${percentage.toFixed(1)}%)`;
+  }
+  return formattedValue;
 };
 
 // Calculate total student-related expenses
@@ -155,27 +160,58 @@ const COLORS = [
   "#D0ED57",
 ];
 
-// Calculate total income and expenses
-const totalIncome = Math.abs(budgetData.budgetSummary.asRevenue) + 
-                    Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) + 
-                    Math.abs(budgetData.reservesAndCarryforwards.asCarryforward);
+// Calculate total income and expenses with more detailed breakdown
+const totalIncome = {
+  asRevenue: Math.abs(budgetData.budgetSummary.asRevenue),
+  totalCarryforward: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward),
+  asCarryforward: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward),
+  auxiliaryCarryforward: Math.abs(budgetData.reservesAndCarryforwards.auxiliaryCarryforward),
+  spacesCarryforward: Math.abs(budgetData.reservesAndCarryforwards.spacesCarryforward),
+  total: Math.abs(budgetData.budgetSummary.asRevenue) + 
+         Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) + 
+         Math.abs(budgetData.reservesAndCarryforwards.asCarryforward)
+};
 
-// Calculate total expenses (sum of all expenses in budgetSummary except asRevenue and remainingFunds)
-const totalExpenses = Object.entries(budgetData.budgetSummary)
-  .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
-  .reduce((sum, [_, value]) => sum + Math.abs(value), 0);
+// Calculate total expenses with detailed breakdown
+const totalExpenses = {
+  studentServices: Math.abs(budgetData.budgetSummary.studentPayrollStipends),
+  careerEmployees: Math.abs(budgetData.budgetSummary.careerEmployees),
+  officeOperations: Math.abs(budgetData.budgetSummary.officeOperations),
+  generalOperations: Math.abs(budgetData.budgetSummary.generalOperations),
+  senateOperations: Math.abs(budgetData.budgetSummary.senateOperations),
+  referendumsAndAid: Math.abs(budgetData.budgetSummary.referendumsAndAid),
+  mandatedReserves: Math.abs(budgetData.budgetSummary.mandatedReserves),
+  total: Object.entries(budgetData.budgetSummary)
+    .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
+    .reduce((sum, [_, value]) => sum + Math.abs(value), 0)
+};
 
-// Calculate the deficit
-const deficit = Math.abs(budgetData.budgetSummary.remainingFunds);
+// Calculate the deficit with more context
+const deficit = {
+  amount: Math.abs(budgetData.budgetSummary.remainingFunds),
+  percentage: (Math.abs(budgetData.budgetSummary.remainingFunds) / totalIncome.total) * 100
+};
 
-// Prepare data for income breakdown
+// Prepare data for income breakdown with percentages
 const incomeBreakdownData = [
-  { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
-  { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
-  { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
+  { 
+    name: "AS Revenue", 
+    value: totalIncome.asRevenue,
+    percentage: (totalIncome.asRevenue / totalIncome.total) * 100
+  },
+  { 
+    name: "Total Carryforward", 
+    value: totalIncome.totalCarryforward,
+    percentage: (totalIncome.totalCarryforward / totalIncome.total) * 100
+  },
+  { 
+    name: "AS Carryforward", 
+    value: totalIncome.asCarryforward,
+    percentage: (totalIncome.asCarryforward / totalIncome.total) * 100
+  }
 ];
 
-// Prepare data for expense breakdown
+// Prepare data for expense breakdown with percentages
 const expenseBreakdownData = Object.entries(budgetData.budgetSummary)
   .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
   .map(([name, value]) => ({
@@ -184,22 +220,23 @@ const expenseBreakdownData = Object.entries(budgetData.budgetSummary)
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" "),
     value: Math.abs(value),
+    percentage: (Math.abs(value) / totalExpenses.total) * 100
   }));
 
 // Prepare data for monthly trend (simulated data for visualization)
 const monthlyTrendData = [
-  { month: "Jul", income: totalIncome * 0.1, expenses: totalExpenses * 0.08 },
-  { month: "Aug", income: totalIncome * 0.15, expenses: totalExpenses * 0.12 },
-  { month: "Sep", income: totalIncome * 0.2, expenses: totalExpenses * 0.18 },
-  { month: "Oct", income: totalIncome * 0.25, expenses: totalExpenses * 0.22 },
-  { month: "Nov", income: totalIncome * 0.3, expenses: totalExpenses * 0.28 },
-  { month: "Dec", income: totalIncome * 0.35, expenses: totalExpenses * 0.32 },
-  { month: "Jan", income: totalIncome * 0.4, expenses: totalExpenses * 0.38 },
-  { month: "Feb", income: totalIncome * 0.45, expenses: totalExpenses * 0.42 },
-  { month: "Mar", income: totalIncome * 0.5, expenses: totalExpenses * 0.48 },
-  { month: "Apr", income: totalIncome * 0.6, expenses: totalExpenses * 0.58 },
-  { month: "May", income: totalIncome * 0.7, expenses: totalExpenses * 0.68 },
-  { month: "Jun", income: totalIncome, expenses: totalExpenses },
+  { month: "Jul", income: totalIncome.total * 0.1, expenses: totalExpenses.total * 0.08 },
+  { month: "Aug", income: totalIncome.total * 0.15, expenses: totalExpenses.total * 0.12 },
+  { month: "Sep", income: totalIncome.total * 0.2, expenses: totalExpenses.total * 0.18 },
+  { month: "Oct", income: totalIncome.total * 0.25, expenses: totalExpenses.total * 0.22 },
+  { month: "Nov", income: totalIncome.total * 0.3, expenses: totalExpenses.total * 0.28 },
+  { month: "Dec", income: totalIncome.total * 0.35, expenses: totalExpenses.total * 0.32 },
+  { month: "Jan", income: totalIncome.total * 0.4, expenses: totalExpenses.total * 0.38 },
+  { month: "Feb", income: totalIncome.total * 0.45, expenses: totalExpenses.total * 0.42 },
+  { month: "Mar", income: totalIncome.total * 0.5, expenses: totalExpenses.total * 0.48 },
+  { month: "Apr", income: totalIncome.total * 0.6, expenses: totalExpenses.total * 0.58 },
+  { month: "May", income: totalIncome.total * 0.7, expenses: totalExpenses.total * 0.68 },
+  { month: "Jun", income: totalIncome.total, expenses: totalExpenses.total },
 ];
 
 // Function to get detailed breakdown for a specific expense category
@@ -296,6 +333,42 @@ const getSubcategoryBreakdown = (category: string, subcategory: string) => {
   return [];
 };
 
+// Custom tooltip component for better data visualization
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background/95 p-4 rounded-lg shadow-lg border border-border">
+        <p className="font-semibold mb-2">{label}</p>
+        {payload.map((entry: any, index: number) => (
+          <p key={index} className="text-sm" style={{ color: entry.color }}>
+            {entry.name}: {formatCurrency(entry.value, entry.payload.percentage)}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
+// Custom legend component
+const CustomLegend = ({ payload }: any) => {
+  return (
+    <div className="flex flex-wrap justify-center gap-4 mt-4">
+      {payload.map((entry: any, index: number) => (
+        <div key={index} className="flex items-center">
+          <div
+            className="w-3 h-3 rounded-full mr-2"
+            style={{ backgroundColor: entry.color }}
+          />
+          <span className="text-sm text-foreground/70">
+            {entry.value} ({formatCurrency(entry.payload.value, entry.payload.percentage)})
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function BudgetPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -374,7 +447,7 @@ export default function BudgetPage() {
           >
             <h3 className="text-lg font-semibold mb-2">Total Income</h3>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(totalIncome)}
+              {formatCurrency(totalIncome.total)}
             </p>
             <p className="text-sm text-foreground/70 mt-1">
               AS Revenue + Carryforward
@@ -388,7 +461,7 @@ export default function BudgetPage() {
           >
             <h3 className="text-lg font-semibold mb-2">Total Expenses</h3>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(totalExpenses)}
+              {formatCurrency(totalExpenses.total)}
             </p>
           </motion.div>
         </div>
@@ -402,7 +475,7 @@ export default function BudgetPage() {
         >
           <h3 className="text-lg font-bold text-red-700 dark:text-red-300 mb-1">Budget Deficit</h3>
           <p className="text-2xl font-bold text-red-700 dark:text-red-300">
-            {formatCurrency(deficit)}
+            {formatCurrency(deficit.amount, deficit.percentage)}
           </p>
         </motion.div>
 
@@ -504,9 +577,9 @@ export default function BudgetPage() {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={[
-                          { name: "Total Income", value: totalIncome },
-                          { name: "Total Expenses", value: totalExpenses },
-                          { name: "Deficit", value: deficit },
+                          { name: "Total Income", value: totalIncome.total },
+                          { name: "Total Expenses", value: totalExpenses.total },
+                          { name: "Deficit", value: deficit.amount },
                         ]}
                         onClick={(data) => {
                           if (data && data.activePayload && data.activePayload[0]) {
@@ -540,7 +613,7 @@ export default function BudgetPage() {
                           dataKey="value" 
                           fill="#ef4444" 
                           name="Deficit" 
-                          data={[{ name: "Deficit", value: deficit }]}
+                          data={[{ name: "Deficit", value: deficit.amount }]}
                         />
                       </BarChart>
                     </ResponsiveContainer>
@@ -572,8 +645,8 @@ export default function BudgetPage() {
                             />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                        <Legend />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend content={<CustomLegend />} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
@@ -602,8 +675,8 @@ export default function BudgetPage() {
                             />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                        <Legend />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend content={<CustomLegend />} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
@@ -614,24 +687,30 @@ export default function BudgetPage() {
                 <h3 className="text-xl font-semibold mb-4">Monthly Budget Trend</h3>
                 <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={monthlyTrendData}>
+                    <LineChart
+                      data={monthlyTrendData}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
-                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="income" 
-                        stroke="#8884d8" 
-                        name="Income" 
+                      <YAxis 
+                        tickFormatter={(value) => formatCurrency(value)}
+                        width={120}
+                      />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
+                      <Line
+                        type="monotone"
+                        dataKey="income"
+                        stroke="#8884d8"
+                        name="Income"
                         strokeWidth={2}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="expenses" 
-                        stroke="#82ca9d" 
-                        name="Expenses" 
+                      <Line
+                        type="monotone"
+                        dataKey="expenses"
+                        stroke="#82ca9d"
+                        name="Expenses"
                         strokeWidth={2}
                       />
                     </LineChart>
@@ -662,8 +741,8 @@ export default function BudgetPage() {
                           />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -699,8 +778,8 @@ export default function BudgetPage() {
                         />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                    <Legend />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend content={<CustomLegend />} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -767,8 +846,8 @@ export default function BudgetPage() {
                       tickFormatter={(value) => formatCurrency(value)} 
                       width={120}
                     />
-                    <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                    <Legend />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend content={<CustomLegend />} />
                     <Bar dataKey="value" fill="#8884d8" name="Amount" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -817,8 +896,8 @@ export default function BudgetPage() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
                     <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                    <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                    <Legend />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend content={<CustomLegend />} />
                     <Bar dataKey="value" fill="#82ca9d" name="Amount" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -853,8 +932,8 @@ export default function BudgetPage() {
                         tickFormatter={(value) => formatCurrency(value)} 
                         width={120}
                       />
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
                       <Bar dataKey="value" fill="#ff8042" name="Amount" />
                     </BarChart>
                   </ResponsiveContainer>
@@ -883,8 +962,8 @@ export default function BudgetPage() {
                         <Cell fill="#ff8042" />
                         <Cell fill="#82ca9d" />
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -916,8 +995,8 @@ export default function BudgetPage() {
                           />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -949,8 +1028,8 @@ export default function BudgetPage() {
                           />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                      <Legend />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend content={<CustomLegend />} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
