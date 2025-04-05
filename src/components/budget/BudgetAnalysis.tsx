@@ -59,6 +59,15 @@ const findItemsByKeyword = (data: BudgetData, keyword: string): { path: string[]
         }
       });
     }
+    
+    // Also search through Subitems if they exist
+    if (obj.Subitems) {
+      Object.entries(obj.Subitems).forEach(([key, value]) => {
+        if (typeof value === 'object') {
+          search(value, [...path, key]);
+        }
+      });
+    }
   };
   
   search(data);
@@ -589,37 +598,131 @@ const BudgetAnalysis: React.FC = () => {
     );
   }
   
+  // Update the sankeyData structure to show more detailed revenue sources and their connections
   const sankeyData = {
     nodes: [
       { name: "Total Revenue", fill: COLORS.revenue },
+      { name: "Student Fees", fill: COLORS.revenue },
+      { name: "Auxiliary Carryforwards", fill: COLORS.revenue },
+      { name: "Other Revenue", fill: COLORS.revenue },
       { name: "Student Funding", fill: COLORS.studentFunding },
       { name: "Administrative Costs", fill: COLORS.adminCosts },
       { name: "Events & Activities", fill: COLORS.events },
+      { name: "Marketing", fill: COLORS.other },
+      { name: "Travel", fill: COLORS.other },
       { name: "Other Expenses", fill: COLORS.other },
     ],
     links: [
+      // Revenue breakdown
       {
         source: 0,
         target: 1,
-        value: metrics.clubFunding,
-        fill: COLORS.studentFunding,
+        value: budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 AS Revenue"]?.value || 0,
+        fill: COLORS.revenue,
       },
       {
         source: 0,
         target: 2,
-        value: metrics.adminExpenses,
-        fill: COLORS.adminCosts,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0,
+        fill: COLORS.revenue,
       },
       {
         source: 0,
         target: 3,
+        value: (budgetData["BUDGET SUMMARY"]?.General?.Items?.["2024–2025 AS Revenue"]?.value || 0) - 
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0),
+        fill: COLORS.revenue,
+      },
+      
+      // Student funding
+      {
+        source: 1,
+        target: 4,
+        value: metrics.clubFunding,
+        fill: COLORS.studentFunding,
+      },
+      
+      // Administrative costs
+      {
+        source: 1,
+        target: 5,
+        value: metrics.adminExpenses,
+        fill: COLORS.adminCosts,
+      },
+      
+      // Events & activities
+      {
+        source: 1,
+        target: 6,
         value: metrics.oneDayEvents,
         fill: COLORS.events,
       },
+      
+      // Marketing
       {
-        source: 0,
-        target: 4,
+        source: 1,
+        target: 7,
         value: metrics.marketingExpenses,
+        fill: COLORS.other,
+      },
+      
+      // Travel
+      {
+        source: 1,
+        target: 8,
+        value: metrics.travelExpenses,
+        fill: COLORS.other,
+      },
+      
+      // Other expenses
+      {
+        source: 1,
+        target: 9,
+        value: metrics.totalExpenditures - metrics.clubFunding - metrics.adminExpenses - 
+               metrics.oneDayEvents - metrics.marketingExpenses - metrics.travelExpenses,
+        fill: COLORS.other,
+      },
+      
+      // Auxiliary carryforwards connections
+      {
+        source: 2,
+        target: 4,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Student Organizations Carryforward"]?.value || 0,
+        fill: COLORS.studentFunding,
+      },
+      {
+        source: 2,
+        target: 5,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Administrative Carryforward"]?.value || 0,
+        fill: COLORS.adminCosts,
+      },
+      {
+        source: 2,
+        target: 6,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Events Carryforward"]?.value || 0,
+        fill: COLORS.events,
+      },
+      {
+        source: 2,
+        target: 7,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Marketing Carryforward"]?.value || 0,
+        fill: COLORS.other,
+      },
+      {
+        source: 2,
+        target: 8,
+        value: budgetData["CARRYFORWARDS"]?.General?.Items?.["Travel Carryforward"]?.value || 0,
+        fill: COLORS.other,
+      },
+      {
+        source: 2,
+        target: 9,
+        value: (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0) - 
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Student Organizations Carryforward"]?.value || 0) -
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Administrative Carryforward"]?.value || 0) -
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Events Carryforward"]?.value || 0) -
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Marketing Carryforward"]?.value || 0) -
+               (budgetData["CARRYFORWARDS"]?.General?.Items?.["Travel Carryforward"]?.value || 0),
         fill: COLORS.other,
       },
     ],
@@ -647,6 +750,8 @@ const BudgetAnalysis: React.FC = () => {
   const CustomSankeyTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+      const totalRevenue = metrics.revenue + (budgetData["CARRYFORWARDS"]?.General?.Items?.["Total Carryforwards"]?.value || 0);
+      
       return (
         <div className="bg-white/90 dark:bg-gray-800/90 p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
           <p className="font-semibold text-gray-900 dark:text-white">
@@ -656,7 +761,7 @@ const BudgetAnalysis: React.FC = () => {
             {formatCurrency(data.value)}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {calculatePercentage(data.value, metrics.revenue)}% of total revenue
+            {calculatePercentage(data.value, totalRevenue)}% of total budget
           </p>
         </div>
       );
