@@ -130,13 +130,17 @@ const COLORS = [
 ];
 
 // Calculate total income and expenses
-const totalIncome = Math.abs(budgetData.budgetSummary.asRevenue);
+const totalIncome = Math.abs(budgetData.budgetSummary.asRevenue) + 
+                    Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) + 
+                    Math.abs(budgetData.reservesAndCarryforwards.asCarryforward);
+
+// Calculate total expenses (sum of all expenses in budgetSummary except asRevenue and remainingFunds)
 const totalExpenses = Object.entries(budgetData.budgetSummary)
   .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
   .reduce((sum, [_, value]) => sum + Math.abs(value), 0);
 
 // Calculate the deficit
-const deficit = totalExpenses - totalIncome;
+const deficit = Math.abs(budgetData.budgetSummary.remainingFunds);
 
 // Function to get detailed breakdown for a specific expense category
 const getDetailedBreakdown = (category: string) => {
@@ -156,6 +160,16 @@ const getDetailedBreakdown = (category: string) => {
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" "),
         value: Math.abs(value.amount),
+        hasSubcategories: Object.keys(value).filter(key => key !== "amount").length > 0,
+        subcategories: Object.entries(value)
+          .filter(([key]) => key !== "amount")
+          .map(([subName, subValue]) => ({
+            name: subName
+              .split(/(?=[A-Z])/)
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            value: Math.abs(subValue as number),
+          })),
       }));
     case "General Operations":
       return Object.entries(budgetData.generalOperations).map(([name, value]) => ({
@@ -169,24 +183,71 @@ const getDetailedBreakdown = (category: string) => {
       return [{ name: "Senate Operations", value: Math.abs(budgetData.budgetSummary.senateOperations) }];
     case "Student Services":
       return [{ name: "Student Payroll & Stipends", value: Math.abs(budgetData.budgetSummary.studentPayrollStipends) }];
+    case "Referendums And Aid":
+      return [{ name: "Referendums And Aid", value: Math.abs(budgetData.budgetSummary.referendumsAndAid) }];
+    case "Mandated Reserves":
+      return [{ name: "Mandated Reserves", value: Math.abs(budgetData.budgetSummary.mandatedReserves) }];
     default:
       return [];
   }
 };
 
+// Function to get subcategory breakdown
+const getSubcategoryBreakdown = (category: string, subcategory: string) => {
+  if (category === "Office Operations") {
+    // Convert subcategory to camelCase for accessing the object
+    const camelCaseSubcategory = subcategory
+      .split(' ')
+      .map((word, index) => 
+        index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      )
+      .join('');
+    
+    // Check if the subcategory exists in officeOperations
+    if (camelCaseSubcategory in budgetData.officeOperations) {
+      const data = budgetData.officeOperations[camelCaseSubcategory as keyof typeof budgetData.officeOperations];
+      return Object.entries(data)
+        .filter(([key]) => key !== "amount")
+        .map(([name, value]) => ({
+          name: name
+            .split(/(?=[A-Z])/)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" "),
+          value: Math.abs(value as number),
+        }));
+    }
+  }
+  return [];
+};
+
 export default function BudgetPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [detailedData, setDetailedData] = useState<any[]>([]);
+  const [subcategoryData, setSubcategoryData] = useState<any[]>([]);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
+    setSelectedSubcategory(null);
     setDetailedData(getDetailedBreakdown(category));
   };
 
+  const handleSubcategoryClick = (subcategory: string) => {
+    if (selectedCategory) {
+      setSelectedSubcategory(subcategory);
+      setSubcategoryData(getSubcategoryBreakdown(selectedCategory, subcategory));
+    }
+  };
+
   const handleBack = () => {
-    setSelectedCategory(null);
-    setDetailedData([]);
+    if (selectedSubcategory) {
+      setSelectedSubcategory(null);
+      setSubcategoryData([]);
+    } else {
+      setSelectedCategory(null);
+      setDetailedData([]);
+    }
   };
 
   return (
@@ -228,6 +289,9 @@ export default function BudgetPage() {
             <p className="text-2xl font-bold text-primary">
               {formatCurrency(totalIncome)}
             </p>
+            <p className="text-sm text-foreground/70 mt-1">
+              AS Revenue + Carryforward
+            </p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -247,14 +311,11 @@ export default function BudgetPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-red-100 dark:bg-red-900/30 rounded-lg p-6 shadow-lg mb-12 border-2 border-red-500"
+          className="bg-transparent rounded-lg p-4 shadow-lg mb-8 border-2 border-red-500 max-w-md mx-auto"
         >
-          <h3 className="text-xl font-bold text-red-700 dark:text-red-300 mb-2">Budget Deficit</h3>
-          <p className="text-3xl font-bold text-red-700 dark:text-red-300">
+          <h3 className="text-lg font-bold text-red-700 dark:text-red-300 mb-1">Budget Deficit</h3>
+          <p className="text-2xl font-bold text-red-700 dark:text-red-300">
             {formatCurrency(deficit)}
-          </p>
-          <p className="text-red-600 dark:text-red-400 mt-2">
-            Expenses exceed income by {formatCurrency(deficit)}
           </p>
         </motion.div>
 
@@ -359,7 +420,11 @@ export default function BudgetPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={incomeData}
+                      data={[
+                        { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
+                        { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
+                        { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
+                      ]}
                       dataKey="value"
                       nameKey="name"
                       cx="50%"
@@ -369,7 +434,7 @@ export default function BudgetPage() {
                         `${name}: ${(percent * 100).toFixed(0)}%`
                       }
                     >
-                      {incomeData.map((_, index) => (
+                      {[0, 1, 2].map((index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
@@ -391,27 +456,46 @@ export default function BudgetPage() {
               transition={{ duration: 0.5 }}
             >
               <h3 className="text-xl font-semibold mb-4">
-                {selectedCategory ? `${selectedCategory} Breakdown` : "Expense Breakdown"}
+                {selectedSubcategory 
+                  ? `${selectedSubcategory} Breakdown` 
+                  : selectedCategory 
+                    ? `${selectedCategory} Breakdown` 
+                    : "Expense Breakdown"}
               </h3>
               {selectedCategory && (
                 <button
                   onClick={handleBack}
                   className="mb-4 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors"
                 >
-                  ← Back to All Expenses
+                  ← Back to {selectedSubcategory ? selectedCategory : "All Expenses"}
                 </button>
               )}
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart 
-                    data={selectedCategory ? detailedData : expenseData}
+                    data={selectedSubcategory 
+                      ? subcategoryData 
+                      : selectedCategory 
+                        ? detailedData 
+                        : expenseData}
                     onClick={(data) => {
-                      if (!selectedCategory && data && data.activePayload && data.activePayload[0]) {
-                        const category = data.activePayload[0].payload.name;
-                        handleCategoryClick(category);
+                      if (selectedSubcategory) return;
+                      
+                      if (selectedCategory) {
+                        if (data && data.activePayload && data.activePayload[0]) {
+                          const item = data.activePayload[0].payload;
+                          if (item.hasSubcategories) {
+                            handleSubcategoryClick(item.name);
+                          }
+                        }
+                      } else {
+                        if (data && data.activePayload && data.activePayload[0]) {
+                          const category = data.activePayload[0].payload.name;
+                          handleCategoryClick(category);
+                        }
                       }
                     }}
-                    style={{ cursor: selectedCategory ? 'default' : 'pointer' }}
+                    style={{ cursor: selectedSubcategory ? 'default' : 'pointer' }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
@@ -431,18 +515,37 @@ export default function BudgetPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-xl font-semibold mb-4">Office Operations Breakdown</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                {selectedSubcategory 
+                  ? `${selectedSubcategory} Breakdown` 
+                  : "Office Operations Breakdown"}
+              </h3>
+              {selectedCategory && (
+                <button
+                  onClick={handleBack}
+                  className="mb-4 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors"
+                >
+                  ← Back to {selectedSubcategory ? "Office Operations" : "All Operations"}
+                </button>
+              )}
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart 
-                    data={officeOperationsData}
+                    data={selectedSubcategory 
+                      ? subcategoryData 
+                      : officeOperationsData}
                     onClick={(data) => {
+                      if (selectedSubcategory) return;
+                      
                       if (data && data.activePayload && data.activePayload[0]) {
-                        const category = data.activePayload[0].payload.name;
-                        handleCategoryClick(category);
+                        const item = data.activePayload[0].payload;
+                        if (item.hasSubcategories) {
+                          setSelectedCategory("Office Operations");
+                          handleSubcategoryClick(item.name);
+                        }
                       }
                     }}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: selectedSubcategory ? 'default' : 'pointer' }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
