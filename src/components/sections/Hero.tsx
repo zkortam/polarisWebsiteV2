@@ -1,17 +1,171 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Canvas-based star background component
+const StarBackground = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const particlesRef = useRef<any[]>([]);
+  const animationFrameRef = useRef<number | null>(null);
+  const particleCount = 200; // Reduced from 800 to 200 for fewer stars
+
+  // Particle class
+  class Particle {
+    x: number;
+    y: number;
+    size: number = 0;
+    speedX: number = 0;
+    speedY: number = 0;
+    brightness: number = 0;
+    pulseSpeed: number = 0;
+    pulseOffset: number = 0;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.reset();
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+    }
+
+    reset() {
+      this.size = Math.random() * 1.5 + 0.5; // Smaller stars
+      this.speedX = (Math.random() - 0.5) * 0.2; // Slower movement
+      this.speedY = (Math.random() - 0.5) * 0.2;
+      this.brightness = Math.random() * 0.3 + 0.2; // More faded stars
+      this.pulseSpeed = Math.random() * 0.01 + 0.005; // Slower pulsing
+      this.pulseOffset = Math.random() * Math.PI * 2;
+    }
+
+    update(canvas: HTMLCanvasElement) {
+      // Subtle pulsing effect
+      this.brightness = 0.2 + Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.1;
+      
+      this.x += this.speedX;
+      this.y += this.speedY;
+      
+      // Wrap around screen edges
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Initialize particles
+  const initParticles = (canvas: HTMLCanvasElement) => {
+    particlesRef.current = [];
+    for (let i = 0; i < particleCount; i++) {
+      particlesRef.current.push(new Particle(canvas));
+    }
+  };
+
+  // Animation function
+  const animateParticles = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    particlesRef.current.forEach(p => {
+      const relativeY = p.y / canvas.height;
+      const densityFactor = Math.max(0, 1 - (scrollPercent + relativeY) * 0.5);
+      p.update(canvas);
+      ctx.globalAlpha = p.brightness * densityFactor;
+      p.draw(ctx);
+    });
+    
+    ctx.globalAlpha = 1;
+    
+    animationFrameRef.current = requestAnimationFrame(() => animateParticles(canvas, ctx));
+  };
+
+  // Setup canvas and event listeners
+  useEffect(() => {
+    setMounted(true);
+    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Initialize particles
+    initParticles(canvas);
+    
+    // Start animation
+    animateParticles(canvas, ctx);
+    
+    // Handle window resize
+    const handleResize = () => {
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles(canvas);
+      }
+    };
+    
+    // Handle scroll
+    const handleScroll = () => {
+      if (canvas) {
+        canvas.style.top = window.scrollY + 'px';
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      id="stars-canvas"
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+      style={{ background: 'transparent' }}
+    />
+  );
+};
+
 export function Hero() {
   const [mounted, setMounted] = useState(false);
   
+  // Initialize effects
   useEffect(() => {
     setMounted(true);
+    
+    // Handle scroll for parallax effect
+    const handleScroll = () => {
+      // Scroll handling if needed
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
   
   // Static UI for server-side rendering
@@ -52,37 +206,8 @@ export function Hero() {
   
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/80">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(64,120,255,0.1)_0%,transparent_70%)] opacity-50" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(64,120,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(64,120,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
-        
-        {/* Animated orbs */}
-        <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.5, 0.3, 0.5],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
+      {/* Canvas-based star background */}
+      <StarBackground />
       
       {/* Content */}
       <div className="container mx-auto px-4 z-10">
