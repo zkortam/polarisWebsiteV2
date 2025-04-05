@@ -33,21 +33,18 @@ import {
 import budgetData from "@/data/data.json";
 
 // Helper function to format currency
-const formatCurrency = (value: number | undefined, showPercentage = false, percentage?: number) => {
-  if (value === undefined || isNaN(value)) return "N/A";
-  const absValue = Math.abs(value);
-  const formattedValue = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+const formatCurrency = (value: number, percentage?: number) => {
+  const formattedValue = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(absValue);
+  }).format(Math.abs(value));
   
-  const sign = value < 0 ? "-" : "";
-  if (showPercentage && percentage !== undefined) {
-    return `${sign}${formattedValue} (${percentage.toFixed(1)}%)`;
+  if (percentage !== undefined) {
+    return `${formattedValue} (${percentage.toFixed(1)}%)`;
   }
-  return `${sign}${formattedValue}`;
+  return formattedValue;
 };
 
 // Calculate total student-related expenses
@@ -150,10 +147,18 @@ const questionableExpensesData = Object.entries(questionableExpenses).map(([name
 }));
 
 // Colors for charts
-const COLORS = {
-  primary: "#8884d8",
-  pie: ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"],
-};
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+  "#FFC658",
+  "#FF7C43",
+  "#A4DE6C",
+  "#D0ED57",
+];
 
 // Calculate total income and expenses with more detailed breakdown
 const totalIncome = {
@@ -235,42 +240,66 @@ const monthlyTrendData = [
 ];
 
 // Function to get detailed breakdown for a specific expense category
-const getDetailedBreakdown = (category: string): any[] => {
+const getDetailedBreakdown = (category: string) => {
   switch (category) {
+    case "Career Employees":
+      return Object.entries(budgetData.careerEmployees).map(([name, value]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value),
+      }));
+    case "Office Operations":
+      return Object.entries(budgetData.officeOperations).map(([name, value]: [string, any]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value.amount),
+        hasSubcategories: Object.keys(value).filter(key => key !== "amount").length > 0,
+        subcategories: Object.entries(value)
+          .filter(([key]) => key !== "amount")
+          .map(([subName, subValue]) => ({
+            name: subName
+              .split(/(?=[A-Z])/)
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            value: Math.abs(subValue as number),
+          })),
+      }));
+    case "General Operations":
+      return Object.entries(budgetData.generalOperations).map(([name, value]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value),
+      }));
+    case "Senate Operations":
+      return [{ name: "Senate Operations", value: Math.abs(budgetData.budgetSummary.senateOperations) }];
     case "Student Services":
-      return Object.entries(studentExpenses).map(([name, value]) => ({
-        name,
-        value: Math.abs(value),
-        percentage: (Math.abs(value) / totalExpenses.total) * 100
-      }));
-    case "Administrative":
-      return Object.entries(adminExpenses).map(([name, value]) => ({
-        name,
-        value: Math.abs(value),
-        percentage: (Math.abs(value) / totalExpenses.total) * 100
-      }));
-    case "Marketing":
-      return Object.entries(marketingExpenses).map(([name, value]) => ({
-        name,
-        value: Math.abs(value),
-        percentage: (Math.abs(value) / totalExpenses.total) * 100
-      }));
-    case "Travel":
-      return Object.entries(travelExpenses).map(([name, value]) => ({
-        name,
-        value: Math.abs(value),
-        percentage: (Math.abs(value) / totalExpenses.total) * 100
-      }));
-    case "Questionable":
-      return Object.entries(questionableExpenses).map(([name, value]) => ({
-        name,
-        value: Math.abs(value),
-        percentage: (Math.abs(value) / totalExpenses.total) * 100
-      }));
+      return [{ name: "Student Payroll & Stipends", value: Math.abs(budgetData.budgetSummary.studentPayrollStipends) }];
+    case "Referendums And Aid":
+      return [{ name: "Referendums And Aid", value: Math.abs(budgetData.budgetSummary.referendumsAndAid) }];
+    case "Mandated Reserves":
+      return [{ name: "Mandated Reserves", value: Math.abs(budgetData.budgetSummary.mandatedReserves) }];
     case "Income":
-      return incomeBreakdownData;
+      return [
+        { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
+        { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
+        { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
+      ];
     case "Expenses":
-      return expenseBreakdownData;
+      return Object.entries(budgetData.budgetSummary)
+        .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
+        .map(([name, value]) => ({
+          name: name
+            .split(/(?=[A-Z])/)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" "),
+          value: Math.abs(value),
+        }));
     default:
       return [];
   }
@@ -308,11 +337,11 @@ const getSubcategoryBreakdown = (category: string, subcategory: string) => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-        <p className="font-semibold text-gray-900">{label}</p>
+      <div className="bg-background/95 p-4 rounded-lg shadow-lg border border-border">
+        <p className="font-semibold mb-2">{label}</p>
         {payload.map((entry: any, index: number) => (
           <p key={index} className="text-sm" style={{ color: entry.color }}>
-            {entry.name}: {formatCurrency(entry.value, true, entry.payload?.percentage)}
+            {entry.name}: {formatCurrency(entry.value, entry.payload.percentage)}
           </p>
         ))}
       </div>
@@ -326,13 +355,13 @@ const CustomLegend = ({ payload }: any) => {
   return (
     <div className="flex flex-wrap justify-center gap-4 mt-4">
       {payload.map((entry: any, index: number) => (
-        <div key={index} className="flex items-center gap-2">
+        <div key={index} className="flex items-center">
           <div
-            className="w-3 h-3 rounded-full"
+            className="w-3 h-3 rounded-full mr-2"
             style={{ backgroundColor: entry.color }}
           />
           <span className="text-sm text-foreground/70">
-            {entry.value} ({formatCurrency(entry.payload?.value || 0, true, entry.payload?.percentage || 0)})
+            {entry.value} ({formatCurrency(entry.payload.value, entry.payload.percentage)})
           </span>
         </div>
       ))}
@@ -347,7 +376,6 @@ export default function BudgetPage() {
   const [detailedData, setDetailedData] = useState<any[]>([]);
   const [subcategoryData, setSubcategoryData] = useState<any[]>([]);
   const [summaryDrillDown, setSummaryDrillDown] = useState<string | null>(null);
-  const [drillDownData, setDrillDownData] = useState<any[]>([]);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
@@ -373,16 +401,13 @@ export default function BudgetPage() {
   };
 
   const handleSummaryDrillDown = (category: string) => {
-    const data = getDetailedBreakdown(category);
-    if (Array.isArray(data)) {
-      setSummaryDrillDown(category);
-      setDrillDownData(data);
-    }
+    setSummaryDrillDown(category);
+    setDetailedData(getDetailedBreakdown(category));
   };
 
   const handleSummaryBack = () => {
     setSummaryDrillDown(null);
-    setDrillDownData([]);
+    setDetailedData([]);
   };
 
   return (
@@ -450,7 +475,7 @@ export default function BudgetPage() {
         >
           <h3 className="text-lg font-bold text-red-700 dark:text-red-300 mb-1">Budget Deficit</h3>
           <p className="text-2xl font-bold text-red-700 dark:text-red-300">
-            {formatCurrency(deficit.amount, true, deficit.percentage)}
+            {formatCurrency(deficit.amount, deficit.percentage)}
           </p>
         </motion.div>
 
@@ -523,7 +548,7 @@ export default function BudgetPage() {
                     </button>
                     <div className="h-[400px]">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={drillDownData}>
+                        <BarChart data={detailedData}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis 
                             dataKey="name" 
@@ -616,7 +641,7 @@ export default function BudgetPage() {
                           {incomeBreakdownData.map((_, index) => (
                             <Cell
                               key={`cell-${index}`}
-                              fill={COLORS.pie[index % COLORS.pie.length]}
+                              fill={COLORS[index % COLORS.length]}
                             />
                           ))}
                         </Pie>
@@ -646,7 +671,7 @@ export default function BudgetPage() {
                           {expenseBreakdownData.map((_, index) => (
                             <Cell
                               key={`cell-${index}`}
-                              fill={COLORS.pie[index % COLORS.pie.length]}
+                              fill={COLORS[index % COLORS.length]}
                             />
                           ))}
                         </Pie>
@@ -677,7 +702,7 @@ export default function BudgetPage() {
                       <Line
                         type="monotone"
                         dataKey="income"
-                        stroke={COLORS.primary}
+                        stroke="#8884d8"
                         name="Income"
                         strokeWidth={2}
                       />
@@ -712,7 +737,7 @@ export default function BudgetPage() {
                         {studentVsAdminData.map((_, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={COLORS.pie[index % COLORS.pie.length]}
+                            fill={COLORS[index % COLORS.length]}
                           />
                         ))}
                       </Pie>
@@ -749,7 +774,7 @@ export default function BudgetPage() {
                       {incomeBreakdownData.map((_, index) => (
                         <Cell
                           key={`cell-${index}`}
-                          fill={COLORS.pie[index % COLORS.pie.length]}
+                          fill={COLORS[index % COLORS.length]}
                         />
                       ))}
                     </Pie>
@@ -966,7 +991,7 @@ export default function BudgetPage() {
                         {Object.keys(studentExpenses).map((_, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={COLORS.pie[index % COLORS.pie.length]}
+                            fill={COLORS[index % COLORS.length]}
                           />
                         ))}
                       </Pie>
@@ -999,7 +1024,7 @@ export default function BudgetPage() {
                         {Object.keys(adminExpenses).map((_, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={COLORS.pie[index % COLORS.pie.length]}
+                            fill={COLORS[index % COLORS.length]}
                           />
                         ))}
                       </Pie>
