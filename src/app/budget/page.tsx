@@ -142,6 +142,40 @@ const totalExpenses = Object.entries(budgetData.budgetSummary)
 // Calculate the deficit
 const deficit = Math.abs(budgetData.budgetSummary.remainingFunds);
 
+// Prepare data for income breakdown
+const incomeBreakdownData = [
+  { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
+  { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
+  { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
+];
+
+// Prepare data for expense breakdown
+const expenseBreakdownData = Object.entries(budgetData.budgetSummary)
+  .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
+  .map(([name, value]) => ({
+    name: name
+      .split(/(?=[A-Z])/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "),
+    value: Math.abs(value),
+  }));
+
+// Prepare data for monthly trend (simulated data for visualization)
+const monthlyTrendData = [
+  { month: "Jul", income: totalIncome * 0.1, expenses: totalExpenses * 0.08 },
+  { month: "Aug", income: totalIncome * 0.15, expenses: totalExpenses * 0.12 },
+  { month: "Sep", income: totalIncome * 0.2, expenses: totalExpenses * 0.18 },
+  { month: "Oct", income: totalIncome * 0.25, expenses: totalExpenses * 0.22 },
+  { month: "Nov", income: totalIncome * 0.3, expenses: totalExpenses * 0.28 },
+  { month: "Dec", income: totalIncome * 0.35, expenses: totalExpenses * 0.32 },
+  { month: "Jan", income: totalIncome * 0.4, expenses: totalExpenses * 0.38 },
+  { month: "Feb", income: totalIncome * 0.45, expenses: totalExpenses * 0.42 },
+  { month: "Mar", income: totalIncome * 0.5, expenses: totalExpenses * 0.48 },
+  { month: "Apr", income: totalIncome * 0.6, expenses: totalExpenses * 0.58 },
+  { month: "May", income: totalIncome * 0.7, expenses: totalExpenses * 0.68 },
+  { month: "Jun", income: totalIncome, expenses: totalExpenses },
+];
+
 // Function to get detailed breakdown for a specific expense category
 const getDetailedBreakdown = (category: string) => {
   switch (category) {
@@ -346,7 +380,7 @@ export default function BudgetPage() {
               className="space-y-8"
             >
               <div>
-                <h3 className="text-xl font-semibold mb-4">Income vs Expenses</h3>
+                <h3 className="text-xl font-semibold mb-4">Budget Summary</h3>
                 <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -373,6 +407,97 @@ export default function BudgetPage() {
                         data={[{ name: "Deficit", value: deficit }]}
                       />
                     </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Income Breakdown</h3>
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={incomeBreakdownData}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={100}
+                          label={({ name, percent }) =>
+                            `${name}: ${(percent * 100).toFixed(0)}%`
+                          }
+                        >
+                          {incomeBreakdownData.map((_, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Expense Breakdown</h3>
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={expenseBreakdownData}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={100}
+                          label={({ name, percent }) =>
+                            `${name}: ${(percent * 100).toFixed(0)}%`
+                          }
+                        >
+                          {expenseBreakdownData.map((_, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Monthly Budget Trend</h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monthlyTrendData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                      <Legend />
+                      <Line 
+                        type="monotone" 
+                        dataKey="income" 
+                        stroke="#8884d8" 
+                        name="Income" 
+                        strokeWidth={2}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="expenses" 
+                        stroke="#82ca9d" 
+                        name="Expenses" 
+                        strokeWidth={2}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -420,11 +545,7 @@ export default function BudgetPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={[
-                        { name: "AS Revenue", value: Math.abs(budgetData.budgetSummary.asRevenue) },
-                        { name: "Total Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.totalCarryforward) },
-                        { name: "AS Carryforward", value: Math.abs(budgetData.reservesAndCarryforwards.asCarryforward) },
-                      ]}
+                      data={incomeBreakdownData}
                       dataKey="value"
                       nameKey="name"
                       cx="50%"
@@ -434,7 +555,7 @@ export default function BudgetPage() {
                         `${name}: ${(percent * 100).toFixed(0)}%`
                       }
                     >
-                      {[0, 1, 2].map((index) => (
+                      {incomeBreakdownData.map((_, index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
