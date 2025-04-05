@@ -135,8 +135,59 @@ const totalExpenses = Object.entries(budgetData.budgetSummary)
   .filter(([key]) => key !== "asRevenue" && key !== "remainingFunds")
   .reduce((sum, [_, value]) => sum + Math.abs(value), 0);
 
+// Calculate the deficit
+const deficit = totalExpenses - totalIncome;
+
+// Function to get detailed breakdown for a specific expense category
+const getDetailedBreakdown = (category: string) => {
+  switch (category) {
+    case "Career Employees":
+      return Object.entries(budgetData.careerEmployees).map(([name, value]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value),
+      }));
+    case "Office Operations":
+      return Object.entries(budgetData.officeOperations).map(([name, value]: [string, any]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value.amount),
+      }));
+    case "General Operations":
+      return Object.entries(budgetData.generalOperations).map(([name, value]) => ({
+        name: name
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: Math.abs(value),
+      }));
+    case "Senate Operations":
+      return [{ name: "Senate Operations", value: Math.abs(budgetData.budgetSummary.senateOperations) }];
+    case "Student Services":
+      return [{ name: "Student Payroll & Stipends", value: Math.abs(budgetData.budgetSummary.studentPayrollStipends) }];
+    default:
+      return [];
+  }
+};
+
 export default function BudgetPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [detailedData, setDetailedData] = useState<any[]>([]);
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+    setDetailedData(getDetailedBreakdown(category));
+  };
+
+  const handleBack = () => {
+    setSelectedCategory(null);
+    setDetailedData([]);
+  };
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-12">
@@ -191,6 +242,22 @@ export default function BudgetPage() {
           </motion.div>
         </div>
 
+        {/* Deficit Highlight */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-red-100 dark:bg-red-900/30 rounded-lg p-6 shadow-lg mb-12 border-2 border-red-500"
+        >
+          <h3 className="text-xl font-bold text-red-700 dark:text-red-300 mb-2">Budget Deficit</h3>
+          <p className="text-3xl font-bold text-red-700 dark:text-red-300">
+            {formatCurrency(deficit)}
+          </p>
+          <p className="text-red-600 dark:text-red-400 mt-2">
+            Expenses exceed income by {formatCurrency(deficit)}
+          </p>
+        </motion.div>
+
         {/* Tabs */}
         <div className="flex flex-wrap gap-4 mb-8">
           {["overview", "income", "expenses", "operations", "analysis"].map((tab) => (
@@ -225,6 +292,7 @@ export default function BudgetPage() {
                       data={[
                         { name: "Income", value: totalIncome },
                         { name: "Expenses", value: totalExpenses },
+                        { name: "Deficit", value: deficit },
                       ]}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
@@ -232,7 +300,17 @@ export default function BudgetPage() {
                       <YAxis tickFormatter={(value) => formatCurrency(value)} />
                       <Tooltip formatter={(value) => formatCurrency(value as number)} />
                       <Legend />
-                      <Bar dataKey="value" fill="#8884d8" name="Amount" />
+                      <Bar 
+                        dataKey="value" 
+                        fill="#8884d8" 
+                        name="Amount" 
+                      />
+                      <Bar 
+                        dataKey="value" 
+                        fill="#ef4444" 
+                        name="Deficit" 
+                        data={[{ name: "Deficit", value: deficit }]}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -312,10 +390,29 @@ export default function BudgetPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-xl font-semibold mb-4">Expense Breakdown</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                {selectedCategory ? `${selectedCategory} Breakdown` : "Expense Breakdown"}
+              </h3>
+              {selectedCategory && (
+                <button
+                  onClick={handleBack}
+                  className="mb-4 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded-md transition-colors"
+                >
+                  ← Back to All Expenses
+                </button>
+              )}
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={expenseData}>
+                  <BarChart 
+                    data={selectedCategory ? detailedData : expenseData}
+                    onClick={(data) => {
+                      if (!selectedCategory && data && data.activePayload && data.activePayload[0]) {
+                        const category = data.activePayload[0].payload.name;
+                        handleCategoryClick(category);
+                      }
+                    }}
+                    style={{ cursor: selectedCategory ? 'default' : 'pointer' }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
                     <YAxis tickFormatter={(value) => formatCurrency(value)} />
@@ -337,7 +434,16 @@ export default function BudgetPage() {
               <h3 className="text-xl font-semibold mb-4">Office Operations Breakdown</h3>
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={officeOperationsData}>
+                  <BarChart 
+                    data={officeOperationsData}
+                    onClick={(data) => {
+                      if (data && data.activePayload && data.activePayload[0]) {
+                        const category = data.activePayload[0].payload.name;
+                        handleCategoryClick(category);
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
                     <YAxis tickFormatter={(value) => formatCurrency(value)} />
