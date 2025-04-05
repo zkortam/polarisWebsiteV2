@@ -68,6 +68,7 @@ export function Navbar() {
     { label: "Home", href: "/#home" },
     { label: "About", href: "/#about" },
     { label: "Platform", href: "/platform" },
+    { label: "Budget", href: "/budget" },
     { label: "Team", href: "/#team" },
   ];
 

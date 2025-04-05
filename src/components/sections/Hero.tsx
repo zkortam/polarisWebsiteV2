@@ -7,208 +7,337 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-// Particle component with glow effect
-const Particle = ({ x, y, size, speed, direction, mousePosition }: { 
-  x: number, 
-  y: number, 
-  size: number, 
-  speed: number, 
-  direction: { x: number, y: number },
-  mousePosition: { x: number, y: number }
-}) => {
-  const [position, setPosition] = useState({ x, y });
-  const [isHovered, setIsHovered] = useState(false);
-  const particleRef = useRef<HTMLDivElement>(null);
-  
-  // Calculate distance from mouse
-  const distanceFromMouse = Math.sqrt(
-    Math.pow(position.x - mousePosition.x, 2) + 
-    Math.pow(position.y - mousePosition.y, 2)
-  );
-  
-  // Calculate repulsion force based on distance
-  const repulsionRadius = 150;
-  const repulsionStrength = 0.5;
-  const repulsionForce = distanceFromMouse < repulsionRadius 
-    ? (1 - distanceFromMouse / repulsionRadius) * repulsionStrength 
-    : 0;
-  
-  // Calculate direction away from mouse
-  const angleFromMouse = Math.atan2(
-    position.y - mousePosition.y,
-    position.x - mousePosition.x
-  );
-  
-  // Apply repulsion force
-  const repulsionX = Math.cos(angleFromMouse) * repulsionForce * 10;
-  const repulsionY = Math.sin(angleFromMouse) * repulsionForce * 10;
-  
-  // Update position with animation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPosition(prev => {
-        // Calculate new position with direction and speed
-        let newX = prev.x + direction.x * speed + repulsionX;
-        let newY = prev.y + direction.y * speed + repulsionY;
-        
-        // Wrap around screen edges
-        if (newX < 0) newX = window.innerWidth;
-        if (newX > window.innerWidth) newX = 0;
-        if (newY < 0) newY = window.innerHeight;
-        if (newY > window.innerHeight) newY = 0;
-        
-        return { x: newX, y: newY };
-      });
-    }, 16); // ~60fps
-    
-    return () => clearInterval(interval);
-  }, [direction, speed, repulsionX, repulsionY]);
-  
-  // Handle hover effect
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
-  
-  return (
-    <motion.div
-      ref={particleRef}
-      className="absolute rounded-full"
-      style={{
-        x: position.x,
-        y: position.y,
-        width: size,
-        height: size,
-        background: "rgba(255, 255, 255, 0.8)",
-        boxShadow: isHovered 
-          ? "0 0 20px 5px rgba(255, 255, 255, 0.8)" 
-          : "0 0 10px 3px rgba(255, 255, 255, 0.6)",
-        filter: "blur(1px)",
-        zIndex: 10,
-        cursor: "pointer",
-        transition: "box-shadow 0.3s ease"
-      }}
-      whileHover={{ 
-        scale: 1.5,
-        boxShadow: "0 0 30px 10px rgba(255, 255, 255, 0.9)",
-        filter: "blur(0px)"
-      }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    />
-  );
-};
+// Canvas-based star background component
+const StarBackground = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const mousePosition = useRef<{ x: number | null, y: number | null }>({ x: null, y: null });
+  const particlesRef = useRef<any[]>([]);
+  const shootingStarsRef = useRef<any[]>([]);
+  const burningAsteroidsRef = useRef<any[]>([]);
+  const animationFrameRef = useRef<number | null>(null);
+  const particleCount = 800; // Increased from 400 to 800 for more stars
 
-// Shooting star component
-const ShootingStar = ({ startX, startY, angle, length, speed }: { 
-  startX: number, 
-  startY: number, 
-  angle: number, 
-  length: number,
-  speed: number
-}) => {
-  const [position, setPosition] = useState({ x: startX, y: startY });
-  const [opacity, setOpacity] = useState(1);
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPosition(prev => {
-        const newX = prev.x + Math.cos(angle) * speed;
-        const newY = prev.y + Math.sin(angle) * speed;
-        
-        // Reset when off screen
-        if (newX > window.innerWidth + 100 || newY > window.innerHeight + 100) {
-          setOpacity(0);
-          setTimeout(() => {
-            setPosition({ x: -100, y: Math.random() * window.innerHeight });
-            setOpacity(1);
-          }, 1000);
-          return { x: -100, y: Math.random() * window.innerHeight };
+  // Particle class
+  class Particle {
+    x: number;
+    y: number;
+    size: number = 0;
+    speedX: number = 0;
+    speedY: number = 0;
+    brightness: number = 0;
+    pulseSpeed: number = 0;
+    pulseOffset: number = 0;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.reset();
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+    }
+
+    reset() {
+      this.size = Math.random() * 2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.brightness = Math.random() * 0.5 + 0.5;
+      this.pulseSpeed = Math.random() * 0.02 + 0.01;
+      this.pulseOffset = Math.random() * Math.PI * 2;
+    }
+
+    update(canvas: HTMLCanvasElement) {
+      // Pulsing effect
+      this.brightness = 0.5 + Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.2;
+      
+      // Mouse interaction with increased sensitivity
+      if (mousePosition.current.x !== null && mousePosition.current.y !== null) {
+        let dx = mousePosition.current.x - this.x;
+        let dy = mousePosition.current.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 150) { // Increased threshold
+          let force = (150 - distance) / 150;
+          this.x -= dx * force * 0.1; // Increased multiplier
+          this.y -= dy * force * 0.1;
         }
-        
-        return { x: newX, y: newY };
-      });
-    }, 16);
-    
-    return () => clearInterval(interval);
-  }, [angle, speed]);
-  
-  return (
-    <motion.div
-      className="absolute"
-      style={{
-        x: position.x,
-        y: position.y,
-        width: length,
-        height: 2,
-        background: "linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)",
-        transform: `rotate(${angle}rad)`,
-        transformOrigin: "left center",
-        opacity,
-        zIndex: 5
-      }}
-    />
-  );
-};
+      }
+      
+      this.x += this.speedX;
+      this.y += this.speedY;
+      
+      // Wrap around screen edges
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
 
-// Sparkle component
-const Sparkle = ({ x, y, size, duration }: { 
-  x: number, 
-  y: number, 
-  size: number, 
-  duration: number 
-}) => {
+    draw(ctx: CanvasRenderingContext2D) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Shooting star class
+  class ShootingStar {
+    x: number = 0;
+    y: number = 0;
+    length: number = 0;
+    speed: number = 0;
+    angle: number = 0;
+    opacity: number = 0;
+    fadeSpeed: number = 0;
+    active: boolean = false;
+    trail: any[] = [];
+    color: string = '#ffffff';
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.reset(canvas);
+    }
+
+    reset(canvas: HTMLCanvasElement) {
+      this.x = Math.random() * canvas.width;
+      this.y = 0;
+      this.length = Math.random() * 80 + 100;
+      this.speed = Math.random() * 15 + 10;
+      this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2;
+      this.opacity = 0;
+      this.fadeSpeed = 0.05;
+      this.active = false;
+      this.trail = [];
+      this.color = Math.random() < 0.3 ? '#63b3ed' : '#ffffff';
+    }
+
+    update(canvas: HTMLCanvasElement) {
+      if (!this.active) {
+        if (Math.random() < 0.005) {
+          this.active = true;
+          this.opacity = 1;
+        }
+        return;
+      }
+      
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed;
+      
+      // Update trail with sparkle effect
+      this.trail.unshift({ 
+        x: this.x, 
+        y: this.y, 
+        opacity: this.opacity,
+        sparkle: Math.random() > 0.7
+      });
+      
+      if (this.trail.length > 20) this.trail.pop();
+      
+      // Fade out when off screen
+      if (this.x > canvas.width || this.y > canvas.height) {
+        this.opacity -= this.fadeSpeed;
+        if (this.opacity <= 0) {
+          this.reset(canvas);
+        }
+      }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+      if (!this.active) return;
+      
+      this.trail.forEach((point, index) => {
+        const gradientOpacity = point.opacity * (1 - index / this.trail.length);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${gradientOpacity})`;
+        ctx.lineWidth = point.sparkle ? 3 : 2;
+        ctx.beginPath();
+        ctx.moveTo(point.x, point.y);
+        if (index < this.trail.length - 1) {
+          ctx.lineTo(this.trail[index + 1].x, this.trail[index + 1].y);
+        }
+        ctx.stroke();
+        
+        if (point.sparkle) {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    }
+  }
+
+  // Burning asteroid class
+  class BurningAsteroid {
+    x: number = 0;
+    y: number = 0;
+    size: number = 0;
+    speed: number = 0;
+    particles: any[] = [];
+    active: boolean = true;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.reset(canvas);
+      this.active = true; // Always active from the beginning
+    }
+
+    reset(canvas: HTMLCanvasElement) {
+      this.x = Math.random() * canvas.width;
+      this.y = -50;
+      this.size = Math.random() * 5 + 10; // Start off larger
+      this.speed = Math.random() * 2 + 1;
+      this.particles = [];
+    }
+
+    update(canvas: HTMLCanvasElement) {
+      this.y += this.speed;
+      this.size *= 0.995; // Gradually shrink
+      
+      if (Math.random() < 0.3) {
+        this.particles.push({
+          x: this.x,
+          y: this.y,
+          size: Math.random() * 2,
+          speedX: (Math.random() - 0.5) * 2,
+          speedY: -Math.random() * 2,
+          life: 1,
+          color: Math.random() < 0.7 ? '#ff4500' : '#ffd700'
+        });
+      }
+      
+      for (let i = this.particles.length - 1; i >= 0; i--) {
+        const p = this.particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.life -= 0.02;
+        if (p.life <= 0) this.particles.splice(i, 1);
+      }
+      
+      if (this.y > canvas.height + 50 || this.size < 2) {
+        this.reset(canvas);
+      }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+      ctx.fillStyle = '#808080';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      
+      this.particles.forEach(p => {
+        ctx.fillStyle = `rgba(${p.color === '#ff4500' ? '255,69,0' : '255,215,0'},${p.life})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  }
+
+  // Initialize particles
+  const initParticles = (canvas: HTMLCanvasElement) => {
+    particlesRef.current = [];
+    for (let i = 0; i < particleCount; i++) {
+      particlesRef.current.push(new Particle(canvas));
+    }
+    
+    // Reduce shooting stars and asteroids by 50%
+    shootingStarsRef.current = Array(3).fill(null).map(() => new ShootingStar(canvas));
+    burningAsteroidsRef.current = Array(3).fill(null).map(() => new BurningAsteroid(canvas));
+  };
+
+  // Animation function
+  const animateParticles = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    particlesRef.current.forEach(p => {
+      const relativeY = p.y / canvas.height;
+      const densityFactor = Math.max(0, 1 - (scrollPercent + relativeY) * 0.5);
+      p.update(canvas);
+      ctx.globalAlpha = p.brightness * densityFactor;
+      p.draw(ctx);
+    });
+    
+    ctx.globalAlpha = 1;
+    
+    shootingStarsRef.current.forEach(star => {
+      star.update(canvas);
+      star.draw(ctx);
+    });
+    
+    burningAsteroidsRef.current.forEach(asteroid => {
+      asteroid.update(canvas);
+      asteroid.draw(ctx);
+    });
+    
+    animationFrameRef.current = requestAnimationFrame(() => animateParticles(canvas, ctx));
+  };
+
+  // Setup canvas and event listeners
+  useEffect(() => {
+    setMounted(true);
+    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Initialize particles
+    initParticles(canvas);
+    
+    // Start animation
+    animateParticles(canvas, ctx);
+    
+    // Handle mouse movement
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePosition.current = { x: e.clientX, y: e.clientY };
+    };
+    
+    // Handle window resize
+    const handleResize = () => {
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles(canvas);
+      }
+    };
+    
+    // Handle scroll
+    const handleScroll = () => {
+      if (canvas) {
+        canvas.style.top = window.scrollY + 'px';
+      }
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <motion.div
-      className="absolute rounded-full"
-      style={{
-        x,
-        y,
-        width: size,
-        height: size,
-        background: "rgba(255, 255, 255, 0.9)",
-        boxShadow: "0 0 15px 5px rgba(255, 255, 255, 0.7)",
-        filter: "blur(1px)",
-        zIndex: 15
-      }}
-      animate={{
-        scale: [0, 1, 0],
-        opacity: [0, 1, 0],
-      }}
-      transition={{
-        duration,
-        repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeInOut"
-      }}
+    <canvas
+      ref={canvasRef}
+      id="stars-canvas"
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+      style={{ background: 'transparent' }}
     />
   );
 };
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState<Array<{
-    id: number;
-    x: number;
-    y: number;
-    size: number;
-    speed: number;
-    direction: { x: number; y: number };
-  }>>([]);
-  const [shootingStars, setShootingStars] = useState<Array<{
-    id: number;
-    startX: number;
-    startY: number;
-    angle: number;
-    length: number;
-    speed: number;
-  }>>([]);
-  const [sparkles, setSparkles] = useState<Array<{
-    id: number;
-    x: number;
-    y: number;
-    size: number;
-    duration: number;
-  }>>([]);
   
   // Mouse movement for glow effect
   const mouseX = useMotionValue(0);
@@ -222,108 +351,29 @@ export function Hero() {
   const scrollY = useMotionValue(0);
   const glowOpacity = useTransform(scrollY, [0, 500], [0.8, 0.2]);
   
-  // Initialize particles and effects
+  // Initialize effects
   useEffect(() => {
     setMounted(true);
-    
-    // Generate random particles
-    const newParticles = Array.from({ length: 100 }, (_, i) => {
-      const angle = Math.random() * Math.PI * 2;
-      return {
-        id: i,
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 3 + 1,
-        speed: Math.random() * 0.2 + 0.05,
-        direction: {
-          x: Math.cos(angle),
-          y: Math.sin(angle)
-        }
-      };
-    });
-    setParticles(newParticles);
-    
-    // Generate shooting stars
-    const newShootingStars = Array.from({ length: 3 }, (_, i) => ({
-      id: i,
-      startX: -100,
-      startY: Math.random() * window.innerHeight,
-      angle: Math.PI / 4 + (Math.random() * Math.PI / 8),
-      length: Math.random() * 100 + 50,
-      speed: Math.random() * 5 + 3
-    }));
-    setShootingStars(newShootingStars);
-    
-    // Generate sparkles
-    const newSparkles = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 3 + 2
-    }));
-    setSparkles(newSparkles);
     
     // Handle mouse movement
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      setMousePosition({ x: e.clientX, y: e.clientY });
     };
     
-    // Handle window resize
-    const handleResize = () => {
-      // Update particle positions on resize
-      setParticles(prev => 
-        prev.map(p => ({
-          ...p,
-          x: p.x > window.innerWidth ? window.innerWidth - 10 : p.x,
-          y: p.y > window.innerHeight ? window.innerHeight - 10 : p.y
-        }))
-      );
-    };
-    
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", handleResize);
-    
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [mouseX, mouseY]);
-  
-  // Handle scroll for parallax effect
-  useEffect(() => {
+    // Handle scroll for parallax effect
     const handleScroll = () => {
       scrollY.set(window.scrollY);
     };
     
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollY]);
-  
-  // Generate new sparkles periodically
-  useEffect(() => {
-    if (!mounted) return;
     
-    const interval = setInterval(() => {
-      setSparkles(prev => {
-        // Replace a random sparkle with a new one
-        const index = Math.floor(Math.random() * prev.length);
-        const newSparkles = [...prev];
-        newSparkles[index] = {
-          id: prev[index].id,
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          size: Math.random() * 4 + 2,
-          duration: Math.random() * 3 + 2
-        };
-        return newSparkles;
-      });
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [mounted]);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [mouseX, mouseY, scrollY]);
   
   // Static UI for server-side rendering
   if (!mounted) {
@@ -354,6 +404,9 @@ export function Hero() {
   
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/80">
+      {/* Canvas-based star background */}
+      <StarBackground />
+      
       {/* Background glow that follows mouse */}
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full bg-primary/20 blur-[100px] pointer-events-none"
@@ -364,42 +417,6 @@ export function Hero() {
           transform: "translate(-50%, -50%)",
         }}
       />
-      
-      {/* Particles */}
-      {particles.map((particle) => (
-        <Particle
-          key={particle.id}
-          x={particle.x}
-          y={particle.y}
-          size={particle.size}
-          speed={particle.speed}
-          direction={particle.direction}
-          mousePosition={mousePosition}
-        />
-      ))}
-      
-      {/* Shooting stars */}
-      {shootingStars.map((star) => (
-        <ShootingStar
-          key={star.id}
-          startX={star.startX}
-          startY={star.startY}
-          angle={star.angle}
-          length={star.length}
-          speed={star.speed}
-        />
-      ))}
-      
-      {/* Sparkles */}
-      {sparkles.map((sparkle) => (
-        <Sparkle
-          key={sparkle.id}
-          x={sparkle.x}
-          y={sparkle.y}
-          size={sparkle.size}
-          duration={sparkle.duration}
-        />
-      ))}
       
       {/* Content */}
       <div className="container mx-auto px-4 z-10">
