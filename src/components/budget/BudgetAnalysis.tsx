@@ -233,13 +233,17 @@ const BudgetAnalysis: React.FC = () => {
     const travelExpenses = findItemsByKeyword(budgetData, "travel")
       .reduce((sum, item) => sum + Math.abs(item.value), 0);
     
-    // Find one-day events
-    const oneDayEvents = [
-      ...findItemsByKeyword(budgetData, "sun god"),
-      ...findItemsByKeyword(budgetData, "bear garden"),
-      ...findItemsByKeyword(budgetData, "day one"),
-      ...findItemsByKeyword(budgetData, "horizon")
-    ].reduce((sum, item) => sum + Math.abs(item.value), 0);
+    // Find one-day events - specifically look for each event
+    const sunGodFestival = findItemsByKeyword(budgetData, "sun god")
+      .reduce((sum, item) => sum + Math.abs(item.value), 0);
+    const bearGarden = findItemsByKeyword(budgetData, "bear garden")
+      .reduce((sum, item) => sum + Math.abs(item.value), 0);
+    const dayOne = findItemsByKeyword(budgetData, "day one")
+      .reduce((sum, item) => sum + Math.abs(item.value), 0);
+    const horizon = findItemsByKeyword(budgetData, "horizon")
+      .reduce((sum, item) => sum + Math.abs(item.value), 0);
+    
+    const oneDayEvents = sunGodFestival + bearGarden + dayOne + horizon;
     
     // Find club funding
     const clubFunding = findItemsByKeyword(budgetData, "student organization")
@@ -262,6 +266,10 @@ const BudgetAnalysis: React.FC = () => {
       adminExpenses,
       travelExpenses,
       oneDayEvents,
+      sunGodFestival,
+      bearGarden,
+      dayOne,
+      horizon,
       clubFunding,
       questionableExpenses
     };
@@ -300,8 +308,7 @@ const BudgetAnalysis: React.FC = () => {
         name: item.path[item.path.length - 1],
         value: Math.abs(item.value)
       }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10);
+      .sort((a, b) => b.value - a.value);
     
     // Questionable expenses
     const questionableData = metrics.questionableExpenses
@@ -803,9 +810,22 @@ const BudgetAnalysis: React.FC = () => {
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-            <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-            <Tooltip formatter={(value: number) => formatCurrency(value)} />
+            <XAxis 
+              dataKey="name" 
+              angle={-45} 
+              textAnchor="end" 
+              height={100} 
+              interval={0}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis 
+              tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
+              width={80}
+            />
+            <Tooltip 
+              formatter={(value: number) => formatCurrency(value)}
+              contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
+            />
             <Legend />
             <Bar 
               dataKey="value" 
@@ -968,13 +988,13 @@ const BudgetAnalysis: React.FC = () => {
                     className="h-[300px]"
                   >
                     <ResponsiveContainer width="100%" height="100%">
-                      <PieChart width={400} height={400}>
+                      <PieChart>
                         <Pie
                           data={chartData?.studentVsAdmin || []}
-                          cx={200}
-                          cy={200}
+                          cx="50%"
+                          cy="50%"
                           labelLine={false}
-                          outerRadius={150}
+                          outerRadius={120}
                           fill="#8884d8"
                           dataKey="value"
                           nameKey="name"
@@ -1050,15 +1070,19 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        width={600}
-                        height={300}
                         data={chartData?.spendingComparison || []}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
-                        <YAxis tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <YAxis 
+                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
+                          width={80}
+                        />
+                        <Tooltip 
+                          formatter={(value: number) => formatCurrency(value)}
+                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
+                        />
                         <Legend />
                         <Bar 
                           dataKey="value" 
@@ -1128,15 +1152,26 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        width={600}
-                        height={300}
                         data={chartData?.travelData || []}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                        layout="vertical"
                       >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <YAxis type="category" dataKey="name" width={90} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <XAxis 
+                          type="number" 
+                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
+                          width={80}
+                        />
+                        <YAxis 
+                          type="category" 
+                          dataKey="name" 
+                          width={150}
+                          tick={{ fontSize: 12 }}
+                        />
+                        <Tooltip 
+                          formatter={(value: number) => formatCurrency(value)}
+                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
+                        />
                         <Legend />
                         <Bar 
                           dataKey="value" 
@@ -1205,15 +1240,26 @@ const BudgetAnalysis: React.FC = () => {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        width={600}
-                        height={300}
                         data={chartData?.questionableData || []}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                        layout="vertical"
                       >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis type="number" tickFormatter={(value) => formatCurrency(value).replace('$', '')} />
-                        <YAxis type="category" dataKey="name" width={90} />
-                        <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                        <XAxis 
+                          type="number" 
+                          tickFormatter={(value) => formatCurrency(value).replace('$', '')} 
+                          width={80}
+                        />
+                        <YAxis 
+                          type="category" 
+                          dataKey="name" 
+                          width={150}
+                          tick={{ fontSize: 12 }}
+                        />
+                        <Tooltip 
+                          formatter={(value: number) => formatCurrency(value)}
+                          contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: 'white' }}
+                        />
                         <Legend />
                         <Bar 
                           dataKey="value" 
